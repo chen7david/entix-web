@@ -28,8 +28,8 @@ jobs:
           VITE_AWS_USER_POOL_ID: ${{ secrets.VITE_AWS_USER_POOL_ID }}
           VITE_AWS_USER_POOL_CLIENT_ID: ${{ secrets.VITE_AWS_USER_POOL_CLIENT_ID }}
 
-      # - name: Copy CNAME file
-      #   run: cp CNAME dist/
+      - name: Copy CNAME file
+        run: cp CNAME dist/
 
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4
