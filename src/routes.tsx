@@ -10,7 +10,7 @@ export const RouterContent = () => {
   return (
     <Routes>
       <Route path="/" element={<RootLayout />}>
-        <Route path="/" element={<HomePage />} />
+        <Route index element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/profile" element={<ProfilePage />} />
