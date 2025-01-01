@@ -1,13 +1,16 @@
-import { Button } from "antd";
-import { Link } from "react-router-dom";
+import { LoginForm } from "../components/auth/LoginForm";
 
 export const LoginPage = () => {
   return (
-    <>
-      <div>Login</div>
-      <Link to="/profile">
-        <Button type="primary">Profile</Button>
-      </Link>
-    </>
+    <div className="min-h-screen flex items-center justify-center px-4">
+      <div className="max-w-md w-full space-y-8">
+        <div>
+          <h2 className="text-center text-3xl font-bold">
+            Sign in to your account
+          </h2>
+        </div>
+        <LoginForm />
+      </div>
+    </div>
   );
 };
