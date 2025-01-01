@@ -25,7 +25,7 @@ export const HomePage = () => {
             </div>
           )}
         </div>
-
+        <span className="text-4xl">{import.meta.env.VITE_API_URL}</span>
         <div className="bg-white rounded-lg shadow p-6">
           {isAuthenticated ? (
             <p className="text-lg">You're logged in! This is your dashboard.</p>
