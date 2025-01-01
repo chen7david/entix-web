@@ -1,6 +1,6 @@
 import { Amplify } from "aws-amplify";
 
-export default Amplify.configure({
+Amplify.configure({
   Auth: {
     Cognito: {
       userPoolId: import.meta.env.VITE_COGNITO_USER_POOL_ID,
