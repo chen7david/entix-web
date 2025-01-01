@@ -1,12 +1,16 @@
+import { Provider as JotaiProvider } from "jotai";
 import { HashRouter } from "react-router-dom";
+import { AuthProvider } from "./providers/AuthProvider";
 import { RouterContent } from "./routes";
 
-function App() {
+export default function App() {
   return (
     <HashRouter>
-      <RouterContent />
+      <JotaiProvider>
+        <AuthProvider>
+          <RouterContent />
+        </AuthProvider>
+      </JotaiProvider>
     </HashRouter>
   );
 }
-
-export default App;

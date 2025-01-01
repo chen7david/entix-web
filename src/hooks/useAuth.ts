@@ -1,30 +1,58 @@
-import { signIn, type SignInInput } from "aws-amplify/auth";
-import { useState } from "react";
+import { signIn, signOut, type SignInInput } from "aws-amplify/auth";
+import { useAtom, useSetAtom } from "jotai";
+import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+import { authAtom, loadUserAtom } from "../store/auth";
 
 export const useAuth = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [auth, setAuth] = useAtom(authAtom);
+  const loadUser = useSetAtom(loadUserAtom);
   const navigate = useNavigate();
 
-  const login = async (email: string, password: string) => {
-    setIsLoading(true);
-    setError(null);
+  const login = useCallback(
+    async (email: string, password: string) => {
+      setAuth((prev) => ({ ...prev, isLoading: true, error: null }));
 
+      try {
+        const signInInput: SignInInput = {
+          username: email,
+          password,
+        };
+
+        await signIn(signInInput);
+        await loadUser();
+        navigate("/dashboard");
+      } catch (err) {
+        setAuth((prev) => ({
+          ...prev,
+          error: err instanceof Error ? err.message : "An error occurred",
+          isLoading: false,
+        }));
+      }
+    },
+    [setAuth, loadUser, navigate]
+  );
+
+  const logout = useCallback(async () => {
     try {
-      const signInInput: SignInInput = {
-        username: email,
-        password,
-      };
-
-      await signIn(signInInput);
-      navigate("/dashboard");
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred");
-    } finally {
-      setIsLoading(false);
+      await signOut();
+      setAuth((prev) => ({
+        ...prev,
+        isAuthenticated: false,
+        user: null,
+      }));
+      navigate("/login");
+    } catch (error) {
+      console.error("Error signing out:", error);
     }
-  };
+  }, [setAuth, navigate]);
 
-  return { login, isLoading, error };
+  return {
+    login,
+    logout,
+    isAuthenticated: auth.isAuthenticated,
+    isLoading: auth.isLoading,
+    error: auth.error,
+    user: auth.user,
+  };
 };
