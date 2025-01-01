@@ -24,7 +24,7 @@ export const authLoadingAtom = atom(
     set(authAtom, { ...get(authAtom), isLoading: loading })
 );
 
-export const loadUserAtom = atom(null, async (get, set) => {
+export const loadUserAtom = atom(null, async (_, set) => {
   try {
     set(authLoadingAtom, true);
     const user = await getCurrentUser();
