@@ -1,5 +1,5 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { authService } from "../services/auth.service";
+import { authService } from "@/services/auth.service";
 
 export function AuthGuard() {
   const location = useLocation();

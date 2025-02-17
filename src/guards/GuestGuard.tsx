@@ -1,5 +1,5 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { authService } from "../services/auth.service";
+import { authService } from "@/services/auth.service";
 
 export function GuestGuard() {
   if (authService.isAuthenticated()) {
