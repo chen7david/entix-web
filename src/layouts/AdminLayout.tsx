@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import { authService } from "../services/auth.service";
+import { authService } from "@/services/auth.service";
 
 export const AdminLayout: React.FC = () => {
   return (
