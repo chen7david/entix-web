@@ -1,7 +1,9 @@
+import { Router } from "./router/routes";
+
 export const App: React.FC = () => {
   return (
     <div>
-      <h1>Entix Web</h1>
+      <Router />
     </div>
   );
 };
