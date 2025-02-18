@@ -1,10 +1,13 @@
-import { App as AntApp } from 'antd';
+import { App as AntApp, ConfigProvider } from "antd";
 import { Router as AppRouter } from "./router/routes";
+import theme from "./theme/theme";
 
 export function App() {
   return (
-    <AntApp>
-      <AppRouter />
-    </AntApp>
+    <ConfigProvider theme={theme}>
+      <AntApp>
+        <AppRouter />
+      </AntApp>
+    </ConfigProvider>
   );
 }
