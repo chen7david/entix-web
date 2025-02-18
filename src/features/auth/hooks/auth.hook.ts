@@ -56,6 +56,50 @@ export const useAuth = () => {
     [setAuth, handleAuthError]
   );
 
+  const verifyEmail = useCallback(
+    async (email: string, code: string): Promise<AuthResult<void>> => {
+      try {
+        setAuth((prev) => ({
+          ...prev,
+          isLoading: true,
+          error: null,
+          authError: null,
+        }));
+
+        await authService.confirmRegistration(email, code);
+        return { success: true };
+      } catch (error) {
+        const errorMessage = handleAuthError(error);
+        return { success: false, error: errorMessage };
+      } finally {
+        setAuth((prev) => ({ ...prev, isLoading: false }));
+      }
+    },
+    [setAuth, handleAuthError]
+  );
+
+  const resendVerificationCode = useCallback(
+    async (email: string): Promise<AuthResult<void>> => {
+      try {
+        setAuth((prev) => ({
+          ...prev,
+          isLoading: true,
+          error: null,
+          authError: null,
+        }));
+
+        await authService.resendVerificationCode(email);
+        return { success: true };
+      } catch (error) {
+        const errorMessage = handleAuthError(error);
+        return { success: false, error: errorMessage };
+      } finally {
+        setAuth((prev) => ({ ...prev, isLoading: false }));
+      }
+    },
+    [setAuth, handleAuthError]
+  );
+
   const login = useCallback(
     async (email: string, password: string): Promise<AuthResult<void>> => {
       try {
@@ -112,6 +156,54 @@ export const useAuth = () => {
     }
   }, [setAuth, handleAuthError]);
 
+  const requestPasswordReset = useCallback(
+    async (email: string): Promise<AuthResult<void>> => {
+      try {
+        setAuth((prev) => ({
+          ...prev,
+          isLoading: true,
+          error: null,
+          authError: null,
+        }));
+
+        await authService.requestPasswordReset(email);
+        return { success: true };
+      } catch (error) {
+        const errorMessage = handleAuthError(error);
+        return { success: false, error: errorMessage };
+      } finally {
+        setAuth((prev) => ({ ...prev, isLoading: false }));
+      }
+    },
+    [setAuth, handleAuthError]
+  );
+
+  const confirmPasswordReset = useCallback(
+    async (
+      email: string,
+      code: string,
+      newPassword: string
+    ): Promise<AuthResult<void>> => {
+      try {
+        setAuth((prev) => ({
+          ...prev,
+          isLoading: true,
+          error: null,
+          authError: null,
+        }));
+
+        await authService.confirmPasswordReset(email, code, newPassword);
+        return { success: true };
+      } catch (error) {
+        const errorMessage = handleAuthError(error);
+        return { success: false, error: errorMessage };
+      } finally {
+        setAuth((prev) => ({ ...prev, isLoading: false }));
+      }
+    },
+    [setAuth, handleAuthError]
+  );
+
   return {
     // Auth state
     isAuthenticated: auth.isAuthenticated,
@@ -123,5 +215,9 @@ export const useAuth = () => {
     login,
     logout,
     register,
+    verifyEmail,
+    resendVerificationCode,
+    requestPasswordReset,
+    confirmPasswordReset,
   };
 };
