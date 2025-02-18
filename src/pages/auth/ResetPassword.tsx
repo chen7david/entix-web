@@ -128,10 +128,10 @@ export const ResetPasswordPage: React.FC = () => {
             <Space direction="vertical" size="small">
               <Text>
                 Didn't receive OTP?{" "}
-                <Link to="/forgot-password">Request again</Link>
+                <Link to="/auth/forgot-password">Request again</Link>
               </Text>
               <Text>
-                Remember your password? <Link to="/login">Sign in</Link>
+                Remember your password? <Link to="/auth/login">Sign in</Link>
               </Text>
             </Space>
           </div>

@@ -14,19 +14,22 @@ export const Router: React.FC = () => {
   return (
     <HashRouter>
       <Routes>
-        <Route path="/" element={<Navigate to="/login" replace />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
+        {/* Public routes */}
+        <Route path="/" element={<Navigate to="/auth/login" replace />} />
+        <Route path="/auth/login" element={<LoginPage />} />
+        <Route path="/auth/register" element={<RegisterPage />} />
+        <Route path="/auth/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/auth/reset-password" element={<ResetPasswordPage />} />
+        <Route path="/auth/verify-email" element={<VerifyEmailPage />} />
+        <Route
+          path="/auth/request-verification"
+          element={<RequestEmailVerificationPage />}
+        />
+
+        {/* Protected routes */}
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
-        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-        <Route path="/reset-password" element={<ResetPasswordPage />} />
-        <Route
-          path="/request-verification"
-          element={<RequestEmailVerificationPage />}
-        />
-        <Route path="/verify-email" element={<VerifyEmailPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </HashRouter>

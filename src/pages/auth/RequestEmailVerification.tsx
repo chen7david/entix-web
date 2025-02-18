@@ -79,10 +79,10 @@ export const RequestEmailVerificationPage: React.FC = () => {
             <Space direction="vertical" size="small">
               <Text>
                 Already have an OTP?{" "}
-                <Link to="/verify-email">Verify email</Link>
+                <Link to="/auth/verify-email">Verify email</Link>
               </Text>
               <Text>
-                Back to <Link to="/login">Sign in</Link>
+                Back to <Link to="/auth/login">Sign in</Link>
               </Text>
             </Space>
           </div>

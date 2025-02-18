@@ -78,10 +78,10 @@ export const VerifyEmailPage: React.FC = () => {
             <Space direction="vertical" size="small">
               <Text>
                 Didn't receive OTP?{" "}
-                <Link to="/request-verification">Request again</Link>
+                <Link to="/auth/request-verification">Request again</Link>
               </Text>
               <Text>
-                Back to <Link to="/login">Sign in</Link>
+                Back to <Link to="/auth/login">Sign in</Link>
               </Text>
             </Space>
           </div>

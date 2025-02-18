@@ -79,14 +79,14 @@ export const ForgotPasswordPage: React.FC = () => {
           <div className="text-center">
             <Space direction="vertical" size="small">
               <Text>
-                Remember your password? <Link to="/login">Sign in</Link>
+                Remember your password? <Link to="/auth/login">Sign in</Link>
               </Text>
               <Text>
-                Don't have an account? <Link to="/register">Sign up</Link>
+                Don't have an account? <Link to="/auth/register">Sign up</Link>
               </Text>
               <Text>
                 Need to verify your email?{" "}
-                <Link to="/request-verification">Verify now</Link>
+                <Link to="/auth/request-verification">Verify now</Link>
               </Text>
             </Space>
           </div>
