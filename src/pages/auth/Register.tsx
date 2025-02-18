@@ -1,38 +1,32 @@
 import { App, Card, Typography, Space } from "antd";
 import { Link } from "react-router-dom";
+import { useAuth } from "@/features/auth/hooks/auth.hook";
 import {
   RegisterForm,
   RegisterFormData,
 } from "@/features/auth/components/RegisterForm";
-import { useAuth } from "@/features/auth/hooks/auth.hook";
 
 const { Title, Text } = Typography;
 
 export const RegisterPage: React.FC = () => {
   const { message } = App.useApp();
-  const { register, isLoading, error } = useAuth();
+  const { register, isLoading, authError } = useAuth();
 
   const handleRegister = async (values: RegisterFormData) => {
     try {
-      // Validate password match
-      if (values.password !== values.confirmPassword) {
-        message.error("Passwords do not match!");
-        return;
-      }
-
       await register({
         email: values.email,
         password: values.password,
-        username: values.email, // Use email as username
+        username: values.username,
       });
 
       message.success(
         "Registration successful! Please check your email to verify your account."
       );
     } catch (err) {
-      // Error is already handled by the useAuth hook
-      // We just need to show a user-friendly message
-      message.error(error || "Registration failed. Please try again.");
+      message.error(
+        authError?.message || "Registration failed. Please try again."
+      );
     }
   };
 

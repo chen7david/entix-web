@@ -41,7 +41,9 @@ export class AuthService {
           userAttributes: {
             email: credentials.email,
             // Store username as a custom attribute if provided
-            ...(credentials.username && { preferred_username: credentials.username }),
+            ...(credentials.username && {
+              preferred_username: credentials.username,
+            }),
           },
         },
       };

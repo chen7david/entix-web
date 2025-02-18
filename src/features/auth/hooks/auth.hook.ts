@@ -22,16 +22,31 @@ export const useAuth = () => {
       const authError = error as AuthError;
       setAuth((prev) => ({
         ...prev,
-        error: authError.message || "An unexpected error occurred",
+        error: authError.message,
+        authError: authError, // Store the full error object
         isLoading: false,
       }));
+      return authError; // Return the error for immediate use
     },
     [setAuth]
   );
 
+  const clearError = useCallback(() => {
+    setAuth((prev) => ({
+      ...prev,
+      error: null,
+      authError: null,
+    }));
+  }, [setAuth]);
+
   const withLoading = useCallback(
     <T>(promise: Promise<T>) => {
-      setAuth((prev) => ({ ...prev, isLoading: true, error: null }));
+      setAuth((prev) => ({
+        ...prev,
+        isLoading: true,
+        error: null,
+        authError: null,
+      }));
       return promise.finally(() =>
         setAuth((prev) => ({ ...prev, isLoading: false }))
       );
@@ -39,31 +54,49 @@ export const useAuth = () => {
     [setAuth]
   );
 
+  const register = useCallback(
+    async (credentials: SignUpCredentials) => {
+      try {
+        setAuth((prev) => ({
+          ...prev,
+          isLoading: true,
+          error: null,
+          authError: null,
+        }));
+
+        const result = await withLoading(authService.register(credentials));
+        navigate("/auth/verify-email");
+        return result;
+      } catch (error) {
+        const authError = handleAuthError(error);
+        throw authError; // Re-throw to allow components to handle specific error cases
+      } finally {
+        setAuth((prev) => ({ ...prev, isLoading: false }));
+      }
+    },
+    [setAuth, handleAuthError, withLoading]
+  );
+
   const login = useCallback(
     async (email: string, password: string, redirectUrl?: string) => {
       try {
+        setAuth((prev) => ({
+          ...prev,
+          isLoading: true,
+          error: null,
+          authError: null,
+        }));
+
         await withLoading(authService.login({ username: email, password }));
         await loadUser();
         navigate(redirectUrl || "/dashboard");
       } catch (error) {
         handleAuthError(error);
+      } finally {
+        setAuth((prev) => ({ ...prev, isLoading: false }));
       }
     },
-    [loadUser, navigate, handleAuthError, withLoading]
-  );
-
-  const register = useCallback(
-    async (values: SignUpCredentials) => {
-      try {
-        await withLoading(authService.register(values));
-        navigate(
-          "/auth/verify-email?email=" + encodeURIComponent(values.email)
-        );
-      } catch (error) {
-        handleAuthError(error);
-      }
-    },
-    [navigate, handleAuthError, withLoading]
+    [loadUser, navigate, handleAuthError, setAuth, withLoading]
   );
 
   const verifyEmail = useCallback(
@@ -117,6 +150,13 @@ export const useAuth = () => {
   const logout = useCallback(
     async (redirectUrl?: string) => {
       try {
+        setAuth((prev) => ({
+          ...prev,
+          isLoading: true,
+          error: null,
+          authError: null,
+        }));
+
         await withLoading(authService.logout());
         setAuth((prev) => ({
           ...prev,
@@ -126,6 +166,8 @@ export const useAuth = () => {
         navigate(redirectUrl || "/login");
       } catch (error) {
         handleAuthError(error);
+      } finally {
+        setAuth((prev) => ({ ...prev, isLoading: false }));
       }
     },
     [setAuth, navigate, handleAuthError, withLoading]
@@ -136,6 +178,7 @@ export const useAuth = () => {
     isAuthenticated: auth.isAuthenticated,
     isLoading: auth.isLoading,
     error: auth.error,
+    authError: auth.authError as AuthError | null, // Expose the full error object
     user: auth.user,
 
     // Auth methods
@@ -146,5 +189,6 @@ export const useAuth = () => {
     resendVerificationCode,
     forgotPassword,
     resetPassword,
+    clearError, // Expose method to clear errors
   };
 };
