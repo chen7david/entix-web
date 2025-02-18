@@ -7,7 +7,7 @@ import {
   TeamOutlined,
 } from "@ant-design/icons";
 import StatCard from "@/features/admin/components/StatCard";
-import RecentActivityTable from "@/features/admin/components/RecentActivityTable";
+// import RecentActivityTable from "@/features/admin/components/RecentActivityTable";
 import AnalyticsChart from "@/features/admin/components/AnalyticsChart";
 
 const { Title } = Typography;
@@ -55,32 +55,32 @@ export const DashboardPage: React.FC = () => {
   ];
 
   // Mock data for recent activity
-  const recentActivity = [
-    {
-      key: "1",
-      user: "John Doe",
-      action: "Created account",
-      type: "user",
-      status: "success",
-      timestamp: "2025-02-18 10:30 AM",
-    },
-    {
-      key: "2",
-      user: "Jane Smith",
-      action: "Placed order #123",
-      type: "order",
-      status: "pending",
-      timestamp: "2025-02-18 10:15 AM",
-    },
-    {
-      key: "3",
-      user: "Bob Johnson",
-      action: "Verified email",
-      type: "email",
-      status: "success",
-      timestamp: "2025-02-18 10:00 AM",
-    },
-  ] as const;
+  // const recentActivity = [
+  //   {
+  //     key: "1",
+  //     user: "John Doe",
+  //     action: "Created account",
+  //     type: "user",
+  //     status: "success",
+  //     timestamp: "2025-02-18 10:30 AM",
+  //   },
+  //   {
+  //     key: "2",
+  //     user: "Jane Smith",
+  //     action: "Placed order #123",
+  //     type: "order",
+  //     status: "pending",
+  //     timestamp: "2025-02-18 10:15 AM",
+  //   },
+  //   {
+  //     key: "3",
+  //     user: "Bob Johnson",
+  //     action: "Verified email",
+  //     type: "email",
+  //     status: "success",
+  //     timestamp: "2025-02-18 10:00 AM",
+  //   },
+  // ] as const;
 
   // Mock data for analytics chart
   const analyticsData = [
@@ -127,7 +127,9 @@ export const DashboardPage: React.FC = () => {
             <Tabs defaultActiveKey="weekly">
               <TabPane
                 tab={
-                  <span className="flex items-center gap-2">Weekly Overview</span>
+                  <span className="flex items-center gap-2">
+                    Weekly Overview
+                  </span>
                 }
                 key="weekly"
               >
@@ -138,7 +140,7 @@ export const DashboardPage: React.FC = () => {
         </Col>
         <Col xs={24} lg={8}>
           <Card title="Recent Activity" className="h-full">
-            <RecentActivityTable data={recentActivity} loading={loading} />
+            {/* <RecentActivityTable data={recentActivity} loading={loading} /> */}
           </Card>
         </Col>
       </Row>

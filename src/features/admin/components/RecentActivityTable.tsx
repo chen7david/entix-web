@@ -1,20 +1,24 @@
 import { Table, Tag, Space } from "antd";
 import { ColumnsType } from "antd/es/table";
-import { UserOutlined, ShoppingCartOutlined, MailOutlined } from "@ant-design/icons";
+import {
+  UserOutlined,
+  ShoppingCartOutlined,
+  MailOutlined,
+} from "@ant-design/icons";
 
-interface Activity {
+type Activity = {
   key: string;
   user: string;
   action: string;
   type: "user" | "order" | "email";
   status: "success" | "pending" | "failed";
   timestamp: string;
-}
+};
 
-interface RecentActivityTableProps {
+type RecentActivityTableProps = {
   data: Activity[];
   loading?: boolean;
-}
+};
 
 const getStatusColor = (status: Activity["status"]) => {
   switch (status) {
