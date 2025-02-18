@@ -1,9 +1,10 @@
-import { Router } from "./router/routes";
+import { App as AntApp } from 'antd';
+import { Router as AppRouter } from "./router/routes";
 
-export const App: React.FC = () => {
+export function App() {
   return (
-    <div>
-      <Router />
-    </div>
+    <AntApp>
+      <AppRouter />
+    </AntApp>
   );
-};
+}
