@@ -22,8 +22,8 @@ export const RegisterPage: React.FC = () => {
 
       await register({
         email: values.email,
-        username: values.username,
         password: values.password,
+        username: values.email, // Use email as username
       });
 
       message.success(
