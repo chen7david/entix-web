@@ -1,5 +1,5 @@
 import { App, Card, Typography, Space } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/features/auth/hooks/auth.hook";
 import {
   RegisterForm,
@@ -10,23 +10,23 @@ const { Title, Text } = Typography;
 
 export const RegisterPage: React.FC = () => {
   const { message } = App.useApp();
-  const { register, isLoading, authError } = useAuth();
+  const navigate = useNavigate();
+  const { register, isLoading } = useAuth();
 
   const handleRegister = async (values: RegisterFormData) => {
-    try {
-      await register({
-        email: values.email,
-        password: values.password,
-        username: values.username,
-      });
+    const result = await register({
+      email: values.email,
+      password: values.password,
+      username: values.username,
+    });
 
+    if (result.success) {
       message.success(
         "Registration successful! Please check your email to verify your account."
       );
-    } catch (err) {
-      message.error(
-        authError?.message || "Registration failed. Please try again."
-      );
+      navigate("/auth/verify-email");
+    } else {
+      message.error(result.error || "Registration failed. Please try again.");
     }
   };
 
