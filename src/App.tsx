@@ -1,5 +1,7 @@
-import { AppRouter } from "./router/router";
-
-export function App() {
-  return <AppRouter />;
-}
+export const App: React.FC = () => {
+  return (
+    <div>
+      <h1>Entix Web</h1>
+    </div>
+  );
+};
