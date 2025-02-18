@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { App, Button, Card, Form, Input, Typography, Space } from "antd";
-import { MailOutlined } from "@ant-design/icons";
+import { App, Card, Typography, Space } from "antd";
+import {
+  ForgotPasswordForm,
+  ForgotPasswordFormData,
+} from "@/features/auth/components/ForgotPasswordForm";
 
 const { Title, Text } = Typography;
-
-type ForgotPasswordFormData = {
-  email: string;
-};
 
 export const ForgotPasswordPage: React.FC = () => {
   const { message } = App.useApp();
@@ -23,7 +22,7 @@ export const ForgotPasswordPage: React.FC = () => {
       message.success(
         "If an account exists with this email, you will receive a password reset OTP."
       );
-      navigate("/reset-password");
+      navigate("/auth/reset-password");
     } catch (error) {
       message.error("Failed to send reset email. Please try again.");
       console.error("Forgot password error:", error);
@@ -43,55 +42,25 @@ export const ForgotPasswordPage: React.FC = () => {
           </Text>
         </div>
 
-        <Form
-          name="forgotPassword"
-          onFinish={handleForgotPassword}
-          layout="vertical"
-          requiredMark={false}
-        >
-          <Form.Item
-            name="email"
-            rules={[
-              { required: true, message: "Please input your email!" },
-              { type: "email", message: "Please enter a valid email!" },
-            ]}
-          >
-            <Input
-              prefix={<MailOutlined />}
-              placeholder="Email"
-              size="large"
-              autoComplete="email"
-            />
-          </Form.Item>
+        <ForgotPasswordForm onSubmit={handleForgotPassword} loading={loading} />
 
-          <Form.Item>
-            <Button
-              type="primary"
-              htmlType="submit"
-              size="large"
-              block
-              loading={loading}
-            >
-              Send Reset Instructions
-            </Button>
-          </Form.Item>
-
-          <div className="text-center">
-            <Space direction="vertical" size="small">
-              <Text>
-                Remember your password? <Link to="/auth/login">Sign in</Link>
-              </Text>
-              <Text>
-                Don't have an account? <Link to="/auth/register">Sign up</Link>
-              </Text>
-              <Text>
-                Need to verify your email?{" "}
-                <Link to="/auth/request-verification">Verify now</Link>
-              </Text>
-            </Space>
-          </div>
-        </Form>
+        <div className="text-center mt-4">
+          <Space direction="vertical" size="small">
+            <Text>
+              Remember your password? <Link to="/auth/login">Sign in</Link>
+            </Text>
+            <Text>
+              Don't have an account? <Link to="/auth/register">Sign up</Link>
+            </Text>
+            <Text>
+              Need to verify your email?{" "}
+              <Link to="/auth/request-verification">Verify now</Link>
+            </Text>
+          </Space>
+        </div>
       </Card>
     </div>
   );
 };
+
+export default ForgotPasswordPage;

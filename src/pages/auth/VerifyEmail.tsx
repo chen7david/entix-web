@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { App, Button, Card, Form, Input, Space, Typography } from "antd";
-import { NumberOutlined } from "@ant-design/icons";
+import { App, Card, Typography, Space } from "antd";
+import {
+  VerifyEmailForm,
+  VerifyEmailFormData,
+} from "@/features/auth/components/VerifyEmailForm";
 
 const { Title, Text } = Typography;
-
-type VerifyEmailFormData = {
-  otp: string;
-};
 
 export const VerifyEmailPage: React.FC = () => {
   const { message } = App.useApp();
@@ -21,7 +20,7 @@ export const VerifyEmailPage: React.FC = () => {
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
       message.success("Email has been successfully verified!");
-      navigate("/login");
+      navigate("/auth/login");
     } catch (error) {
       message.error("Failed to verify email. Please try again.");
       console.error("Email verification error:", error);
@@ -35,58 +34,27 @@ export const VerifyEmailPage: React.FC = () => {
       <Card className="w-full max-w-md">
         <div className="text-center mb-8">
           <Title level={2}>Verify Your Email</Title>
-          <Typography.Paragraph type="secondary">
+          <Text type="secondary">
             Enter the verification OTP sent to your email
-          </Typography.Paragraph>
+          </Text>
         </div>
 
-        <Form
-          name="verifyEmail"
-          onFinish={handleVerifyEmail}
-          layout="vertical"
-          requiredMark={false}
-        >
-          <Form.Item
-            name="otp"
-            rules={[
-              { required: true, message: "Please input the OTP!" },
-              { len: 6, message: "OTP must be exactly 6 digits!" },
-              { pattern: /^\d+$/, message: "OTP must contain only numbers!" },
-            ]}
-          >
-            <Input
-              prefix={<NumberOutlined />}
-              placeholder="Enter 6-digit OTP"
-              size="large"
-              maxLength={6}
-            />
-          </Form.Item>
+        <VerifyEmailForm onSubmit={handleVerifyEmail} loading={loading} />
 
-          <Form.Item>
-            <Button
-              type="primary"
-              htmlType="submit"
-              size="large"
-              block
-              loading={loading}
-            >
-              Verify Email
-            </Button>
-          </Form.Item>
-
-          <div className="text-center">
-            <Space direction="vertical" size="small">
-              <Text>
-                Didn't receive OTP?{" "}
-                <Link to="/auth/request-verification">Request again</Link>
-              </Text>
-              <Text>
-                Back to <Link to="/auth/login">Sign in</Link>
-              </Text>
-            </Space>
-          </div>
-        </Form>
+        <div className="text-center mt-4">
+          <Space direction="vertical" size="small">
+            <Text>
+              Didn't receive OTP?{" "}
+              <Link to="/auth/request-verification">Request again</Link>
+            </Text>
+            <Text>
+              Back to <Link to="/auth/login">Sign in</Link>
+            </Text>
+          </Space>
+        </div>
       </Card>
     </div>
   );
 };
+
+export default VerifyEmailPage;

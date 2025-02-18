@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { App, Card, Typography, Space } from "antd";
 import {
   RegisterForm,
   RegisterFormData,
 } from "@/features/auth/components/RegisterForm";
 
-const { Title, Text, Link } = Typography;
+const { Title, Text } = Typography;
 
 export const RegisterPage: React.FC = () => {
   const { message } = App.useApp();
@@ -45,7 +45,7 @@ export const RegisterPage: React.FC = () => {
 
         <Space className="w-full justify-center mt-4">
           <Text>Already have an account?</Text>
-          <Link href="/auth/login">Sign in</Link>
+          <Link to="/auth/login">Sign in</Link>
         </Space>
       </Card>
     </div>
