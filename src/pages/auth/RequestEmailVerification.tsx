@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { App, Button, Card, Form, Input, Space, Typography } from "antd";
-import { MailOutlined } from "@ant-design/icons";
+import { App, Card, Typography, Space } from "antd";
+import {
+  RequestEmailVerificationForm,
+  EmailVerificationFormData,
+} from "@/features/auth/components/RequestEmailVerificationForm";
 
 const { Title, Text } = Typography;
-
-type EmailVerificationFormData = {
-  email: string;
-};
 
 export const RequestEmailVerificationPage: React.FC = () => {
   const { message } = App.useApp();
@@ -23,7 +22,7 @@ export const RequestEmailVerificationPage: React.FC = () => {
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
       message.success("Verification OTP has been sent to your email address.");
-      navigate("/verify-email");
+      navigate("/auth/verify-email");
     } catch (error) {
       message.error("Failed to send verification email. Please try again.");
       console.error("Email verification request error:", error);
@@ -37,57 +36,30 @@ export const RequestEmailVerificationPage: React.FC = () => {
       <Card className="w-full max-w-md">
         <div className="text-center mb-8">
           <Title level={2}>Verify Your Email</Title>
-          <Typography.Paragraph type="secondary">
+          <Text type="secondary">
             Enter your email address to receive a verification OTP
-          </Typography.Paragraph>
+          </Text>
         </div>
 
-        <Form
-          name="requestEmailVerification"
-          onFinish={handleRequestVerification}
-          layout="vertical"
-          requiredMark={false}
-        >
-          <Form.Item
-            name="email"
-            rules={[
-              { required: true, message: "Please input your email!" },
-              { type: "email", message: "Please enter a valid email!" },
-            ]}
-          >
-            <Input
-              prefix={<MailOutlined />}
-              placeholder="Email"
-              size="large"
-              autoComplete="email"
-            />
-          </Form.Item>
+        <RequestEmailVerificationForm
+          onSubmit={handleRequestVerification}
+          loading={loading}
+        />
 
-          <Form.Item>
-            <Button
-              type="primary"
-              htmlType="submit"
-              size="large"
-              block
-              loading={loading}
-            >
-              Send Verification OTP
-            </Button>
-          </Form.Item>
-
-          <div className="text-center">
-            <Space direction="vertical" size="small">
-              <Text>
-                Already have an OTP?{" "}
-                <Link to="/verify-email">Verify email</Link>
-              </Text>
-              <Text>
-                Back to <Link to="/login">Sign in</Link>
-              </Text>
-            </Space>
-          </div>
-        </Form>
+        <div className="text-center mt-4">
+          <Space direction="vertical" size="small">
+            <Text>
+              Already have an OTP?{" "}
+              <Link to="/auth/verify-email">Verify email</Link>
+            </Text>
+            <Text>
+              Back to <Link to="/auth/login">Sign in</Link>
+            </Text>
+          </Space>
+        </div>
       </Card>
     </div>
   );
 };
+
+export default RequestEmailVerificationPage;

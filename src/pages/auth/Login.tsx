@@ -1,14 +1,9 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { App, Button, Card, Form, Input, Typography, Space } from "antd";
-import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import { useNavigate, Link } from "react-router-dom";
+import { App, Card, Typography, Space } from "antd";
+import { LoginForm, LoginFormData } from "@/features/auth/components/LoginForm";
 
-const { Title, Text, Link } = Typography;
-
-type LoginFormData = {
-  email: string;
-  password: string;
-};
+const { Title, Text } = Typography;
 
 export const LoginPage: React.FC = () => {
   const { message } = App.useApp();
@@ -41,79 +36,16 @@ export const LoginPage: React.FC = () => {
           <Text type="secondary">Please sign in to continue</Text>
         </div>
 
-        <Form
-          name="login"
-          initialValues={{ remember: true }}
-          onFinish={handleLogin}
-          layout="vertical"
-          requiredMark={false}
-        >
-          <Form.Item
-            name="email"
-            rules={[
-              { required: true, message: "Please input your email!" },
-              { type: "email", message: "Please enter a valid email!" },
-            ]}
-          >
-            <Input
-              prefix={<UserOutlined />}
-              placeholder="Email"
-              size="large"
-              autoComplete="email"
-            />
-          </Form.Item>
+        <LoginForm onSubmit={handleLogin} loading={loading} />
 
-          <Form.Item
-            name="password"
-            rules={[
-              { required: true, message: "Please input your password!" },
-              { min: 6, message: "Password must be at least 6 characters!" },
-            ]}
-            extra={
-              <Link
-                onClick={() => navigate("/forgot-password")}
-                className="float-right"
-              >
-                Forgot password?
-              </Link>
-            }
-          >
-            <Input.Password
-              prefix={<LockOutlined />}
-              placeholder="Password"
-              size="large"
-              autoComplete="current-password"
-            />
-          </Form.Item>
-
-          <Form.Item>
-            <Button
-              type="primary"
-              htmlType="submit"
-              size="large"
-              block
-              loading={loading}
-            >
-              Sign in
-            </Button>
-          </Form.Item>
-
-          <div className="text-center">
-            <Space direction="vertical" size="small">
-              <Text>
-                Don't have an account?{" "}
-                <Link onClick={() => navigate("/register")}>Sign up</Link>
-              </Text>
-              <Text>
-                Email not verified?{" "}
-                <Link onClick={() => navigate("/request-verification")}>
-                  Verify now
-                </Link>
-              </Text>
-            </Space>
-          </div>
-        </Form>
+        <Space className="w-full justify-center mt-4">
+          <Link to="/auth/forgot-password">Forgot password?</Link>
+          <Text type="secondary">|</Text>
+          <Link to="/auth/register">Create an account</Link>
+        </Space>
       </Card>
     </div>
   );
 };
+
+export default LoginPage;
