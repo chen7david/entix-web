@@ -1,33 +1,38 @@
-import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
 import { App, Card, Typography, Space } from "antd";
+import { Link } from "react-router-dom";
 import {
   RegisterForm,
   RegisterFormData,
 } from "@/features/auth/components/RegisterForm";
+import { useAuth } from "@/features/auth/hooks/auth.hook";
 
 const { Title, Text } = Typography;
 
 export const RegisterPage: React.FC = () => {
   const { message } = App.useApp();
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
+  const { register, isLoading, error } = useAuth();
 
   const handleRegister = async (values: RegisterFormData) => {
     try {
-      setLoading(true);
-      console.log(values);
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      // Validate password match
+      if (values.password !== values.confirmPassword) {
+        message.error("Passwords do not match!");
+        return;
+      }
+
+      await register({
+        email: values.email,
+        username: values.username,
+        password: values.password,
+      });
 
       message.success(
         "Registration successful! Please check your email to verify your account."
       );
-      navigate("/login");
-    } catch (error) {
-      message.error("Registration failed. Please try again.");
-      console.error("Registration error:", error);
-    } finally {
-      setLoading(false);
+    } catch (err) {
+      // Error is already handled by the useAuth hook
+      // We just need to show a user-friendly message
+      message.error(error || "Registration failed. Please try again.");
     }
   };
 
@@ -41,7 +46,7 @@ export const RegisterPage: React.FC = () => {
           </Text>
         </div>
 
-        <RegisterForm onSubmit={handleRegister} loading={loading} />
+        <RegisterForm onSubmit={handleRegister} loading={isLoading} />
 
         <Space className="w-full justify-center mt-4">
           <Text>Already have an account?</Text>
