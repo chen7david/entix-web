@@ -14,16 +14,16 @@ In `src/config/env.config.ts`, add the new environment variable to the `envSchem
 
 ```typescript
 // Optional variable (can be undefined)
-VITE_FEATURE_FLAG: z.string().optional()
+VITE_FEATURE_FLAG: z.string().optional();
 
 // Required variable
-VITE_API_KEY: z.string()
+VITE_API_KEY: z.string();
 
 // Variable with specific validation
-VITE_MAX_ITEMS: z.coerce.number().min(1).max(100)
+VITE_MAX_ITEMS: z.coerce.number().min(1).max(100);
 
 // URL validation
-VITE_EXTERNAL_SERVICE: z.string().url()
+VITE_EXTERNAL_SERVICE: z.string().url();
 ```
 
 #### 2. Update `.env.example`
@@ -55,27 +55,28 @@ VITE_EXTERNAL_SERVICE=http://localhost:8000
 In your code, access the variable through the `env` export:
 
 ```typescript
-import { env } from '@/config/env.config'
+import { env } from "@/config/env.config";
 
 // Optional variable with fallback
-const isFeatureEnabled = env.VITE_FEATURE_FLAG === 'true'
+const isFeatureEnabled = env.VITE_FEATURE_FLAG === "true";
 
 // Required variable
 function callApi() {
-  fetch('https://api.example.com', {
+  fetch("https://api.example.com", {
     headers: {
-      'Authorization': `Bearer ${env.VITE_API_KEY}`
-    }
-  })
+      Authorization: `Bearer ${env.VITE_API_KEY}`,
+    },
+  });
 }
 
 // Validated number
-const maxItems = env.VITE_MAX_ITEMS // Guaranteed to be between 1-100
+const maxItems = env.VITE_MAX_ITEMS; // Guaranteed to be between 1-100
 ```
 
 ### Configuration Validation
 
 The configuration system provides:
+
 - Type-safe environment variables
 - Runtime validation
 - Clear error messages for missing or invalid variables
@@ -83,10 +84,12 @@ The configuration system provides:
 ### Deployment Considerations
 
 #### Local Development
+
 1. Copy `.env.example` to `.env`
 2. Fill in actual values
 
 #### GitHub Actions
+
 1. Add secrets in GitHub repository settings
 2. Ensure all required variables are set
 3. Use repository secrets to populate environment variables
