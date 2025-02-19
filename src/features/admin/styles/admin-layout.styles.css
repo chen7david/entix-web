@@ -1,0 +1,37 @@
+:root {
+  --sidebar-width: 260px;
+  --navbar-height: 64px;
+  --sidebar-card-top-height: 80px;
+  --sidebar-card-bottom-height: 64px;
+  --sidebar-menu-height: calc(
+    100dvh - var(--sidebar-card-top-height) - var(--navbar-height) -
+      var(--sidebar-card-bottom-height)
+  );
+}
+
+#admin-app-container {
+  min-height: 100dvh;
+  display: grid;
+  grid-template-columns: var(--sidebar-width) 1fr;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    "sidebar main"
+    "sidebar main"
+    "sidebar footer";
+}
+
+#footer-container {
+  grid-area: footer;
+}
+
+#sidebar-container {
+  grid-area: sidebar;
+  position: sticky;
+  top: 0;
+  height: 100dvh;
+  z-index: 111;
+}
+
+#main-container {
+  grid-area: main;
+}
