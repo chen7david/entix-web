@@ -9,8 +9,8 @@ import { ForgotPasswordPage } from "@/pages/auth/ForgotPassword";
 import { ResetPasswordPage } from "@/pages/auth/ResetPassword";
 import { RequestEmailVerificationPage } from "@/pages/auth/RequestEmailVerification";
 import { VerifyEmailPage } from "@/pages/auth/VerifyEmail";
-import { AdminLayout } from "@/features/admin/layout/AdminLayout";
-import { AuthLayout } from "@/features/auth/layout/AuthLayout";
+import { AdminLayout } from "@/layouts/admin/AdminLayout";
+import { AuthLayout } from "@/layouts/auth/AuthLayout";
 
 export const Router: React.FC = () => {
   return (

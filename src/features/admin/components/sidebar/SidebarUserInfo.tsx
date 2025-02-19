@@ -1,7 +1,11 @@
-import { Avatar, Dropdown, Space, Typography } from 'antd';
-import { UserOutlined, LogoutOutlined, SettingOutlined } from '@ant-design/icons';
-import type { MenuProps } from 'antd';
-import { useNavigate } from 'react-router-dom';
+import { Avatar, Dropdown, Space, Typography } from "antd";
+import {
+  UserOutlined,
+  LogoutOutlined,
+  SettingOutlined,
+} from "@ant-design/icons";
+import type { MenuProps } from "antd";
+import { useNavigate } from "react-router-dom";
 
 const { Text } = Typography;
 
@@ -15,26 +19,26 @@ export const SidebarUserInfo: React.FC<SidebarUserInfoProps> = ({
   onLogout,
 }) => {
   const navigate = useNavigate();
-  
-  const userMenuItems: MenuProps['items'] = [
+
+  const userMenuItems: MenuProps["items"] = [
     {
-      key: 'profile',
-      label: 'Profile',
+      key: "profile",
+      label: "Profile",
       icon: <UserOutlined />,
-      onClick: () => navigate('/admin/profile'),
+      onClick: () => navigate("/admin/profile"),
     },
     {
-      key: 'settings',
-      label: 'Settings',
+      key: "settings",
+      label: "Settings",
       icon: <SettingOutlined />,
-      onClick: () => navigate('/admin/settings'),
+      onClick: () => navigate("/admin/settings"),
     },
     {
-      type: 'divider',
+      type: "divider",
     },
     {
-      key: 'logout',
-      label: 'Logout',
+      key: "logout",
+      label: "Logout",
       icon: <LogoutOutlined />,
       danger: true,
       onClick: onLogout,
@@ -44,9 +48,13 @@ export const SidebarUserInfo: React.FC<SidebarUserInfoProps> = ({
   if (collapsed) {
     return (
       <div className="px-4 py-3">
-        <Dropdown menu={{ items: userMenuItems }} placement="topRight" trigger={['click']}>
-          <Avatar 
-            icon={<UserOutlined />} 
+        <Dropdown
+          menu={{ items: userMenuItems }}
+          placement="topRight"
+          trigger={["click"]}
+        >
+          <Avatar
+            icon={<UserOutlined />}
             className="cursor-pointer bg-primary"
           />
         </Dropdown>
@@ -56,7 +64,11 @@ export const SidebarUserInfo: React.FC<SidebarUserInfoProps> = ({
 
   return (
     <div className="px-4 py-3">
-      <Dropdown menu={{ items: userMenuItems }} placement="topRight" trigger={['click']}>
+      <Dropdown
+        menu={{ items: userMenuItems }}
+        placement="topRight"
+        trigger={["click"]}
+      >
         <Space className="cursor-pointer w-full justify-between">
           <Space>
             <Avatar icon={<UserOutlined />} className="bg-primary" />
@@ -64,9 +76,7 @@ export const SidebarUserInfo: React.FC<SidebarUserInfoProps> = ({
               <Text strong className="text-white">
                 Admin User
               </Text>
-              <Text className="text-gray-400 text-sm">
-                admin@example.com
-              </Text>
+              <Text className="text-gray-400 text-sm">admin@example.com</Text>
             </div>
           </Space>
         </Space>

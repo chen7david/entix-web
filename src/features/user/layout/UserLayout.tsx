@@ -1,7 +1,7 @@
 import cn from "classnames";
 import { Outlet } from "react-router-dom";
 import { HTMLAttributes } from "react";
-import { AppContainer } from "@/components/layout/AppContainer";
+import { AppContainer } from "@/layouts/admin/AppContainer";
 
 type UserLayoutProps = HTMLAttributes<HTMLDivElement>;
 

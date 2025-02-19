@@ -20,11 +20,11 @@
     "sidebar footer";
 }
 
-#footer-container {
+#admin-footer-container {
   grid-area: footer;
 }
 
-#sidebar-container {
+#admin-sidebar-container {
   grid-area: sidebar;
   position: sticky;
   top: 0;
@@ -32,6 +32,6 @@
   z-index: 111;
 }
 
-#main-container {
+#admin-main-container {
   grid-area: main;
 }
