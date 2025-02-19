@@ -9,6 +9,7 @@ import { ForgotPasswordPage } from "@/pages/auth/ForgotPassword";
 import { ResetPasswordPage } from "@/pages/auth/ResetPassword";
 import { RequestEmailVerificationPage } from "@/pages/auth/RequestEmailVerification";
 import { VerifyEmailPage } from "@/pages/auth/VerifyEmail";
+import { AdminLayout } from "@/features/layout/components/AdminLayout";
 
 export const Router: React.FC = () => {
   return (
@@ -27,9 +28,13 @@ export const Router: React.FC = () => {
         />
 
         {/* Protected routes */}
-        <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/settings" element={<SettingsPage />} />
-        <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="admin" element={<AdminLayout />}>
+          <Route path="profile" element={<ProfilePage />} />
+          <Route path="settings" element={<SettingsPage />} />
+          <Route path="dashboard" element={<DashboardPage />} />
+        </Route>
+
+        {/* 404 page */}
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </HashRouter>
