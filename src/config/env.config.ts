@@ -10,22 +10,23 @@ const envSchema = z.object({
 
 export type EnvConfig = z.infer<typeof envSchema>;
 
-function validateEnv(): EnvConfig {
-  const parsed = envSchema.safeParse(import.meta.env);
+export const validateEnv = (values: Record<string, string>): EnvConfig => {
+  const parsed = envSchema.safeParse(values);
 
   if (!parsed.success) {
     const missingEnvs = parsed.error.errors.map((error) =>
       error.path.join(".")
     );
 
-    throw new Error(
+    console.error(
       `❌ Invalid environment variables:\n${missingEnvs
         .map((env) => `   - ${env} is missing or invalid`)
         .join("\n")}`
     );
+    return {} as EnvConfig;
   }
 
   return parsed.data;
-}
+};
 
-export const env = validateEnv();
+export const env = validateEnv(import.meta.env);
