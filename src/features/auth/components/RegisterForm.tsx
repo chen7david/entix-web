@@ -1,17 +1,17 @@
 import { Form, Input, Button } from "antd";
 import { LockOutlined, UserOutlined, MailOutlined } from "@ant-design/icons";
 
-export interface RegisterFormData {
+export type RegisterFormData = {
   username: string;
   email: string;
   password: string;
   confirmPassword: string;
-}
+};
 
-interface RegisterFormProps {
+type RegisterFormProps = {
   onSubmit: (values: RegisterFormData) => Promise<void>;
   loading?: boolean;
-}
+};
 
 export const RegisterForm: React.FC<RegisterFormProps> = ({
   onSubmit,

@@ -20,9 +20,10 @@ export type LoginCredentials = {
   password: string;
 };
 
-export type SignUpCredentials = LoginCredentials & {
+export type SignUpCredentials = {
   email: string;
-  // Add any additional fields you need for registration
+  password: string;
+  username?: string; // Optional, in case we want to store it as a custom attribute
 };
 
 export class AuthService {
@@ -34,11 +35,15 @@ export class AuthService {
   async register(credentials: SignUpCredentials) {
     try {
       const signUpData: SignUpInput = {
-        username: credentials.username,
+        username: credentials.email, // Use email as username
         password: credentials.password,
         options: {
           userAttributes: {
             email: credentials.email,
+            // Store username as a custom attribute if provided
+            ...(credentials.username && {
+              preferred_username: credentials.username,
+            }),
           },
         },
       };
