@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
 import { App, Card, Typography, Space } from "antd";
+import { useNavigate, Link } from "react-router-dom";
+import { useAuth } from "@/features/auth/hooks/auth.hook";
 import {
   VerifyEmailForm,
   VerifyEmailFormData,
@@ -11,21 +11,26 @@ const { Title, Text } = Typography;
 export const VerifyEmailPage: React.FC = () => {
   const { message } = App.useApp();
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
+  const { verifyEmail, resendVerificationCode, isLoading } = useAuth();
 
   const handleVerifyEmail = async (values: VerifyEmailFormData) => {
-    try {
-      setLoading(true);
-      console.log(values);
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
+    const result = await verifyEmail(values.email, values.code);
+    
+    if (result.success) {
       message.success("Email has been successfully verified!");
       navigate("/auth/login");
-    } catch (error) {
-      message.error("Failed to verify email. Please try again.");
-      console.error("Email verification error:", error);
-    } finally {
-      setLoading(false);
+    } else {
+      message.error(result.error || "Failed to verify email. Please try again.");
+    }
+  };
+
+  const handleResendCode = async (email: string) => {
+    const result = await resendVerificationCode(email);
+    
+    if (result.success) {
+      message.success("Verification code has been resent to your email.");
+    } else {
+      message.error(result.error || "Failed to resend code. Please try again.");
     }
   };
 
@@ -39,14 +44,14 @@ export const VerifyEmailPage: React.FC = () => {
           </Text>
         </div>
 
-        <VerifyEmailForm onSubmit={handleVerifyEmail} loading={loading} />
+        <VerifyEmailForm 
+          onSubmit={handleVerifyEmail} 
+          onResendCode={handleResendCode}
+          loading={isLoading} 
+        />
 
         <div className="text-center mt-4">
           <Space direction="vertical" size="small">
-            <Text>
-              Didn't receive OTP?{" "}
-              <Link to="/auth/request-verification">Request again</Link>
-            </Text>
             <Text>
               Back to <Link to="/auth/login">Sign in</Link>
             </Text>

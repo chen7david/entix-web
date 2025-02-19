@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
 import { App, Card, Typography, Space } from "antd";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "@/features/auth/hooks/auth.hook";
 import { LoginForm, LoginFormData } from "@/features/auth/components/LoginForm";
 
 const { Title, Text } = Typography;
@@ -8,23 +8,16 @@ const { Title, Text } = Typography;
 export const LoginPage: React.FC = () => {
   const { message } = App.useApp();
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
+  const { login, isLoading } = useAuth();
 
   const handleLogin = async (values: LoginFormData) => {
-    try {
-      setLoading(true);
-      console.log(values);
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+    const result = await login(values.email, values.password);
 
-      message.success(
-        "Login successful! Replace this with actual API integration"
-      );
+    if (result.success) {
+      message.success("Login successful!");
       navigate("/dashboard");
-    } catch (error) {
-      message.error("Login failed. Please try again.");
-      console.error("Login error:", error);
-    } finally {
-      setLoading(false);
+    } else {
+      message.error(result.error || "Login failed. Please try again.");
     }
   };
 
@@ -36,7 +29,7 @@ export const LoginPage: React.FC = () => {
           <Text type="secondary">Please sign in to continue</Text>
         </div>
 
-        <LoginForm onSubmit={handleLogin} loading={loading} />
+        <LoginForm onSubmit={handleLogin} loading={isLoading} />
 
         <Space className="w-full justify-center mt-4">
           <Link to="/auth/forgot-password">Forgot password?</Link>

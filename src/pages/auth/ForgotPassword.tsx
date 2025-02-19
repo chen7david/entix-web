@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
 import { App, Card, Typography, Space } from "antd";
+import { useNavigate, Link } from "react-router-dom";
+import { useAuth } from "@/features/auth/hooks/auth.hook";
 import {
   ForgotPasswordForm,
   ForgotPasswordFormData,
@@ -11,23 +11,21 @@ const { Title, Text } = Typography;
 export const ForgotPasswordPage: React.FC = () => {
   const { message } = App.useApp();
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
+  const { requestPasswordReset, isLoading } = useAuth();
 
   const handleForgotPassword = async (values: ForgotPasswordFormData) => {
-    try {
-      setLoading(true);
-      console.log(values);
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+    const result = await requestPasswordReset(values.email);
 
+    if (result.success) {
       message.success(
-        "If an account exists with this email, you will receive a password reset OTP."
+        "If an account exists with this email, you will receive a password reset code."
       );
-      navigate("/auth/reset-password");
-    } catch (error) {
-      message.error("Failed to send reset email. Please try again.");
-      console.error("Forgot password error:", error);
-    } finally {
-      setLoading(false);
+      // Pass email to reset password page to maintain context
+      navigate("/auth/reset-password", { 
+        state: { email: values.email } 
+      });
+    } else {
+      message.error(result.error || "Failed to send reset code. Please try again.");
     }
   };
 
@@ -37,12 +35,12 @@ export const ForgotPasswordPage: React.FC = () => {
         <div className="text-center mb-8">
           <Title level={2}>Reset Password</Title>
           <Text type="secondary">
-            Enter your email address and we'll send you an OTP to reset your
+            Enter your email address and we'll send you a code to reset your
             password
           </Text>
         </div>
 
-        <ForgotPasswordForm onSubmit={handleForgotPassword} loading={loading} />
+        <ForgotPasswordForm onSubmit={handleForgotPassword} loading={isLoading} />
 
         <div className="text-center mt-4">
           <Space direction="vertical" size="small">

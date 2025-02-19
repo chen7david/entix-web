@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
 import { App, Card, Typography, Space } from "antd";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "@/features/auth/hooks/auth.hook";
 import {
   RegisterForm,
   RegisterFormData,
@@ -11,23 +11,22 @@ const { Title, Text } = Typography;
 export const RegisterPage: React.FC = () => {
   const { message } = App.useApp();
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
+  const { register, isLoading } = useAuth();
 
   const handleRegister = async (values: RegisterFormData) => {
-    try {
-      setLoading(true);
-      console.log(values);
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+    const result = await register({
+      email: values.email,
+      password: values.password,
+      username: values.username,
+    });
 
+    if (result.success) {
       message.success(
         "Registration successful! Please check your email to verify your account."
       );
-      navigate("/login");
-    } catch (error) {
-      message.error("Registration failed. Please try again.");
-      console.error("Registration error:", error);
-    } finally {
-      setLoading(false);
+      navigate("/auth/verify-email");
+    } else {
+      message.error(result.error || "Registration failed. Please try again.");
     }
   };
 
@@ -41,7 +40,7 @@ export const RegisterPage: React.FC = () => {
           </Text>
         </div>
 
-        <RegisterForm onSubmit={handleRegister} loading={loading} />
+        <RegisterForm onSubmit={handleRegister} loading={isLoading} />
 
         <Space className="w-full justify-center mt-4">
           <Text>Already have an account?</Text>

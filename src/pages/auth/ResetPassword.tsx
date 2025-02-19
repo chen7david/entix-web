@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
 import { App, Card, Typography, Space } from "antd";
+import { useNavigate, Link, useLocation } from "react-router-dom";
+import { useAuth } from "@/features/auth/hooks/auth.hook";
 import {
   ResetPasswordForm,
   ResetPasswordFormData,
@@ -11,21 +11,36 @@ const { Title, Text } = Typography;
 export const ResetPasswordPage: React.FC = () => {
   const { message } = App.useApp();
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
+  const location = useLocation();
+  const { confirmPasswordReset, requestPasswordReset, isLoading } = useAuth();
+  
+  // Get email from navigation state
+  const email = location.state?.email;
 
   const handleResetPassword = async (values: ResetPasswordFormData) => {
-    try {
-      setLoading(true);
-      console.log(values);
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+    const result = await confirmPasswordReset(
+      values.email || email,
+      values.code,
+      values.newPassword
+    );
 
+    if (result.success) {
       message.success("Password has been successfully reset!");
       navigate("/auth/login");
-    } catch (error) {
-      message.error("Failed to reset password. Please try again.");
-      console.error("Reset password error:", error);
-    } finally {
-      setLoading(false);
+    } else {
+      message.error(result.error || "Failed to reset password. Please try again.");
+    }
+  };
+
+  const handleResendCode = async (email: string) => {
+    const result = await requestPasswordReset(email);
+    
+    if (result.success) {
+      message.success(
+        "If an account exists with this email, you will receive a new reset code."
+      );
+    } else {
+      message.error(result.error || "Failed to send reset code. Please try again.");
     }
   };
 
@@ -35,18 +50,19 @@ export const ResetPasswordPage: React.FC = () => {
         <div className="text-center mb-8">
           <Title level={2}>Reset Your Password</Title>
           <Text type="secondary">
-            Enter the OTP sent to your email and your new password
+            Enter the code sent to your email and your new password
           </Text>
         </div>
 
-        <ResetPasswordForm onSubmit={handleResetPassword} loading={loading} />
+        <ResetPasswordForm 
+          onSubmit={handleResetPassword} 
+          onResendCode={handleResendCode}
+          loading={isLoading}
+          defaultEmail={email}
+        />
 
         <div className="text-center mt-4">
           <Space direction="vertical" size="small">
-            <Text>
-              Didn't receive OTP?{" "}
-              <Link to="/auth/forgot-password">Request again</Link>
-            </Text>
             <Text>
               Remember your password? <Link to="/auth/login">Sign in</Link>
             </Text>
