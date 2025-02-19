@@ -22,22 +22,20 @@ export const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <Card className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <Title level={2}>Welcome Back</Title>
-          <Text type="secondary">Please sign in to continue</Text>
-        </div>
+    <Card className="w-full max-w-md">
+      <div className="text-center mb-8">
+        <Title level={2}>Welcome Back</Title>
+        <Text type="secondary">Please sign in to continue</Text>
+      </div>
 
-        <LoginForm onSubmit={handleLogin} loading={isLoading} />
+      <LoginForm onSubmit={handleLogin} loading={isLoading} />
 
-        <Space className="w-full justify-center mt-4">
-          <Link to="/auth/forgot-password">Forgot password?</Link>
-          <Text type="secondary">|</Text>
-          <Link to="/auth/register">Create an account</Link>
-        </Space>
-      </Card>
-    </div>
+      <Space className="w-full justify-center mt-4">
+        <Link to="/auth/forgot-password">Forgot password?</Link>
+        <Text type="secondary">|</Text>
+        <Link to="/auth/register">Create an account</Link>
+      </Space>
+    </Card>
   );
 };
 

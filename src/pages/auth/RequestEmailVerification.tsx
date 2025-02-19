@@ -32,33 +32,31 @@ export const RequestEmailVerificationPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <Card className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <Title level={2}>Verify Your Email</Title>
-          <Text type="secondary">
-            Enter your email address to receive a verification OTP
+    <Card className="w-full max-w-md">
+      <div className="text-center mb-8">
+        <Title level={2}>Verify Your Email</Title>
+        <Text type="secondary">
+          Enter your email address to receive a verification OTP
+        </Text>
+      </div>
+
+      <RequestEmailVerificationForm
+        onSubmit={handleRequestVerification}
+        loading={loading}
+      />
+
+      <div className="text-center mt-4">
+        <Space direction="vertical" size="small">
+          <Text>
+            Already have an OTP?{" "}
+            <Link to="/auth/verify-email">Verify email</Link>
           </Text>
-        </div>
-
-        <RequestEmailVerificationForm
-          onSubmit={handleRequestVerification}
-          loading={loading}
-        />
-
-        <div className="text-center mt-4">
-          <Space direction="vertical" size="small">
-            <Text>
-              Already have an OTP?{" "}
-              <Link to="/auth/verify-email">Verify email</Link>
-            </Text>
-            <Text>
-              Back to <Link to="/auth/login">Sign in</Link>
-            </Text>
-          </Space>
-        </div>
-      </Card>
-    </div>
+          <Text>
+            Back to <Link to="/auth/login">Sign in</Link>
+          </Text>
+        </Space>
+      </div>
+    </Card>
   );
 };
 

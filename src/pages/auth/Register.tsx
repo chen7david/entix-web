@@ -31,23 +31,21 @@ export const RegisterPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <Card className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <Title level={2}>Create Account</Title>
-          <Text type="secondary">
-            Please fill in your information to create an account
-          </Text>
-        </div>
+    <Card className="w-full max-w-md">
+      <div className="text-center mb-8">
+        <Title level={2}>Create Account</Title>
+        <Text type="secondary">
+          Please fill in your information to create an account
+        </Text>
+      </div>
 
-        <RegisterForm onSubmit={handleRegister} loading={isLoading} />
+      <RegisterForm onSubmit={handleRegister} loading={isLoading} />
 
-        <Space className="w-full justify-center mt-4">
-          <Text>Already have an account?</Text>
-          <Link to="/auth/login">Sign in</Link>
-        </Space>
-      </Card>
-    </div>
+      <Space className="w-full justify-center mt-4">
+        <Text>Already have an account?</Text>
+        <Link to="/auth/login">Sign in</Link>
+      </Space>
+    </Card>
   );
 };
 
