@@ -11,27 +11,21 @@ const envSchema = z.object({
 export type EnvConfig = z.infer<typeof envSchema>;
 
 function validateEnv(): EnvConfig {
-  try {
-    const parsed = envSchema.safeParse(import.meta.env);
+  const parsed = envSchema.safeParse(import.meta.env);
 
-    if (!parsed.success) {
-      const missingEnvs = parsed.error.errors.map((error) =>
-        error.path.join(".")
-      );
-      throw new Error(
-        `❌ Invalid environment variables:\n${missingEnvs
-          .map((env) => `   - ${env} is missing or invalid`)
-          .join("\n")}`
-      );
-    }
+  if (!parsed.success) {
+    const missingEnvs = parsed.error.errors.map((error) =>
+      error.path.join(".")
+    );
 
-    return parsed.data;
-  } catch (error) {
-    if (error instanceof Error) {
-      console.error("\n" + error.message + "\n");
-    }
-    return {} as EnvConfig;
+    throw new Error(
+      `❌ Invalid environment variables:\n${missingEnvs
+        .map((env) => `   - ${env} is missing or invalid`)
+        .join("\n")}`
+    );
   }
+
+  return parsed.data;
 }
 
 export const env = validateEnv();
