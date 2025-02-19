@@ -73,10 +73,47 @@ function callApi() {
 const maxItems = env.VITE_MAX_ITEMS; // Guaranteed to be between 1-100
 ```
 
+#### 5. Deploying Through GitHub Actions
+
+##### Important Note: Environment Variable Naming
+- All environment variables MUST start with `VITE_`
+- This is a Vite-specific requirement for client-side environment variables
+
+##### Adding Secrets to GitHub Actions
+
+1. **Navigate to Repository Settings**
+   - Go to your GitHub repository
+   - Click on "Settings"
+   - Select "Secrets and variables" > "Actions"
+
+2. **Add Repository Secrets**
+   - Click "New repository secret"
+   - Name the secret exactly as it appears in your Vite configuration
+   - Example: `VITE_API_KEY`
+   - Paste the secret value
+
+3. **Update GitHub Actions Workflow**
+   Edit `.github/workflows/prod-build-deploy.yml` to include the new secret:
+
+   ```yaml
+   - name: Build project
+     run: npm run build
+     env:
+       # Existing secrets
+       VITE_API_URL: ${{ secrets.VITE_API_URL }}
+       
+       # New secret
+       VITE_API_KEY: ${{ secrets.VITE_API_KEY }}
+   ```
+
+##### Best Practices
+- Never commit sensitive information to your repository
+- Use GitHub repository secrets for all sensitive environment variables
+- Ensure secrets are scoped appropriately (repository or organization level)
+
 ### Configuration Validation
 
 The configuration system provides:
-
 - Type-safe environment variables
 - Runtime validation
 - Clear error messages for missing or invalid variables
@@ -84,12 +121,10 @@ The configuration system provides:
 ### Deployment Considerations
 
 #### Local Development
-
 1. Copy `.env.example` to `.env`
 2. Fill in actual values
 
 #### GitHub Actions
-
 1. Add secrets in GitHub repository settings
 2. Ensure all required variables are set
 3. Use repository secrets to populate environment variables
