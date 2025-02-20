@@ -76,7 +76,7 @@ export const SidebarUserInfo: React.FC<SidebarUserInfoProps> = ({
               <Text strong className="text-white">
                 Admin User
               </Text>
-              <Text className="text-gray-400 text-sm">admin@example.com</Text>
+              <Text className="text-sm">admin@example.com</Text>
             </div>
           </Space>
         </Space>

@@ -1,26 +1,25 @@
-import { Typography } from 'antd';
-import { Link } from 'react-router-dom';
+import { Avatar } from "antd";
+import { UserOutlined } from "@ant-design/icons";
+import cn from "classnames";
 
-const { Title } = Typography;
+type AdminSidebarCardTopProps = {
+  className?: string;
+};
 
-interface SidebarLogoProps {
-  collapsed: boolean;
-}
-
-export const SidebarLogo: React.FC<SidebarLogoProps> = ({ collapsed }) => {
+export const SidebarLogo: React.FC<AdminSidebarCardTopProps> = ({
+  className,
+}) => {
   return (
-    <div className="h-16 m-4 mb-8 flex items-center justify-center">
-      <Link to="/admin/dashboard" className="flex items-center">
-        {collapsed ? (
-          <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-            <span className="text-white text-lg font-bold">E</span>
-          </div>
-        ) : (
-          <Title level={4} className="m-0 text-white">
-            Entix Admin
-          </Title>
-        )}
-      </Link>
+    <div
+      className={cn(
+        "flex items-center space-x-4 p-4 bg-gray-100 border-gray-200 gap-4",
+        className
+      )}
+    >
+      <Avatar size="large" icon={<UserOutlined />} />
+      <div>
+        <p className="">David Chen</p>
+      </div>
     </div>
   );
 };

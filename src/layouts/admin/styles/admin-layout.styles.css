@@ -1,7 +1,6 @@
 :root {
   --sidebar-width: 260px;
   --navbar-height: 64px;
-  --sidebar-height: calc(100dvh - var(--navbar-height));
   --sidebar-card-top-height: 80px;
   --sidebar-card-bottom-height: 64px;
   --sidebar-menu-height: calc(
@@ -15,7 +14,7 @@
   grid-template-columns: var(--sidebar-width) 1fr;
   grid-template-rows: auto 1fr auto;
   grid-template-areas:
-    "navbar navbar"
+    "sidebar navbar"
     "sidebar main"
     "sidebar footer";
 }
@@ -33,8 +32,8 @@
   grid-area: sidebar;
   position: sticky;
   align-self: start;
-  top: var(--navbar-height);
-  height: var(--sidebar-height);
+  top: 0;
+  height: 100dvh;
   z-index: 112;
 }
 

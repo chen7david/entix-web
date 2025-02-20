@@ -1,136 +1,166 @@
-import { Menu } from 'antd';
-import { useLocation, useNavigate } from 'react-router-dom';
-import {
-  DashboardOutlined,
-  UserOutlined,
-  SettingOutlined,
-  ShopOutlined,
-  TeamOutlined,
-  FileOutlined,
-  BarChartOutlined,
-} from '@ant-design/icons';
-import type { MenuProps } from 'antd';
+import { useState } from "react";
+import type { MenuProps } from "antd";
+import { useNavigate } from "react-router-dom";
+import { Menu } from "antd";
+import { useAtom } from "jotai";
 
-const menuItems: MenuProps['items'] = [
+import {
+  UserOutlined,
+  ScheduleOutlined,
+  LockOutlined,
+  AreaChartOutlined,
+  TeamOutlined,
+  ShopOutlined,
+  FundProjectionScreenOutlined,
+  TagOutlined,
+} from "@ant-design/icons";
+import { sidebarOpenAtom } from "@/layouts/admin/store/sidebar.store";
+
+type MenuItem = Required<MenuProps>["items"][number];
+
+const adminSidebarMenuItems: MenuItem[] = [
   {
-    key: 'dashboard',
-    icon: <DashboardOutlined />,
-    label: 'Dashboard',
+    // label: "Admin",
+    key: "/admin",
+    type: "group",
     children: [
       {
-        key: '/admin/dashboard',
-        label: 'Overview',
+        label: "Reports",
+        key: "/reports",
+        icon: <AreaChartOutlined />,
       },
       {
-        key: '/admin/dashboard/analytics',
-        label: 'Analytics',
-        icon: <BarChartOutlined />,
+        label: "Users",
+        key: "/users",
+        icon: <UserOutlined />,
+      },
+      {
+        label: "Groups",
+        key: "/groups",
+        icon: <TeamOutlined />,
+      },
+      {
+        label: "Sessions",
+        key: "/sessions",
+        icon: <FundProjectionScreenOutlined />,
+      },
+      {
+        label: "Roles",
+        key: "/roles",
+        icon: <LockOutlined />,
+      },
+      {
+        label: "Plans",
+        key: "/paymentplans",
+        icon: <TagOutlined />,
+      },
+
+      // copies start
+      // {
+      //   label: "Reports",
+      //   key: "/reports",
+      //   icon: <AreaChartOutlined />,
+      // },
+      // {
+      //   label: "Users",
+      //   key: "/users",
+      //   icon: <UserOutlined />,
+      // },
+      // {
+      //   label: "Groups",
+      //   key: "/groups",
+      //   icon: <TeamOutlined />,
+      // },
+      // {
+      //   label: "Sessions",
+      //   key: "/sessions",
+      //   icon: <FundProjectionScreenOutlined />,
+      // },
+      // {
+      //   label: "Roles",
+      //   key: "/roles",
+      //   icon: <LockOutlined />,
+      // },
+      // {
+      //   label: "Plans",
+      //   key: "/paymentplans",
+      //   icon: <TagOutlined />,
+      // },
+      // {
+      //   label: "Reports",
+      //   key: "/reports",
+      //   icon: <AreaChartOutlined />,
+      // },
+      // {
+      //   label: "Users",
+      //   key: "/users",
+      //   icon: <UserOutlined />,
+      // },
+      // {
+      //   label: "Groups",
+      //   key: "/groups",
+      //   icon: <TeamOutlined />,
+      // },
+      // {
+      //   label: "Sessions",
+      //   key: "/sessions",
+      //   icon: <FundProjectionScreenOutlined />,
+      // },
+      // {
+      //   label: "Roles",
+      //   key: "/roles",
+      //   icon: <LockOutlined />,
+      // },
+      // {
+      //   label: "Plans",
+      //   key: "/paymentplans",
+      //   icon: <TagOutlined />,
+      // },
+      // copies end
+      {
+        label: "Store",
+        key: "/store",
+        icon: <ShopOutlined />,
+        children: [
+          {
+            label: "Products",
+            key: "/store/products",
+            icon: <ShopOutlined />,
+          },
+          {
+            label: "Categories",
+            key: "/store/categories",
+            icon: <ShopOutlined />,
+          },
+        ],
       },
     ],
   },
   {
-    type: 'divider',
-    style: { background: 'rgba(255,255,255,0.2)', margin: '8px 0' },
-  },
-  {
-    key: 'users',
-    icon: <TeamOutlined />,
-    label: 'Users',
-    children: [
-      {
-        key: '/admin/users',
-        label: 'All Users',
-      },
-      {
-        key: '/admin/users/roles',
-        label: 'Roles',
-      },
-    ],
-  },
-  {
-    key: 'products',
-    icon: <ShopOutlined />,
-    label: 'Products',
-    children: [
-      {
-        key: '/admin/products',
-        label: 'All Products',
-      },
-      {
-        key: '/admin/products/categories',
-        label: 'Categories',
-      },
-    ],
-  },
-  {
-    key: 'reports',
-    icon: <FileOutlined />,
-    label: 'Reports',
-    children: [
-      {
-        key: '/admin/reports/sales',
-        label: 'Sales Report',
-      },
-      {
-        key: '/admin/reports/inventory',
-        label: 'Inventory',
-      },
-    ],
-  },
-  {
-    type: 'divider',
-    style: { background: 'rgba(255,255,255,0.2)', margin: '8px 0' },
-  },
-  {
-    key: 'account',
-    icon: <UserOutlined />,
-    label: 'Account',
-    children: [
-      {
-        key: '/admin/profile',
-        label: 'Profile',
-      },
-      {
-        key: '/admin/settings',
-        icon: <SettingOutlined />,
-        label: 'Settings',
-      },
-    ],
+    label: "Calendar",
+    key: "/calendar",
+    icon: <ScheduleOutlined />,
   },
 ];
 
-interface SidebarMenuProps {
-  collapsed: boolean;
-}
-
-export const SidebarMenu: React.FC<SidebarMenuProps> = ({ collapsed }) => {
-  const location = useLocation();
+export const SidebarMenu = () => {
+  const [current, setCurrent] = useState("mail");
   const navigate = useNavigate();
+  const [isSideBarOpen, setIsSideBarOpenAtom] = useAtom(sidebarOpenAtom);
 
-  // Find the open keys based on current path
-  const findOpenKeys = (path: string): string[] => {
-    const keys: string[] = [];
-    menuItems?.forEach((item) => {
-      if ('children' in item && item.children) {
-        item.children.forEach((child) => {
-          if (child.key === path) {
-            keys.push(item.key as string);
-          }
-        });
-      }
-    });
-    return keys;
+  const menuOnClick: MenuProps["onClick"] = (e) => {
+    setCurrent(e.key);
+    navigate(e.key);
+    setIsSideBarOpenAtom(!isSideBarOpen);
   };
 
   return (
     <Menu
-      theme="dark"
+      onClick={menuOnClick}
+      selectedKeys={[current]}
       mode="inline"
-      selectedKeys={[location.pathname]}
-      defaultOpenKeys={collapsed ? [] : findOpenKeys(location.pathname)}
-      items={menuItems}
-      onClick={({ key }) => navigate(key)}
-      className="border-none"
+      items={adminSidebarMenuItems}
+      style={{ borderRight: "none", backgroundColor: "#f5f5f5" }}
     />
   );
 };

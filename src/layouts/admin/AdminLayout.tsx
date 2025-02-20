@@ -9,6 +9,7 @@ import { AdminFooterContainer } from "./components/AdminFooterContainer";
 import { AdminNavbarContainer } from "./components/AdminNavbarContainer";
 import { sidebarOpenAtom } from "./store/sidebar.store";
 import "./styles/admin-layout.styles.css";
+import { Sidebar } from "@/features/admin/components/sidebar";
 
 type AdminLayoutProps = HTMLAttributes<HTMLDivElement>;
 
@@ -21,31 +22,18 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
   return (
     <AdminAppContainer className={cn(className)} {...props}>
       <AdminSidebarContainer className="bg-gray-200">
-        sidebar
+        <Sidebar onCollapse={setSidebarOpen} collapsed={sidebarOpen} />
       </AdminSidebarContainer>
       <AdminNavbarContainer className="bg-blue-200">
         navbar
       </AdminNavbarContainer>
 
-      <AdminMainContainer className="bg-gray-100">
+      <AdminMainContainer className="bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
         <Outlet />
       </AdminMainContainer>
 
-      <AdminFooterContainer className="bg-blue-100">
-        <span>
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nesciunt,
-          quo voluptatum. Rem eius pariatur cumque, in consectetur iste officia
-          deserunt alias perspiciatis deleniti molestiae suscipit labore,
-          delectus assumenda magnam impedit itaque tempora possimus nemo ut!
-          Soluta enim error eligendi labore vel velit aperiam consequuntur
-          minima, maiores, pariatur neque? Beatae labore harum esse veniam, illo
-          delectus, eligendi quidem sapiente exercitationem enim nesciunt
-          aperiam laboriosam voluptatum alias voluptas consequuntur quos
-          quibusdam ab animi aliquam autem non. Facere soluta saepe iure
-          accusamus alias minus perferendis? Culpa voluptate beatae praesentium
-          obcaecati nostrum in ut porro, delectus, blanditiis laborum facilis
-          minus inventore eligendi ea animi.
-        </span>
+      <AdminFooterContainer className="bg-gray-500 py-12 px-4 sm:px-6 lg:px-8 text-center">
+        <span>© 2024 Entix. All rights reserved.</span>
       </AdminFooterContainer>
     </AdminAppContainer>
   );
