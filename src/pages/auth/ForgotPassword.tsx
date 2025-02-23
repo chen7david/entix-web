@@ -21,43 +21,43 @@ export const ForgotPasswordPage: React.FC = () => {
         "If an account exists with this email, you will receive a password reset code."
       );
       // Pass email to reset password page to maintain context
-      navigate("/auth/reset-password", { 
-        state: { email: values.email } 
+      navigate("/auth/reset-password", {
+        state: { email: values.email },
       });
     } else {
-      message.error(result.error || "Failed to send reset code. Please try again.");
+      message.error(
+        result.error || "Failed to send reset code. Please try again."
+      );
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <Card className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <Title level={2}>Reset Password</Title>
-          <Text type="secondary">
-            Enter your email address and we'll send you a code to reset your
-            password
+    <Card className="w-full max-w-md">
+      <div className="text-center mb-8">
+        <Title level={2}>Reset Password</Title>
+        <Text type="secondary">
+          Enter your email address and we'll send you a code to reset your
+          password
+        </Text>
+      </div>
+
+      <ForgotPasswordForm onSubmit={handleForgotPassword} loading={isLoading} />
+
+      <div className="text-center mt-4">
+        <Space direction="vertical" size="small">
+          <Text>
+            Remember your password? <Link to="/auth/login">Sign in</Link>
           </Text>
-        </div>
-
-        <ForgotPasswordForm onSubmit={handleForgotPassword} loading={isLoading} />
-
-        <div className="text-center mt-4">
-          <Space direction="vertical" size="small">
-            <Text>
-              Remember your password? <Link to="/auth/login">Sign in</Link>
-            </Text>
-            <Text>
-              Don't have an account? <Link to="/auth/register">Sign up</Link>
-            </Text>
-            <Text>
-              Need to verify your email?{" "}
-              <Link to="/auth/request-verification">Verify now</Link>
-            </Text>
-          </Space>
-        </div>
-      </Card>
-    </div>
+          <Text>
+            Don't have an account? <Link to="/auth/register">Sign up</Link>
+          </Text>
+          <Text>
+            Need to verify your email?{" "}
+            <Link to="/auth/request-verification">Verify now</Link>
+          </Text>
+        </Space>
+      </div>
+    </Card>
   );
 };
 
