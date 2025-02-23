@@ -1,25 +1,20 @@
-import { Layout } from "antd";
 import { SidebarLogo } from "./SidebarLogo";
 import { SidebarMenu } from "./SidebarMenu";
 import { SidebarUserInfo } from "./SidebarUserInfo";
 import { HTMLAttributes } from "react";
-
-const { Sider } = Layout;
 
 type SidebarProps = HTMLAttributes<HTMLDivElement> & {
   collapsed: boolean;
   onCollapse: (collapsed: boolean) => void;
 };
 
-export const Sidebar: React.FC<SidebarProps> = ({
-  collapsed,
-  onCollapse,
-  ...props
-}) => {
+export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onCollapse }) => {
   const handleLogout = () => {
     // Implement logout logic here
     console.log("Logging out...");
   };
+
+  onCollapse(!collapsed);
 
   return (
     <div className="flex flex-col h-full">
