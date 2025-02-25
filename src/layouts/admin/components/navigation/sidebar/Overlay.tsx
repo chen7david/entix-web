@@ -10,15 +10,15 @@ export const Overlay: React.FC<OverlayProps> = ({ className, ...props }) => {
 
   useEffect(() => {
     if (sidebarOpen) {
-      document.body.style.overflow = 'hidden';
-      document.body.style.touchAction = 'none';
+      document.body.style.overflow = "hidden";
+      document.body.style.touchAction = "none";
     } else {
-      document.body.style.overflow = '';
-      document.body.style.touchAction = '';
+      document.body.style.overflow = "";
+      document.body.style.touchAction = "";
     }
     return () => {
-      document.body.style.overflow = '';
-      document.body.style.touchAction = '';
+      document.body.style.overflow = "";
+      document.body.style.touchAction = "";
     };
   }, [sidebarOpen]);
 
@@ -37,9 +37,9 @@ export const Overlay: React.FC<OverlayProps> = ({ className, ...props }) => {
         className
       )}
       style={{
-        touchAction: 'none',
-        userSelect: 'none',
-        WebkitTapHighlightColor: 'transparent',
+        touchAction: "none",
+        userSelect: "none",
+        WebkitTapHighlightColor: "transparent",
       }}
     />
   );
