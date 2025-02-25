@@ -6,10 +6,11 @@ import { AdminSidebarContainer } from "./components/containers/AdminSidebarConta
 import { AdminNavbarContainer } from "./components/containers/AdminNavbarContainer";
 import { AdminMainContainer } from "../auth/components/MainContainer";
 import { AdminFooterContainer } from "../auth/components/FooterContainer";
-import "./styles/admin-layout.styles.css";
 import { AdminSidebarToggleButton } from "./components/buttons/AdminSidebarToggleButton";
 import { useAtom } from "jotai";
 import { sidebarOpenAtom } from "./stores/sidebar.store";
+import "./styles/admin-layout.styles.css";
+import { SidebarOverlay } from "./components/navigation/sidebar/Overlay";
 
 type AdminLayoutProps = HTMLAttributes<HTMLDivElement> & {};
 
@@ -23,15 +24,20 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
     <div className={cn(className)} {...props}>
       <AdminAppContainer className="bg-blue-100">
         <AdminSidebarContainer
-          className={cn("bg-red-100", {
+          className={cn("bg-red-100 z-50", {
             "show-admin-sidebar": sidebarOpen,
           })}
         >
           sidebar
         </AdminSidebarContainer>
-        <AdminNavbarContainer className="bg-green-100">
-          <AdminSidebarToggleButton className="bg-red-200" />
-          navbar
+
+        <SidebarOverlay />
+
+        <AdminNavbarContainer className="bg-purple-600 p-3 flex flex-row justify-between">
+          <div className="flex items-center justify-center">
+            <span className="text-white text-lg font-bold">Entix</span>
+          </div>
+          <AdminSidebarToggleButton className="flex justify-center md:hidden" />
         </AdminNavbarContainer>
         <AdminMainContainer className="bg-yellow-100">
           <Outlet />
