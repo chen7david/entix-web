@@ -24,6 +24,7 @@
 #admin-sidebar-container {
   grid-area: sidebar;
   position: sticky;
+  align-self: start;
   top: 0;
   height: 100dvh;
   z-index: 112;
@@ -31,8 +32,6 @@
 
 #admin-main-container {
   grid-area: main;
-  display: flex;
-  flex-direction: column;
 }
 
 #admin-footer-container {
@@ -50,17 +49,17 @@
   }
 
   #admin-sidebar-container {
-    position: fixed;
-    width: var(--sidebar-width);
     top: 0;
+    position: fixed;
     height: 100dvh;
-    transform: translateX(-100%);
+    width: var(--admin-sidebar-width);
     opacity: 0;
+    transform: translateX(-100%);
     transition: transform 0.3s ease, opacity 0.3s ease;
   }
 
-  .show-admin-sidebar {
-    transform: translateX(0);
+  #admin-sidebar-container.show-admin-sidebar {
     opacity: 1;
+    transform: translateX(0);
   }
 }

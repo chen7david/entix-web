@@ -8,6 +8,8 @@ import { AdminMainContainer } from "../auth/components/MainContainer";
 import { AdminFooterContainer } from "../auth/components/FooterContainer";
 import "./styles/admin-layout.styles.css";
 import { AdminSidebarToggleButton } from "./components/buttons/AdminSidebarToggleButton";
+import { useAtom } from "jotai";
+import { sidebarOpenAtom } from "./stores/sidebar.store";
 
 type AdminLayoutProps = HTMLAttributes<HTMLDivElement> & {};
 
@@ -15,10 +17,16 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
   className,
   ...props
 }) => {
+  const [sidebarOpen] = useAtom(sidebarOpenAtom);
+
   return (
     <div className={cn(className)} {...props}>
       <AdminAppContainer className="bg-blue-100">
-        <AdminSidebarContainer className="bg-red-100">
+        <AdminSidebarContainer
+          className={cn("bg-red-100", {
+            "show-admin-sidebar": sidebarOpen,
+          })}
+        >
           sidebar
         </AdminSidebarContainer>
         <AdminNavbarContainer className="bg-green-100">
