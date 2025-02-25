@@ -10,12 +10,12 @@ import { useNavigate } from "react-router-dom";
 const { Text } = Typography;
 
 interface SidebarUserInfoProps {
-  collapsed: boolean;
+  isOpen: boolean;
   onLogout: () => void;
 }
 
 export const SidebarUserInfo: React.FC<SidebarUserInfoProps> = ({
-  collapsed,
+  isOpen,
   onLogout,
 }) => {
   const navigate = useNavigate();
@@ -45,7 +45,7 @@ export const SidebarUserInfo: React.FC<SidebarUserInfoProps> = ({
     },
   ];
 
-  if (collapsed) {
+  if (isOpen) {
     return (
       <div className="px-4 py-3">
         <Dropdown

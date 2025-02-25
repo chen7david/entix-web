@@ -1,40 +1,37 @@
 import cn from "classnames";
-import { useAtom } from "jotai";
 import { HTMLAttributes } from "react";
 import { Outlet } from "react-router-dom";
-import { AdminAppContainer } from "./components/AdminAppContainer";
-import { AdminSidebarContainer } from "./components/AdminSidebarContainer";
-import { AdminMainContainer } from "./components/AdminMainContainer";
-import { AdminFooterContainer } from "./components/AdminFooterContainer";
-import { AdminNavbarContainer } from "./components/AdminNavbarContainer";
-import { sidebarOpenAtom } from "./store/sidebar.store";
+import { AdminAppContainer } from "./components/containers/AdminAppContainer";
+import { AdminSidebarContainer } from "./components/containers/AdminSidebarContainer";
+import { AdminNavbarContainer } from "./components/containers/AdminNavbarContainer";
+import { AdminMainContainer } from "../auth/components/MainContainer";
+import { AdminFooterContainer } from "../auth/components/FooterContainer";
 import "./styles/admin-layout.styles.css";
-import { Sidebar } from "@/features/admin/components/sidebar";
+import { AdminSidebarToggleButton } from "./components/buttons/AdminSidebarToggleButton";
 
-type AdminLayoutProps = HTMLAttributes<HTMLDivElement>;
+type AdminLayoutProps = HTMLAttributes<HTMLDivElement> & {};
 
 export const AdminLayout: React.FC<AdminLayoutProps> = ({
   className,
   ...props
 }) => {
-  const [sidebarOpen, setSidebarOpen] = useAtom(sidebarOpenAtom);
-
   return (
-    <AdminAppContainer className={cn(className)} {...props}>
-      <AdminSidebarContainer className="bg-gray-200">
-        <Sidebar onCollapse={setSidebarOpen} collapsed={sidebarOpen} />
-      </AdminSidebarContainer>
-      <AdminNavbarContainer className="bg-blue-200">
-        navbar
-      </AdminNavbarContainer>
-
-      <AdminMainContainer className="bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-        <Outlet />
-      </AdminMainContainer>
-
-      <AdminFooterContainer className="bg-gray-500 py-12 px-4 sm:px-6 lg:px-8 text-center">
-        <span>© 2024 Entix. All rights reserved.</span>
-      </AdminFooterContainer>
-    </AdminAppContainer>
+    <div className={cn(className)} {...props}>
+      <AdminAppContainer className="bg-blue-100">
+        <AdminSidebarContainer className="bg-red-100">
+          sidebar
+        </AdminSidebarContainer>
+        <AdminNavbarContainer className="bg-green-100">
+          <AdminSidebarToggleButton className="bg-red-200" />
+          navbar
+        </AdminNavbarContainer>
+        <AdminMainContainer className="bg-yellow-100">
+          <Outlet />
+        </AdminMainContainer>
+        <AdminFooterContainer className="bg-gray-100">
+          footer
+        </AdminFooterContainer>
+      </AdminAppContainer>
+    </div>
   );
 };
