@@ -44,3 +44,26 @@
 #admin-main-container {
   grid-area: main;
 }
+
+/* Responsive Design */
+@media (max-width: 860px) {
+  #admin-app-container {
+    grid-template-columns: 1fr;
+    grid-template-areas: "navbar" "main" "footer";
+  }
+
+  #admin-sidebar-container {
+    position: fixed;
+    width: var(--sidebar-width);
+    top: 0;
+    height: 100dvh;
+    transform: translateX(-100%);
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+
+  .show-admin-sidebar {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
