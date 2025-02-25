@@ -3,12 +3,9 @@ import { HTMLAttributes } from "react";
 import { useAtom } from "jotai";
 import { sidebarOpenAtom } from "./../../../stores/sidebar.store";
 
-type SidebarOverlayProps = HTMLAttributes<HTMLDivElement>;
+type OverlayProps = HTMLAttributes<HTMLDivElement>;
 
-export const SidebarOverlay: React.FC<SidebarOverlayProps> = ({
-  className,
-  ...props
-}) => {
+export const Overlay: React.FC<OverlayProps> = ({ className, ...props }) => {
   const [sidebarOpen, setSidebarOpen] = useAtom(sidebarOpenAtom);
 
   if (!sidebarOpen) return null;

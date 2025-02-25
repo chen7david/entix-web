@@ -10,7 +10,7 @@ import { AdminSidebarToggleButton } from "./components/buttons/AdminSidebarToggl
 import { useAtom } from "jotai";
 import { sidebarOpenAtom } from "./stores/sidebar.store";
 import "./styles/admin-layout.styles.css";
-import { SidebarOverlay } from "./components/navigation/sidebar/Overlay";
+import { Overlay } from "./components/navigation/sidebar/Overlay";
 
 type AdminLayoutProps = HTMLAttributes<HTMLDivElement> & {};
 
@@ -31,7 +31,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
           sidebar
         </AdminSidebarContainer>
 
-        <SidebarOverlay />
+        <Overlay />
 
         <AdminNavbarContainer className="bg-purple-600 p-3 flex flex-row justify-between">
           <div className="flex items-center justify-center">
