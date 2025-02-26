@@ -1,7 +1,7 @@
 import cn from "classnames";
 import { HTMLAttributes } from "react";
 import { useNavigate } from "react-router-dom";
-import { Avatar, Badge, Dropdown, Space, Typography } from "antd";
+import { Avatar, Badge, Dropdown, Space } from "antd";
 import {
   UserOutlined,
   LogoutOutlined,
@@ -9,8 +9,6 @@ import {
   MoreOutlined,
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
-
-const { Text } = Typography;
 
 type SidebarFooterProps = HTMLAttributes<HTMLDivElement> & {};
 

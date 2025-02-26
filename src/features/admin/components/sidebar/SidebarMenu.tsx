@@ -14,7 +14,7 @@ import {
   FundProjectionScreenOutlined,
   TagOutlined,
 } from "@ant-design/icons";
-import { sidebarOpenAtom } from "@/layouts/admin-v2/store/sidebar.store";
+import { sidebarOpenAtom } from "@/layouts/admin/stores/sidebar.store";
 
 type MenuItem = Required<MenuProps>["items"][number];
 
