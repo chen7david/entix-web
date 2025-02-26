@@ -37,7 +37,7 @@ const adminSidebarMenuItems: MenuItem[] = [
       },
       {
         label: "Reports",
-        key: "/reports",
+        key: "/admin/reports",
         icon: <AreaChartOutlined />,
       },
       {

@@ -15,6 +15,7 @@ import { UserListPage } from "@/pages/user/UserList";
 import { AuthGuard } from "@/guards/AuthGuard";
 import { PublicGuard } from "@/guards/PublicGuard";
 import { useAuth } from "@/features/auth/hooks/auth.hook";
+import ReportsPage from "@/pages/Reports/Reports";
 
 export const Router: React.FC = () => {
   const { isAuthenticated } = useAuth();
@@ -46,6 +47,7 @@ export const Router: React.FC = () => {
             <Route path="profile" element={<ProfilePage />} />
             <Route path="settings" element={<SettingsPage />} />
             <Route path="dashboard" element={<DashboardPage />} />
+            <Route path="reports" element={<ReportsPage />} />
           </Route>
         </Route>
 

@@ -1,4 +1,4 @@
-export const UserListPage: React.FC = () => {
+export const ReportsPage: React.FC = () => {
   return (
     <>
       <div>
@@ -83,4 +83,4 @@ export const UserListPage: React.FC = () => {
   );
 };
 
-export default UserListPage;
+export default ReportsPage;
