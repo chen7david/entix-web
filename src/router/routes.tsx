@@ -11,6 +11,7 @@ import { RequestEmailVerificationPage } from "@/pages/auth/RequestEmailVerificat
 import { VerifyEmailPage } from "@/pages/auth/VerifyEmail";
 import { AdminLayout } from "@/layouts/admin/AdminLayout";
 import { AuthLayout } from "@/layouts/auth/AuthLayout";
+import { UserListPage } from "@/pages/user/UserList";
 
 export const Router: React.FC = () => {
   return (
@@ -31,6 +32,7 @@ export const Router: React.FC = () => {
         </Route>
         {/* Protected routes */}
         <Route path="admin" element={<AdminLayout />}>
+          <Route path="users" element={<UserListPage />} />
           <Route path="profile" element={<ProfilePage />} />
           <Route path="settings" element={<SettingsPage />} />
           <Route path="dashboard" element={<DashboardPage />} />

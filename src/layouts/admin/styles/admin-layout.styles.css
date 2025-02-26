@@ -1,17 +1,14 @@
 :root {
-  --sidebar-width: 260px;
-  --navbar-height: 64px;
-  --sidebar-card-top-height: 80px;
-  --sidebar-card-bottom-height: 64px;
-  --sidebar-menu-height: calc(
-    100dvh - var(--sidebar-card-top-height) - var(--navbar-height) -
-      var(--sidebar-card-bottom-height)
-  );
+  --admin-navbar-min-height: 64px;
+  --admin-footer-min-height: 64px;
+  --admin-app-container-height: 100dvh;
+  --admin-sidebar-width: 230px;
 }
 
 #admin-app-container {
   display: grid;
-  grid-template-columns: var(--sidebar-width) 1fr;
+  min-height: var(--admin-app-container-height);
+  grid-template-columns: var(--admin-sidebar-width) 1fr;
   grid-template-rows: auto 1fr auto;
   grid-template-areas:
     "sidebar navbar"
@@ -22,10 +19,10 @@
 #admin-navbar-container {
   grid-area: navbar;
   position: sticky;
+  min-height: var(--admin-navbar-min-height);
   top: 0;
   align-self: start;
-  z-index: 111;
-  height: var(--navbar-height);
+  z-index: 30;
 }
 
 #admin-sidebar-container {
@@ -34,13 +31,45 @@
   align-self: start;
   top: 0;
   height: 100dvh;
-  z-index: 112;
-}
-
-#admin-footer-container {
-  grid-area: footer;
+  z-index: 50;
 }
 
 #admin-main-container {
   grid-area: main;
+  min-height: 0;
+}
+
+#admin-footer-container {
+  grid-area: footer;
+  min-height: var(--admin-footer-min-height);
+}
+
+/* Responsive Design */
+@media (max-width: 860px) {
+  #admin-app-container {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+      "navbar"
+      "main"
+      "footer";
+    min-height: var(--admin-app-container-height);
+  }
+
+  #admin-sidebar-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100dvh;
+    width: var(--admin-sidebar-width);
+    opacity: 0;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    background-color: white;
+  }
+
+  #admin-sidebar-container.show-admin-sidebar {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }

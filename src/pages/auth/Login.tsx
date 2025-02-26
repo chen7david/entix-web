@@ -15,7 +15,7 @@ export const LoginPage: React.FC = () => {
 
     if (result.success) {
       message.success("Login successful!");
-      navigate("/dashboard");
+      navigate("/admin/dashboard");
     } else {
       message.error(result.error || "Login failed. Please try again.");
     }
