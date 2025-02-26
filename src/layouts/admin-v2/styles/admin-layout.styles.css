@@ -50,6 +50,7 @@
   #admin-app-container {
     grid-template-columns: 1fr;
     grid-template-areas: "navbar" "main" "footer";
+    grid-template-rows: auto 1fr auto;
   }
 
   #admin-sidebar-container {

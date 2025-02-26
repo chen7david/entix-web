@@ -10,8 +10,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ className, ...props }) => {
   return (
     <div className={cn(className)} {...props}>
       <SidebarHeader className="h-[64px] bg-purple-600" />
-      <SidebarBody className="h-[calc(100dvh-128px)] bg-yellow-100" />
-      <SidebarFooter className="h-[64px] bg-gray-100" />
+      <SidebarBody className="h-[calc(100dvh-128px)] bg-gray-100" />
+      <SidebarFooter className="h-[64px] bg-gray-100 " />
     </div>
   );
 };

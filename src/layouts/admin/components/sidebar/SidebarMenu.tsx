@@ -13,6 +13,7 @@ import {
   ShopOutlined,
   FundProjectionScreenOutlined,
   TagOutlined,
+  DashboardOutlined,
 } from "@ant-design/icons";
 import { sidebarOpenAtom } from "../../stores/sidebar.store";
 
@@ -25,14 +26,19 @@ const adminSidebarMenuItems: MenuItem[] = [
     type: "group",
     children: [
       {
-        label: "Reports",
-        key: "/reports",
-        icon: <AreaChartOutlined />,
+        label: "Dashboard",
+        key: "/admin/dashboard",
+        icon: <DashboardOutlined />,
       },
       {
         label: "Users",
-        key: "/users",
+        key: "/admin/users",
         icon: <UserOutlined />,
+      },
+      {
+        label: "Reports",
+        key: "/reports",
+        icon: <AreaChartOutlined />,
       },
       {
         label: "Groups",

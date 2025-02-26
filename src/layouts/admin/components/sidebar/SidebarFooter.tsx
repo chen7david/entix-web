@@ -1,7 +1,7 @@
 import cn from "classnames";
 import { HTMLAttributes } from "react";
 import { useNavigate } from "react-router-dom";
-import { Avatar, Dropdown, Space, Typography } from "antd";
+import { Avatar, Badge, Dropdown, Space, Typography } from "antd";
 import {
   UserOutlined,
   LogoutOutlined,
@@ -60,10 +60,9 @@ export const SidebarFooter: React.FC<SidebarFooterProps> = ({
               icon={<UserOutlined />}
               className="bg-primary"
             />
-            <div className="flex flex-col">
-              <Text strong className="text-white">
-                Admin User
-              </Text>
+            <div className="flex flex-row justify-center gap-2">
+              <span className="text-gray-500 text-sm">Admin User</span>
+              <Badge status="success" />
             </div>
           </Space>
           <Dropdown
