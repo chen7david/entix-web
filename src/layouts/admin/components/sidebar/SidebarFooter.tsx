@@ -9,6 +9,7 @@ import {
   MoreOutlined,
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
+import { useAuth } from "@/features/auth/hooks/auth.hook";
 
 type SidebarFooterProps = HTMLAttributes<HTMLDivElement> & {};
 
@@ -17,10 +18,17 @@ export const SidebarFooter: React.FC<SidebarFooterProps> = ({
   ...props
 }) => {
   const navigate = useNavigate();
+  const { logout } = useAuth();
 
-  const onLogout = () => {
-    // Implement logout logic here
-    console.log("Logging out...");
+  const onLogout = async () => {
+    try {
+      const result = await logout();
+      if (result.success) {
+        navigate("/auth/login");
+      }
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
   };
 
   const userMenuItems: MenuProps["items"] = [
