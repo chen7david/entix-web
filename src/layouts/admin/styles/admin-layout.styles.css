@@ -53,7 +53,7 @@
       "navbar"
       "main"
       "footer";
-    height: var(--admin-app-container-height);
+    min-height: var(--admin-app-container-height);
   }
 
   #admin-sidebar-container {
