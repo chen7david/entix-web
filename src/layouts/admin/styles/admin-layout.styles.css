@@ -7,6 +7,7 @@
 
 #admin-app-container {
   display: grid;
+  min-height: var(--admin-app-container-height);
   grid-template-columns: var(--admin-sidebar-width) 1fr;
   grid-template-rows: auto 1fr auto;
   grid-template-areas:
@@ -35,6 +36,7 @@
 
 #admin-main-container {
   grid-area: main;
+  min-height: 0;
 }
 
 #admin-footer-container {
@@ -46,10 +48,12 @@
 @media (max-width: 860px) {
   #admin-app-container {
     grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr auto;
     grid-template-areas:
       "navbar"
       "main"
       "footer";
+    height: var(--admin-app-container-height);
   }
 
   #admin-sidebar-container {
