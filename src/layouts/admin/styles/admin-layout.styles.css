@@ -37,6 +37,8 @@
 #admin-main-container {
   grid-area: main;
   min-height: 0;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 #admin-footer-container {
@@ -71,5 +73,9 @@
   #admin-sidebar-container.show-admin-sidebar {
     opacity: 1;
     transform: translateX(0);
+  }
+
+  #admin-main-container {
+    padding: 1rem;
   }
 }

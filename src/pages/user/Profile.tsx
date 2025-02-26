@@ -19,7 +19,8 @@ export const ProfilePage: React.FC = () => {
     fullName: "John Doe",
     phone: "+1 (555) 123-4567",
     bio: "Software developer passionate about creating great user experiences.",
-    avatar: "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50",
+    avatar:
+      "https://res.cloudinary.com/dbhdod0gm/image/upload/v1721408659/t8vvdztckrvjlkkp3jmp.jpg",
   };
 
   const handleProfileUpdate = async (values: ProfileFormData) => {
@@ -38,7 +39,7 @@ export const ProfilePage: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="w-full max-w-5xl mx-auto">
       <Title level={2}>Profile</Title>
       <div className="mt-6">
         <Card>
