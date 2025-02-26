@@ -1,4 +1,6 @@
 :root {
+  --admin-navbar-min-height: 64px;
+  --admin-footer-min-height: 64px;
   --admin-app-container-height: 100dvh;
   --admin-sidebar-width: 230px;
 }
@@ -16,6 +18,7 @@
 #admin-navbar-container {
   grid-area: navbar;
   position: sticky;
+  min-height: var(--admin-navbar-min-height);
   top: 0;
   align-self: start;
   z-index: 30;
@@ -36,6 +39,7 @@
 
 #admin-footer-container {
   grid-area: footer;
+  min-height: var(--admin-footer-min-height);
 }
 
 /* Responsive Design */
