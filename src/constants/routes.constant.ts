@@ -16,6 +16,9 @@ export enum AdminRoutes {
   SESSIONS = "/admin/sessions",
   ROLES = "/admin/roles",
   PLANS = "/admin/plans",
+  STORE_PRODUCTS = "/admin/store/products",
+  STORE_CATEGORIES = "/admin/store/categories",
+  STORE_INVENTORY = "/admin/store/inventory",
 }
 
 export const ROOT_REDIRECT = AuthRoutes.LOGIN;

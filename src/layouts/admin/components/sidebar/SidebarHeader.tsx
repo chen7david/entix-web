@@ -10,12 +10,12 @@ export const SidebarHeader: React.FC<SidebarHeaderProps> = ({
   return (
     <div
       className={cn(
-        "flex items-center px-7 text-gray-800 text-lg font-extrabold",
+        "flex items-center px-7 text-gray-800 text-lg font-extrabold tracking-widest",
         className
       )}
       {...props}
     >
-      Entix
+      ENTIX
     </div>
   );
 };

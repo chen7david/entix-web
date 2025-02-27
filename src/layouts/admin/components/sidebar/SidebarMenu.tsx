@@ -12,6 +12,9 @@ import {
   FundProjectionScreenOutlined,
   TagOutlined,
   DashboardOutlined,
+  AppstoreOutlined,
+  InboxOutlined,
+  BarcodeOutlined,
 } from "@ant-design/icons";
 import { sidebarOpenAtom } from "../../stores/sidebar.store";
 import { AdminRoutes } from "@/constants/routes.constant";
@@ -61,13 +64,18 @@ const adminSidebarMenuItems: MenuItem[] = [
         children: [
           {
             label: "Products",
-            key: "/store/products",
-            icon: <ShopOutlined />,
+            key: AdminRoutes.STORE_PRODUCTS,
+            icon: <BarcodeOutlined />,
           },
           {
             label: "Categories",
-            key: "/store/categories",
-            icon: <ShopOutlined />,
+            key: AdminRoutes.STORE_CATEGORIES,
+            icon: <AppstoreOutlined />,
+          },
+          {
+            label: "Inventory",
+            key: AdminRoutes.STORE_INVENTORY,
+            icon: <InboxOutlined />,
           },
         ],
       },

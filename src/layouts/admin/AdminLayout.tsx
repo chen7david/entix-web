@@ -37,8 +37,8 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
         {/* Navbar */}
         <AdminNavbarContainer className="bg-gray-800 p-3 flex flex-row justify-between">
           <div className="flex items-center justify-center">
-            <span className="pl-2 text-white text-lg font-bold md:hidden">
-              Entix
+            <span className="pl-2 text-white text-lg font-extrabold tracking-widest md:hidden">
+              ENTIX
             </span>
           </div>
           <AdminSidebarToggleButton className="flex justify-center md:hidden" />
