@@ -35,7 +35,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
         <Overlay />
 
         {/* Navbar */}
-        <AdminNavbarContainer className="bg-purple-600 p-3 flex flex-row justify-between">
+        <AdminNavbarContainer className="bg-purple-800 p-3 flex flex-row justify-between">
           <div className="flex items-center justify-center">
             <span className="text-white text-lg font-bold md:hidden">
               Entix
@@ -55,7 +55,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
           flex 
           items-center 
           justify-center 
-          bg-purple-600 
+          bg-purple-800 
           text-white p-3
         "
         >
