@@ -16,6 +16,9 @@ import { AuthGuard } from "@/guards/AuthGuard";
 import { PublicGuard } from "@/guards/PublicGuard";
 import { useAuth } from "@/features/auth/hooks/auth.hook";
 import { ReportsPage } from "@/pages/Reports/Reports";
+import { SessionsPage } from "@/pages/admin/Sessions";
+import { RolesPage } from "@/pages/admin/Roles";
+import { PlansPage } from "@/pages/admin/Plans";
 import {
   AuthRoutes,
   AdminRoutes,
@@ -62,6 +65,9 @@ export const Router: React.FC = () => {
             <Route path={AdminRoutes.SETTINGS} element={<SettingsPage />} />
             <Route path={AdminRoutes.DASHBOARD} element={<DashboardPage />} />
             <Route path={AdminRoutes.REPORTS} element={<ReportsPage />} />
+            <Route path={AdminRoutes.SESSIONS} element={<SessionsPage />} />
+            <Route path={AdminRoutes.ROLES} element={<RolesPage />} />
+            <Route path={AdminRoutes.PLANS} element={<PlansPage />} />
           </Route>
         </Route>
 

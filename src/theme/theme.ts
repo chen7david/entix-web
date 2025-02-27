@@ -54,8 +54,8 @@ const theme: ThemeConfig = {
       borderRadius: 6,
     },
     Menu: {
-      colorItemBgSelected: "#F3F4F6", // Gray-100
-      colorItemBgHover: "#F9FAFB", // Gray-50
+      itemSelectedBg: "#F3F4F6", // Gray-100
+      itemHoverBg: "#F9FAFB", // Gray-50
     },
     Layout: {
       colorBgHeader: "#ffffff",

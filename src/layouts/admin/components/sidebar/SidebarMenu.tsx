@@ -16,6 +16,7 @@ import {
   DashboardOutlined,
 } from "@ant-design/icons";
 import { sidebarOpenAtom } from "../../stores/sidebar.store";
+import { AdminRoutes } from "@/constants/routes.constant";
 
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -27,102 +28,34 @@ const adminSidebarMenuItems: MenuItem[] = [
     children: [
       {
         label: "Dashboard",
-        key: "/admin/dashboard",
+        key: AdminRoutes.DASHBOARD,
         icon: <DashboardOutlined />,
       },
       {
         label: "Users",
-        key: "/admin/users",
+        key: AdminRoutes.USERS,
         icon: <UserOutlined />,
       },
       {
         label: "Reports",
-        key: "/admin/reports",
+        key: AdminRoutes.REPORTS,
         icon: <AreaChartOutlined />,
       },
       {
-        label: "Groups",
-        key: "/groups",
-        icon: <TeamOutlined />,
-      },
-      {
         label: "Sessions",
-        key: "/sessions",
+        key: AdminRoutes.SESSIONS,
         icon: <FundProjectionScreenOutlined />,
       },
       {
         label: "Roles",
-        key: "/roles",
+        key: AdminRoutes.ROLES,
         icon: <LockOutlined />,
       },
       {
         label: "Plans",
-        key: "/paymentplans",
+        key: AdminRoutes.PLANS,
         icon: <TagOutlined />,
       },
-
-      // copies start
-      // {
-      //   label: "Reports",
-      //   key: "/reports",
-      //   icon: <AreaChartOutlined />,
-      // },
-      // {
-      //   label: "Users",
-      //   key: "/users",
-      //   icon: <UserOutlined />,
-      // },
-      // {
-      //   label: "Groups",
-      //   key: "/groups",
-      //   icon: <TeamOutlined />,
-      // },
-      // {
-      //   label: "Sessions",
-      //   key: "/sessions",
-      //   icon: <FundProjectionScreenOutlined />,
-      // },
-      // {
-      //   label: "Roles",
-      //   key: "/roles",
-      //   icon: <LockOutlined />,
-      // },
-      // {
-      //   label: "Plans",
-      //   key: "/paymentplans",
-      //   icon: <TagOutlined />,
-      // },
-      // {
-      //   label: "Reports",
-      //   key: "/reports",
-      //   icon: <AreaChartOutlined />,
-      // },
-      // {
-      //   label: "Users",
-      //   key: "/users",
-      //   icon: <UserOutlined />,
-      // },
-      // {
-      //   label: "Groups",
-      //   key: "/groups",
-      //   icon: <TeamOutlined />,
-      // },
-      // {
-      //   label: "Sessions",
-      //   key: "/sessions",
-      //   icon: <FundProjectionScreenOutlined />,
-      // },
-      // {
-      //   label: "Roles",
-      //   key: "/roles",
-      //   icon: <LockOutlined />,
-      // },
-      // {
-      //   label: "Plans",
-      //   key: "/paymentplans",
-      //   icon: <TagOutlined />,
-      // },
-      // copies end
       {
         label: "Store",
         key: "/store",
