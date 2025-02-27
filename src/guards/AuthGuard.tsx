@@ -1,4 +1,5 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { createAuthRedirectUrl } from "@/constants/routes.constant";
 
 type AuthGuardProps = {
   isAuthenticated: boolean;
@@ -14,7 +15,7 @@ export const AuthGuard = ({ isAuthenticated }: AuthGuardProps) => {
     );
     return (
       <Navigate
-        to={`/auth/login?redirect=${redirectPath}`}
+        to={createAuthRedirectUrl(redirectPath)}
         state={{ from: location }}
         replace
       />

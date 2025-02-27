@@ -15,7 +15,15 @@ import { UserListPage } from "@/pages/user/UserList";
 import { AuthGuard } from "@/guards/AuthGuard";
 import { PublicGuard } from "@/guards/PublicGuard";
 import { useAuth } from "@/features/auth/hooks/auth.hook";
-import ReportsPage from "@/pages/Reports/Reports";
+import { ReportsPage } from "@/pages/Reports/Reports";
+import { SessionsPage } from "@/pages/admin/Sessions";
+import { RolesPage } from "@/pages/admin/Roles";
+import { PlansPage } from "@/pages/admin/Plans";
+import {
+  AuthRoutes,
+  AdminRoutes,
+  ROOT_REDIRECT,
+} from "@/constants/routes.constant";
 
 export const Router: React.FC = () => {
   const { isAuthenticated } = useAuth();
@@ -24,17 +32,26 @@ export const Router: React.FC = () => {
     <HashRouter>
       <Routes>
         {/* Public routes */}
-        <Route path="/" element={<Navigate to="/auth/login" replace />} />
+        <Route path="/" element={<Navigate to={ROOT_REDIRECT} replace />} />
 
         <Route element={<PublicGuard isAuthenticated={isAuthenticated} />}>
-          <Route path="/auth" element={<AuthLayout />}>
-            <Route path="login" element={<LoginPage />} />
-            <Route path="register" element={<RegisterPage />} />
-            <Route path="forgot-password" element={<ForgotPasswordPage />} />
-            <Route path="reset-password" element={<ResetPasswordPage />} />
-            <Route path="verify-email" element={<VerifyEmailPage />} />
+          <Route element={<AuthLayout />}>
+            <Route path={AuthRoutes.LOGIN} element={<LoginPage />} />
+            <Route path={AuthRoutes.REGISTER} element={<RegisterPage />} />
             <Route
-              path="request-verification"
+              path={AuthRoutes.FORGOT_PASSWORD}
+              element={<ForgotPasswordPage />}
+            />
+            <Route
+              path={AuthRoutes.RESET_PASSWORD}
+              element={<ResetPasswordPage />}
+            />
+            <Route
+              path={AuthRoutes.VERIFY_EMAIL}
+              element={<VerifyEmailPage />}
+            />
+            <Route
+              path={AuthRoutes.REQUEST_VERIFICATION}
               element={<RequestEmailVerificationPage />}
             />
           </Route>
@@ -42,12 +59,15 @@ export const Router: React.FC = () => {
 
         {/* Protected routes */}
         <Route element={<AuthGuard isAuthenticated={isAuthenticated} />}>
-          <Route path="admin" element={<AdminLayout />}>
-            <Route path="users" element={<UserListPage />} />
-            <Route path="profile" element={<ProfilePage />} />
-            <Route path="settings" element={<SettingsPage />} />
-            <Route path="dashboard" element={<DashboardPage />} />
-            <Route path="reports" element={<ReportsPage />} />
+          <Route element={<AdminLayout />}>
+            <Route path={AdminRoutes.USERS} element={<UserListPage />} />
+            <Route path={AdminRoutes.PROFILE} element={<ProfilePage />} />
+            <Route path={AdminRoutes.SETTINGS} element={<SettingsPage />} />
+            <Route path={AdminRoutes.DASHBOARD} element={<DashboardPage />} />
+            <Route path={AdminRoutes.REPORTS} element={<ReportsPage />} />
+            <Route path={AdminRoutes.SESSIONS} element={<SessionsPage />} />
+            <Route path={AdminRoutes.ROLES} element={<RolesPage />} />
+            <Route path={AdminRoutes.PLANS} element={<PlansPage />} />
           </Route>
         </Route>
 

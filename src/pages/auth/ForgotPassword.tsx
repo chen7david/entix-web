@@ -5,6 +5,7 @@ import {
   ForgotPasswordForm,
   ForgotPasswordFormData,
 } from "@/features/auth/components/ForgotPasswordForm";
+import { AuthRoutes } from "@/constants/routes.constant";
 
 const { Title, Text } = Typography;
 
@@ -21,7 +22,7 @@ export const ForgotPasswordPage: React.FC = () => {
         "If an account exists with this email, you will receive a password reset code."
       );
       // Pass email to reset password page to maintain context
-      navigate("/auth/reset-password", {
+      navigate(AuthRoutes.RESET_PASSWORD, {
         state: { email: values.email },
       });
     } else {
@@ -46,14 +47,14 @@ export const ForgotPasswordPage: React.FC = () => {
       <div className="text-center mt-4">
         <Space direction="vertical" size="small">
           <Text>
-            Remember your password? <Link to="/auth/login">Sign in</Link>
+            Remember your password? <Link to={AuthRoutes.LOGIN}>Sign in</Link>
           </Text>
           <Text>
-            Don't have an account? <Link to="/auth/register">Sign up</Link>
+            Don't have an account? <Link to={AuthRoutes.REGISTER}>Sign up</Link>
           </Text>
           <Text>
             Need to verify your email?{" "}
-            <Link to="/auth/request-verification">Verify now</Link>
+            <Link to={AuthRoutes.REQUEST_VERIFICATION}>Verify now</Link>
           </Text>
         </Space>
       </div>

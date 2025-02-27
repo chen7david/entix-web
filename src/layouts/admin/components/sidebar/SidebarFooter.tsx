@@ -10,6 +10,7 @@ import {
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { useAuth } from "@/features/auth/hooks/auth.hook";
+import { Fake } from "@/constants/fakes.constant";
 
 type SidebarFooterProps = HTMLAttributes<HTMLDivElement> & {};
 
@@ -61,11 +62,7 @@ export const SidebarFooter: React.FC<SidebarFooterProps> = ({
       <div className="px-4 py-3">
         <Space className="cursor-pointer w-full justify-between items-center">
           <Space>
-            <Avatar
-              size="large"
-              icon={<UserOutlined />}
-              className="bg-primary"
-            />
+            <Avatar size="large" icon={<UserOutlined />} src={Fake.avatar} />
             <div className="flex flex-row justify-center gap-2">
               <span className="text-gray-500 text-sm">Admin User</span>
               <Badge status="success" />

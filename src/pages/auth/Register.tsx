@@ -5,6 +5,7 @@ import {
   RegisterForm,
   RegisterFormData,
 } from "@/features/auth/components/RegisterForm";
+import { AuthRoutes } from "@/constants/routes.constant";
 
 const { Title, Text } = Typography;
 
@@ -24,7 +25,7 @@ export const RegisterPage: React.FC = () => {
       message.success(
         "Registration successful! Please check your email to verify your account."
       );
-      navigate("/auth/verify-email");
+      navigate(AuthRoutes.VERIFY_EMAIL);
     } else {
       message.error(result.error || "Registration failed. Please try again.");
     }
@@ -43,7 +44,7 @@ export const RegisterPage: React.FC = () => {
 
       <Space className="w-full justify-center mt-4">
         <Text>Already have an account?</Text>
-        <Link to="/auth/login">Sign in</Link>
+        <Link to={AuthRoutes.LOGIN}>Sign in</Link>
       </Space>
     </Card>
   );

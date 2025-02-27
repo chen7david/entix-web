@@ -2,22 +2,23 @@ import type { ThemeConfig } from "antd";
 
 const theme: ThemeConfig = {
   token: {
-    // Primary purple color
-    colorPrimary: "#7C3AED", // Vibrant purple
-    colorPrimaryBg: "#F5F3FF", // Light purple background
-    colorPrimaryBgHover: "#EDE9FE", // Hover state
-    colorPrimaryBorder: "#C4B5FD", // Border color
-    colorPrimaryHover: "#8B5CF6", // Hover state
-    colorPrimaryActive: "#6D28D9", // Active state
-    colorPrimaryTextHover: "#8B5CF6", // Text hover
-    colorPrimaryText: "#7C3AED", // Text color
-    colorPrimaryTextActive: "#6D28D9", // Text active
+    // Primary color (Gray-800)
+    colorPrimary: "#1F2937",
+    colorPrimaryBg: "#F3F4F6", // Gray-100
+    colorPrimaryBgHover: "#E5E7EB", // Gray-200
+    colorPrimaryBorder: "#9CA3AF", // Gray-400
+    colorPrimaryHover: "#374151", // Gray-700
+    colorPrimaryActive: "#111827", // Gray-900
+    colorPrimaryTextHover: "#374151", // Gray-700
+    colorPrimaryText: "#1F2937", // Gray-800
+    colorPrimaryTextActive: "#111827", // Gray-900
 
-    // Other colors that complement purple
-    colorSuccess: "#10B981", // Green
-    colorWarning: "#F59E0B", // Amber
-    colorError: "#EF4444", // Red
-    colorInfo: "#3B82F6", // Blue
+    // Five main colors for the application
+    colorSuccess: "#059669", // Emerald-600 - Success/Positive actions
+    colorWarning: "#D97706", // Amber-600 - Warnings/Pending states
+    colorError: "#DC2626", // Red-600 - Errors/Destructive actions
+    colorInfo: "#2563EB", // Blue-600 - Information/Neutral actions
+    colorTextBase: "#374151", // Gray-700 - Main text color
 
     // Border radius
     borderRadius: 6,
@@ -25,8 +26,8 @@ const theme: ThemeConfig = {
     // Other tokens
     colorBgContainer: "#ffffff",
     colorBgElevated: "#ffffff",
-    colorBorder: "#E5E7EB",
-    colorBorderSecondary: "#F3F4F6",
+    colorBorder: "#E5E7EB", // Gray-200
+    colorBorderSecondary: "#F3F4F6", // Gray-100
 
     // Font
     fontFamily:
@@ -36,13 +37,13 @@ const theme: ThemeConfig = {
     Button: {
       controlHeight: 40,
       paddingContentHorizontal: 24,
-      colorPrimaryHover: "#8B5CF6",
+      colorPrimaryHover: "#374151", // Gray-700
       borderRadius: 6,
     },
     Input: {
       controlHeight: 40,
       borderRadius: 6,
-      colorPrimaryHover: "#8B5CF6",
+      colorPrimaryHover: "#374151", // Gray-700
     },
     Card: {
       boxShadowTertiary: "none",
@@ -51,19 +52,15 @@ const theme: ThemeConfig = {
     Select: {
       controlHeight: 40,
       borderRadius: 6,
-      colorPrimaryHover: "#8B5CF6",
     },
     Menu: {
-      itemBorderRadius: 6,
-      itemHoverBg: "#F5F3FF",
-      itemSelectedBg: "#EDE9FE",
-      itemSelectedColor: "#7C3AED",
+      itemSelectedBg: "#F3F4F6", // Gray-100
+      itemHoverBg: "#F9FAFB", // Gray-50
     },
-    Table: {
-      headerBg: "#F5F3FF",
-      headerColor: "#4B5563",
-      borderColor: "#E5E7EB",
-      rowHoverBg: "#F5F3FF",
+    Layout: {
+      colorBgHeader: "#ffffff",
+      colorBgBody: "#F9FAFB", // Gray-50
+      colorBgTrigger: "#ffffff",
     },
   },
 };

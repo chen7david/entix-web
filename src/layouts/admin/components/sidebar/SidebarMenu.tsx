@@ -1,6 +1,5 @@
-import { useState } from "react";
 import type { MenuProps } from "antd";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Menu } from "antd";
 import { useAtom } from "jotai";
 
@@ -9,13 +8,13 @@ import {
   ScheduleOutlined,
   LockOutlined,
   AreaChartOutlined,
-  TeamOutlined,
   ShopOutlined,
   FundProjectionScreenOutlined,
   TagOutlined,
   DashboardOutlined,
 } from "@ant-design/icons";
 import { sidebarOpenAtom } from "../../stores/sidebar.store";
+import { AdminRoutes } from "@/constants/routes.constant";
 
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -27,102 +26,34 @@ const adminSidebarMenuItems: MenuItem[] = [
     children: [
       {
         label: "Dashboard",
-        key: "/admin/dashboard",
+        key: AdminRoutes.DASHBOARD,
         icon: <DashboardOutlined />,
       },
       {
         label: "Users",
-        key: "/admin/users",
+        key: AdminRoutes.USERS,
         icon: <UserOutlined />,
       },
       {
         label: "Reports",
-        key: "/admin/reports",
+        key: AdminRoutes.REPORTS,
         icon: <AreaChartOutlined />,
       },
       {
-        label: "Groups",
-        key: "/groups",
-        icon: <TeamOutlined />,
-      },
-      {
         label: "Sessions",
-        key: "/sessions",
+        key: AdminRoutes.SESSIONS,
         icon: <FundProjectionScreenOutlined />,
       },
       {
         label: "Roles",
-        key: "/roles",
+        key: AdminRoutes.ROLES,
         icon: <LockOutlined />,
       },
       {
         label: "Plans",
-        key: "/paymentplans",
+        key: AdminRoutes.PLANS,
         icon: <TagOutlined />,
       },
-
-      // copies start
-      // {
-      //   label: "Reports",
-      //   key: "/reports",
-      //   icon: <AreaChartOutlined />,
-      // },
-      // {
-      //   label: "Users",
-      //   key: "/users",
-      //   icon: <UserOutlined />,
-      // },
-      // {
-      //   label: "Groups",
-      //   key: "/groups",
-      //   icon: <TeamOutlined />,
-      // },
-      // {
-      //   label: "Sessions",
-      //   key: "/sessions",
-      //   icon: <FundProjectionScreenOutlined />,
-      // },
-      // {
-      //   label: "Roles",
-      //   key: "/roles",
-      //   icon: <LockOutlined />,
-      // },
-      // {
-      //   label: "Plans",
-      //   key: "/paymentplans",
-      //   icon: <TagOutlined />,
-      // },
-      // {
-      //   label: "Reports",
-      //   key: "/reports",
-      //   icon: <AreaChartOutlined />,
-      // },
-      // {
-      //   label: "Users",
-      //   key: "/users",
-      //   icon: <UserOutlined />,
-      // },
-      // {
-      //   label: "Groups",
-      //   key: "/groups",
-      //   icon: <TeamOutlined />,
-      // },
-      // {
-      //   label: "Sessions",
-      //   key: "/sessions",
-      //   icon: <FundProjectionScreenOutlined />,
-      // },
-      // {
-      //   label: "Roles",
-      //   key: "/roles",
-      //   icon: <LockOutlined />,
-      // },
-      // {
-      //   label: "Plans",
-      //   key: "/paymentplans",
-      //   icon: <TagOutlined />,
-      // },
-      // copies end
       {
         label: "Store",
         key: "/store",
@@ -150,12 +81,11 @@ const adminSidebarMenuItems: MenuItem[] = [
 ];
 
 export const SidebarMenu = () => {
-  const [current, setCurrent] = useState("mail");
   const navigate = useNavigate();
+  const location = useLocation();
   const [isSideBarOpen, setIsSideBarOpenAtom] = useAtom(sidebarOpenAtom);
 
   const menuOnClick: MenuProps["onClick"] = (e) => {
-    setCurrent(e.key);
     navigate(e.key);
     setIsSideBarOpenAtom(!isSideBarOpen);
   };
@@ -163,10 +93,10 @@ export const SidebarMenu = () => {
   return (
     <Menu
       onClick={menuOnClick}
-      selectedKeys={[current]}
+      selectedKeys={[location.pathname]}
       mode="inline"
       items={adminSidebarMenuItems}
-      style={{ borderRight: "none", backgroundColor: "#f5f5f5" }}
+      style={{ borderRight: "none", backgroundColor: "#E5E7EB" }}
     />
   );
 };

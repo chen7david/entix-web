@@ -5,6 +5,7 @@ import {
   ProfileFormData,
 } from "@/features/user/components/ProfileForm";
 import { UserOutlined, HistoryOutlined } from "@ant-design/icons";
+import { Fake } from "@/constants/fakes.constant";
 
 const { Title } = Typography;
 const { TabPane } = Tabs;
@@ -19,8 +20,7 @@ export const ProfilePage: React.FC = () => {
     fullName: "John Doe",
     phone: "+1 (555) 123-4567",
     bio: "Software developer passionate about creating great user experiences.",
-    avatar:
-      "https://res.cloudinary.com/dbhdod0gm/image/upload/v1721408659/t8vvdztckrvjlkkp3jmp.jpg",
+    avatar: Fake.avatar,
   };
 
   const handleProfileUpdate = async (values: ProfileFormData) => {
