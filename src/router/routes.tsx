@@ -15,7 +15,7 @@ import { UserListPage } from "@/pages/user/UserList";
 import { AuthGuard } from "@/guards/AuthGuard";
 import { PublicGuard } from "@/guards/PublicGuard";
 import { useAuth } from "@/features/auth/hooks/auth.hook";
-import ReportsPage from "@/pages/Reports/Reports";
+import { ReportsPage } from "@/pages/Reports/Reports";
 import { AuthRoutes, AdminRoutes, ROOT_REDIRECT } from "./routes.constants";
 
 export const Router: React.FC = () => {
@@ -39,7 +39,10 @@ export const Router: React.FC = () => {
               path={AuthRoutes.RESET_PASSWORD}
               element={<ResetPasswordPage />}
             />
-            <Route path={AuthRoutes.VERIFY_EMAIL} element={<VerifyEmailPage />} />
+            <Route
+              path={AuthRoutes.VERIFY_EMAIL}
+              element={<VerifyEmailPage />}
+            />
             <Route
               path={AuthRoutes.REQUEST_VERIFICATION}
               element={<RequestEmailVerificationPage />}
