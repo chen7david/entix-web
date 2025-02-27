@@ -5,7 +5,7 @@ import {
   RegisterForm,
   RegisterFormData,
 } from "@/features/auth/components/RegisterForm";
-import { AuthRoutes } from "@/router/routes.constants";
+import { AuthRoutes } from "@/constants/routes.constants";
 
 const { Title, Text } = Typography;
 

@@ -5,7 +5,7 @@ import {
   ForgotPasswordForm,
   ForgotPasswordFormData,
 } from "@/features/auth/components/ForgotPasswordForm";
-import { AuthRoutes } from "@/router/routes.constants";
+import { AuthRoutes } from "@/constants/routes.constants";
 
 const { Title, Text } = Typography;
 

@@ -16,7 +16,11 @@ import { AuthGuard } from "@/guards/AuthGuard";
 import { PublicGuard } from "@/guards/PublicGuard";
 import { useAuth } from "@/features/auth/hooks/auth.hook";
 import { ReportsPage } from "@/pages/Reports/Reports";
-import { AuthRoutes, AdminRoutes, ROOT_REDIRECT } from "./routes.constants";
+import {
+  AuthRoutes,
+  AdminRoutes,
+  ROOT_REDIRECT,
+} from "../constants/routes.constants";
 
 export const Router: React.FC = () => {
   const { isAuthenticated } = useAuth();

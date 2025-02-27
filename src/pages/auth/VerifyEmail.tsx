@@ -5,7 +5,7 @@ import {
   VerifyEmailForm,
   VerifyEmailFormData,
 } from "@/features/auth/components/VerifyEmailForm";
-import { AuthRoutes } from "@/router/routes.constants";
+import { AuthRoutes } from "@/constants/routes.constants";
 
 const { Title, Text } = Typography;
 
