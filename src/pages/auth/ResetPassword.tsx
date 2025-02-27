@@ -5,6 +5,7 @@ import {
   ResetPasswordForm,
   ResetPasswordFormData,
 } from "@/features/auth/components/ResetPasswordForm";
+import { AuthRoutes } from "@/router/routes.constants";
 
 const { Title, Text } = Typography;
 
@@ -26,7 +27,7 @@ export const ResetPasswordPage: React.FC = () => {
 
     if (result.success) {
       message.success("Password has been successfully reset!");
-      navigate("/auth/login");
+      navigate(AuthRoutes.LOGIN);
     } else {
       message.error(
         result.error || "Failed to reset password. Please try again."
@@ -67,7 +68,7 @@ export const ResetPasswordPage: React.FC = () => {
       <div className="text-center mt-4">
         <Space direction="vertical" size="small">
           <Text>
-            Remember your password? <Link to="/auth/login">Sign in</Link>
+            Remember your password? <Link to={AuthRoutes.LOGIN}>Sign in</Link>
           </Text>
         </Space>
       </div>

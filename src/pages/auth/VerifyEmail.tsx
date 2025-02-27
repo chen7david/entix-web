@@ -5,6 +5,7 @@ import {
   VerifyEmailForm,
   VerifyEmailFormData,
 } from "@/features/auth/components/VerifyEmailForm";
+import { AuthRoutes } from "@/router/routes.constants";
 
 const { Title, Text } = Typography;
 
@@ -18,7 +19,7 @@ export const VerifyEmailPage: React.FC = () => {
 
     if (result.success) {
       message.success("Email has been successfully verified!");
-      navigate("/auth/login");
+      navigate(AuthRoutes.LOGIN);
     } else {
       message.error(
         result.error || "Failed to verify email. Please try again."
@@ -54,7 +55,7 @@ export const VerifyEmailPage: React.FC = () => {
       <div className="text-center mt-4">
         <Space direction="vertical" size="small">
           <Text>
-            Back to <Link to="/auth/login">Sign in</Link>
+            Back to <Link to={AuthRoutes.LOGIN}>Sign in</Link>
           </Text>
         </Space>
       </div>
