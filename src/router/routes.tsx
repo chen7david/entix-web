@@ -19,6 +19,9 @@ import { ReportsPage } from "@/pages/Reports/Reports";
 import { SessionsPage } from "@/pages/admin/Sessions";
 import { RolesPage } from "@/pages/admin/Roles";
 import { PlansPage } from "@/pages/admin/Plans";
+import { ProductsPage } from "@/pages/admin/store/Products";
+import { CategoriesPage } from "@/pages/admin/store/Categories";
+import { InventoryPage } from "@/pages/admin/store/Inventory";
 import {
   AuthRoutes,
   AdminRoutes,
@@ -68,6 +71,9 @@ export const Router: React.FC = () => {
             <Route path={AdminRoutes.SESSIONS} element={<SessionsPage />} />
             <Route path={AdminRoutes.ROLES} element={<RolesPage />} />
             <Route path={AdminRoutes.PLANS} element={<PlansPage />} />
+            <Route path={AdminRoutes.STORE_PRODUCTS} element={<ProductsPage />} />
+            <Route path={AdminRoutes.STORE_CATEGORIES} element={<CategoriesPage />} />
+            <Route path={AdminRoutes.STORE_INVENTORY} element={<InventoryPage />} />
           </Route>
         </Route>
 
