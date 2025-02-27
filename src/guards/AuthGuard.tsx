@@ -1,5 +1,5 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { createAuthRedirectUrl } from "@/constants/routes.constants";
+import { createAuthRedirectUrl } from "@/constants/routes.constant";
 
 type AuthGuardProps = {
   isAuthenticated: boolean;

@@ -20,7 +20,7 @@ import {
   AuthRoutes,
   AdminRoutes,
   ROOT_REDIRECT,
-} from "../constants/routes.constants";
+} from "@/constants/routes.constant";
 
 export const Router: React.FC = () => {
   const { isAuthenticated } = useAuth();

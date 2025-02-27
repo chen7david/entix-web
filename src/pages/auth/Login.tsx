@@ -2,7 +2,7 @@ import { App, Card, Typography, Space } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/features/auth/hooks/auth.hook";
 import { LoginForm, LoginFormData } from "@/features/auth/components/LoginForm";
-import { AuthRoutes, AdminRoutes } from "@/constants/routes.constants";
+import { AuthRoutes, AdminRoutes } from "@/constants/routes.constant";
 
 const { Title, Text } = Typography;
 

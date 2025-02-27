@@ -5,7 +5,7 @@ import {
   ResetPasswordForm,
   ResetPasswordFormData,
 } from "@/features/auth/components/ResetPasswordForm";
-import { AuthRoutes } from "@/constants/routes.constants";
+import { AuthRoutes } from "@/constants/routes.constant";
 
 const { Title, Text } = Typography;
 

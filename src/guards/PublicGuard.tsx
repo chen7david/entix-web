@@ -4,7 +4,7 @@ import {
   useLocation,
   useSearchParams,
 } from "react-router-dom";
-import { AdminRoutes } from "@/constants/routes.constants";
+import { AdminRoutes } from "@/constants/routes.constant";
 
 type PublicGuardProps = {
   isAuthenticated: boolean;

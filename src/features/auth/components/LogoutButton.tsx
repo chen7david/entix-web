@@ -1,7 +1,7 @@
 import { Button } from "antd";
 import { useAuth } from "@/features/auth/hooks/auth.hook";
 import { useNavigate } from "react-router-dom";
-import { AuthRoutes } from "@/constants/routes.constants";
+import { AuthRoutes } from "@/constants/routes.constant";
 
 type LogoutButtonProps = {
   className?: string;
