@@ -1,6 +1,5 @@
-import { useState } from "react";
 import type { MenuProps } from "antd";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Menu } from "antd";
 import { useAtom } from "jotai";
 
@@ -9,7 +8,6 @@ import {
   ScheduleOutlined,
   LockOutlined,
   AreaChartOutlined,
-  TeamOutlined,
   ShopOutlined,
   FundProjectionScreenOutlined,
   TagOutlined,
@@ -83,12 +81,11 @@ const adminSidebarMenuItems: MenuItem[] = [
 ];
 
 export const SidebarMenu = () => {
-  const [current, setCurrent] = useState("mail");
   const navigate = useNavigate();
+  const location = useLocation();
   const [isSideBarOpen, setIsSideBarOpenAtom] = useAtom(sidebarOpenAtom);
 
   const menuOnClick: MenuProps["onClick"] = (e) => {
-    setCurrent(e.key);
     navigate(e.key);
     setIsSideBarOpenAtom(!isSideBarOpen);
   };
@@ -96,7 +93,7 @@ export const SidebarMenu = () => {
   return (
     <Menu
       onClick={menuOnClick}
-      selectedKeys={[current]}
+      selectedKeys={[location.pathname]}
       mode="inline"
       items={adminSidebarMenuItems}
       style={{ borderRight: "none", backgroundColor: "#E5E7EB" }}
