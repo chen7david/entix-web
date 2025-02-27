@@ -166,7 +166,7 @@ export const SidebarMenu = () => {
       selectedKeys={[current]}
       mode="inline"
       items={adminSidebarMenuItems}
-      style={{ borderRight: "none", backgroundColor: "#f5f5f5" }}
+      style={{ borderRight: "none", backgroundColor: "#E5E7EB" }}
     />
   );
 };
