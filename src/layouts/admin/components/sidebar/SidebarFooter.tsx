@@ -59,13 +59,18 @@ export const SidebarFooter: React.FC<SidebarFooterProps> = ({
 
   return (
     <div className={cn(className)} {...props}>
-      <div className="px-4 py-3">
-        <Space className="cursor-pointer w-full justify-between items-center">
+      <div className="px-4 align-middle ">
+        <Space className="w-full justify-between items-center ">
           <Space>
-            <Avatar size="large" icon={<UserOutlined />} src={Fake.avatar} />
+            <Badge status="success" />
+            <Avatar
+              size={45}
+              icon={<UserOutlined />}
+              src={Fake.avatar}
+              style={{ borderColor: "#6B7280", borderWidth: 1 }}
+            />
             <div className="flex flex-row justify-center gap-2">
-              <span className="text-gray-500 text-sm">Admin User</span>
-              <Badge status="success" />
+              <span className="text-gray-500 text-sm">David</span>
             </div>
           </Space>
           <Dropdown
