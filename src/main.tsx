@@ -4,18 +4,11 @@ import App from './App.tsx';
 import './index.css';
 import { ConfigProvider } from 'antd';
 import 'antd/dist/reset.css'; // Import Ant Design CSS
+import { antdTheme } from './config/theme.ts'; // Import the centralized theme
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <ConfigProvider
-      theme={{
-        token: {
-          // Seed Token
-          colorPrimary: '#00b96b',
-          borderRadius: 2,
-        },
-      }}
-    >
+    <ConfigProvider theme={antdTheme}>
       <App />
     </ConfigProvider>
   </React.StrictMode>
