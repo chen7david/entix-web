@@ -2,20 +2,44 @@ import type { ThemeConfig } from 'antd';
 
 /**
  * Ant Design theme configuration.
- * @see https://ant.design/docs/react/customize-theme
+ * Defines global style tokens and component-specific overrides.
  */
 export const antdTheme: ThemeConfig = {
   token: {
     // Seed Token
     colorPrimary: '#00b96b',
-    borderRadius: 2,
+    borderRadius: 6,
+
+    // Alias Tokens (examples, AntD generates most from seed)
+    colorLink: '#00b96b', // Links will inherit colorPrimary by default
+    colorLinkHover: '#00a35c', // Darker shade for hover
+
+    // Functional Colors (using AntD defaults for now, can be customized)
+    colorSuccess: '#52c41a',
+    colorWarning: '#faad14',
+    colorError: '#ff4d4f',
+    colorInfo: '#1677ff', // Default AntD blue, often good for informational elements
+
+    // Neutral Colors (examples, AntD defaults are usually good)
+    colorTextBase: '#333333', // Base text color
+    colorBgLayout: '#f0f2f5', // Layout background color
+    colorBorder: '#d9d9d9', // Default border color
+
+    // Font
+    fontFamily: 'Inter, sans-serif', // Example: Ensure Inter is loaded in your CSS/HTML
   },
-  // You can add other theme configurations here, like:
-  // components: {
-  //   Button: {
-  //     colorPrimary: '#00b96b',
-  //     algorithm: true, // Enable algorithm for components to inherit seed token changes
-  //   },
-  // },
-  // algorithm: theme.darkAlgorithm, // or theme.compactAlgorithm
+  components: {
+    Button: {
+      // Example: Ensure buttons fully utilize primary color if needed
+      colorPrimary: '#00b96b',
+      algorithm: true,
+    },
+    Menu: {
+      // Example: Ensure menu items match primary color scheme if desired
+      colorItemTextSelected: '#00b96b',
+      colorItemTextHover: '#00a35c',
+      colorItemBgSelected: 'e6fffb',
+    },
+    // Add other component-specific overrides here if needed
+  },
 };

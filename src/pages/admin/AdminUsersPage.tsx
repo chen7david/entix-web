@@ -126,7 +126,13 @@ const AdminUsersPage: React.FC = () => {
           Add User
         </Button>
       </Space>
-      <Table dataSource={dataSource} columns={columns} rowKey="key" bordered />
+      <Table
+        dataSource={dataSource}
+        columns={columns}
+        rowKey="key"
+        bordered
+        scroll={{ x: 'max-content' }} // Enable horizontal scrolling
+      />
     </div>
   );
 };
