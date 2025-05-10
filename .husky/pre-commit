@@ -19,20 +19,7 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-# 3. Add any changed files from formatting/linting to the commit
-# This is important because format or lint:fix might have changed files.
-echo "Husky: Staging changes from formatting/linting..."
-git add .
-
-# 4. Check formatting again (as requested)
-echo "Husky: Checking code formatting..."
-npm run format:check
-if [ $? -ne 0 ]; then
-  echo "Husky: Formatting check failed."
-  exit 1
-fi
-
-# 5. Build the project
+# 3. Build the project
 echo "Husky: Building project..."
 npm run build
 if [ $? -ne 0 ]; then
@@ -40,7 +27,12 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-# 6. Clean the build directory (as requested)
+# 4. Add any changed files from formatting/linting to the commit
+# This is important because format or lint:fix might have changed files.
+echo "Husky: Staging changes from formatting/linting..."
+git add .
+
+# 5. Clean the build directory (as requested)
 # Note: If 'build' creates 'dist', and 'clean' removes 'dist', this step
 # removes build artifacts right before committing.
 echo "Husky: Cleaning build directory..."

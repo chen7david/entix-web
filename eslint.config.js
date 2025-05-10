@@ -18,66 +18,77 @@ export default tseslint.config(
       'vite.config.ts.timestamp-*',
     ],
   },
-  eslintJs.configs.recommended, // Base ESLint recommended rules
-  ...tseslint.configs.recommended, // TypeScript-specific recommended rules
-  // For more comprehensive type-aware linting (requires project setup in parserOptions):
-  // Replace `...tseslint.configs.recommended` with `...tseslint.configs.recommendedTypeChecked` or `...tseslint.configs.strictTypeChecked`
-  // And add/uncomment below:
-  // {
-  //   files: ["**/*.{ts,tsx,js,jsx}"], // Apply to all relevant files
-  //   languageOptions: {
-  //     parserOptions: {
-  //       project: true, // This will automatically find tsconfig.json
-  //       tsconfigRootDir: import.meta.dirname, // Ensures tsconfig.json is resolved relative to eslint.config.js
-  //     },
-  //   },
-  // },
 
+  // 1. Base JS/TS recommended rules for ALL .js, .ts files
+  // (including eslint.config.js, vite.config.ts)
+  // This block does NOT use parserOptions.project
   {
-    files: ['**/*.{ts,tsx,jsx}'], // Apply React-specific configurations only to these file types
+    files: ['**/*.{js,ts,mjs,mts,cjs,cts}'],
+    // Using spread for extends is not directly supported here, apply them as separate configs if needed
+    // For simplicity, applying recommended and then ts-recommended as separate top-level configs might be better
+    // Or, define this block after the global eslintJs.configs.recommended and tseslint.configs.recommended
+    // and let them apply globally, then this block just sets languageOptions for config files.
+    // Let's try a simpler global application first, then refine if needed.
+  },
+  eslintJs.configs.recommended, // Applied globally
+  ...tseslint.configs.recommended, // Applied globally (non-type-aware part)
+
+  // Specific configuration for config files (vite.config.ts, eslint.config.js)
+  // to ensure they use Node globals and are not processed with src parserOptions.project
+  {
+    files: ['vite.config.ts', 'eslint.config.js'],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+        ...globals.es2020,
+      },
+    },
+    // No parserOptions.project here
+  },
+
+  // 2. Type-aware linting ONLY for 'src' directory
+  {
+    files: ['src/**/*.{ts,tsx}'], // Target only application source files
+    languageOptions: {
+      parserOptions: {
+        project: './tsconfig.app.json',
+        tsconfigRootDir: import.meta.dirname,
+      },
+      globals: {
+        ...globals.browser, // 'src' code is usually browser-bound
+      },
+    },
+    // Add type-aware rules here if needed, or rely on extended type-checked configs
+    // e.g. by spreading ...tseslint.configs.recommendedTypeChecked.rules here
+  },
+
+  // 3. React specific configuration
+  {
+    files: ['src/**/*.{ts,tsx,jsx}'], // Target React files within src
     plugins: {
       react: eslintPluginReact,
       'react-hooks': eslintPluginReactHooks,
       'react-refresh': eslintPluginReactRefresh,
     },
     rules: {
-      // React recommended rules
       ...eslintPluginReact.configs.recommended.rules,
-      // New JSX transform rules (React 17+)
       ...eslintPluginReact.configs['jsx-runtime'].rules,
-      // React Hooks rules
       ...eslintPluginReactHooks.configs.recommended.rules,
-      // Rule for React Fast Refresh
-      'react-refresh/only-export-components': [
-        'warn',
-        { allowConstantExport: true }, // Useful for Vite/React Router where page components might be const exports
-      ],
-      // TypeScript handles prop types, so turn off the React prop-types rule
+      'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
       'react/prop-types': 'off',
-      // React 17+ new JSX transform doesn't require React in scope
       'react/react-in-jsx-scope': 'off',
     },
     settings: {
-      react: {
-        version: 'detect', // Automatically detect the React version
-      },
+      react: { version: 'detect' },
     },
+    // languageOptions for globals here would be inherited if this block also matches files in block 2
+    // Explicitly setting browser globals for React components if not already covered
     languageOptions: {
       globals: {
-        ...globals.browser, // Define browser global variables
+        ...globals.browser,
       },
     },
   },
-  // Prettier configuration must be the last in the array to override other styling rules
-  eslintConfigPrettier,
-  {
-    // Global language options, applicable to all files unless overridden
-    languageOptions: {
-      globals: {
-        ...globals.browser, // Standard browser environment globals
-        ...globals.es2020, // ES2020 globals, aligning with your tsconfig.app.json target
-        ...globals.node, // Node.js globals for config files (like this one, vite.config.ts, etc.) and scripts
-      },
-    },
-  }
+
+  eslintConfigPrettier // Apply Prettier last
 );
