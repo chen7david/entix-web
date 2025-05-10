@@ -12,7 +12,7 @@
     "format:check": "prettier --check . --cache --ignore-path .gitignore",
     "preview": "vite preview",
     "clean": "rimraf dist",
-    "prepare": "husky"
+    "prepare": "husky install"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.6",
@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",
+    "@types/node": "^22.15.17",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
     "@vitejs/plugin-react": "^4.4.1",
