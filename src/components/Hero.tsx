@@ -1,22 +1,22 @@
+import React from 'react';
+
 /**
- * Example Hero component for the Entix landing page.
- * Displays a title and some text, styled with Tailwind CSS.
+ * Hero component for the home page.
+ * @returns {JSX.Element} The rendered Hero component.
  */
-export function Hero() {
+const Hero: React.FC = () => {
   return (
-    <section className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-20 px-4">
-      <div className="container mx-auto text-center">
-        <h1 className="text-5xl font-bold mb-6 md:text-6xl">Welcome to Entix!</h1>
-        <p className="text-xl mb-8 md:text-2xl max-w-2xl mx-auto">
-          Your fun and engaging learning adventure starts here. Explore a world of knowledge!
-        </p>
-        <button
-          type="button"
-          className="bg-yellow-400 hover:bg-yellow-500 text-blue-900 font-bold py-3 px-8 rounded-full text-lg shadow-lg transition-transform duration-150 hover:scale-105"
-        >
-          Get Started
-        </button>
-      </div>
-    </section>
+    <div className="bg-gray-100 p-8 rounded-lg shadow-md text-center">
+      <h1 className="text-4xl font-bold mb-4">Welcome to Our Application!</h1>
+      <p className="text-lg text-gray-700 mb-6">
+        This is a demonstration of a hero component styled with Tailwind CSS and used within a React
+        application.
+      </p>
+      <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        Get Started
+      </button>
+    </div>
   );
-}
+};
+
+export default Hero;
