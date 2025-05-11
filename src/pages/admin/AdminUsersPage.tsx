@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Tag, Space, Button, Input } from 'antd';
+import { Table, Tag, Space, Button, Input, Row, Col } from 'antd';
 import type { TableProps } from 'antd'; // Type-only import
 import { UserAddOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@ant-design/icons';
 import PageHeaderComponent from '../../components/ui/PageHeader'; // Import PageHeaderComponent
@@ -115,23 +115,30 @@ const AdminUsersPage: React.FC = () => {
         description="Manage all registered users in the system. You can add, edit, or delete user accounts."
         marginBottom="24px" // Keep the slightly larger margin for this page structure
       />
-      <Space style={{ marginBottom: 16, width: '100%', justifyContent: 'space-between' }}>
-        <Input
-          placeholder="Search users..."
-          prefix={<SearchOutlined />}
-          style={{ width: 300 }}
-          // onChange={(e) => console.log(e.target.value)} // Add search logic here
-        />
-        <Button type="primary" icon={<UserAddOutlined />}>
-          Add User
-        </Button>
-      </Space>
+
+      <Row gutter={[16, 16]} className="mb-4">
+        <Col xs={24} sm={16} md={12} lg={8}>
+          <Input
+            placeholder="Search users..."
+            prefix={<SearchOutlined />}
+            style={{ width: '100%' }}
+            // onChange={(e) => console.log(e.target.value)} // Add search logic here
+          />
+        </Col>
+        <Col xs={24} sm={8} md={12} lg={16} className="text-right">
+          <Button type="primary" icon={<UserAddOutlined />}>
+            Add User
+          </Button>
+        </Col>
+      </Row>
+
       <Table
         dataSource={dataSource}
         columns={columns}
         rowKey="key"
         bordered
         scroll={{ x: 'max-content' }} // Enable horizontal scrolling
+        pagination={{ responsive: true, position: ['bottomCenter'] }}
       />
     </div>
   );

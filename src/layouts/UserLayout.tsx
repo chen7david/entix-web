@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, Outlet } from 'react-router-dom';
 import { Layout, Menu, Button, Drawer, Typography } from 'antd';
-import { MenuOutlined, HomeOutlined, LoginOutlined } from '@ant-design/icons';
+import { MenuOutlined, HomeOutlined, LoginOutlined, UserAddOutlined } from '@ant-design/icons';
 import { useAtom, useAtomValue } from 'jotai';
 import { mobileSidebarVisibleAtom, isMobileAtom } from '../store/sidebarAtoms';
 import AppFooter from '../components/layout/AppFooter';
@@ -27,7 +27,12 @@ const UserLayout: React.FC = () => {
 
   const menuItems = [
     { key: '/', icon: <HomeOutlined />, label: <Link to="/">Home</Link> },
-    { key: '/login', icon: <LoginOutlined />, label: <Link to="/login">Login</Link> },
+    { key: '/auth/signin', icon: <LoginOutlined />, label: <Link to="/auth/signin">Sign In</Link> },
+    {
+      key: '/auth/signup',
+      icon: <UserAddOutlined />,
+      label: <Link to="/auth/signup">Sign Up</Link>,
+    },
     // Add other user-specific menu items here
   ];
 
@@ -39,7 +44,7 @@ const UserLayout: React.FC = () => {
           alignItems: 'center',
           padding: '0 24px',
           backgroundColor: '#fff',
-          borderBottom: '1px solid #f0f0f0',
+          boxShadow: '0 1px 4px rgba(0,0,0,0.1)',
         }}
       >
         {isMobile ? (
@@ -51,15 +56,15 @@ const UserLayout: React.FC = () => {
           />
         ) : null}
         <Link to="/">
-          <Title level={3} style={{ margin: 0, color: '#1890ff' }}>
-            My App
+          <Title level={3} style={{ margin: 0, color: '#00b96b' }}>
+            Entix
           </Title>
         </Link>
         {!isMobile && (
           <Menu
             theme="light"
             mode="horizontal"
-            defaultSelectedKeys={[window.location.hash.substring(1) || '/']}
+            defaultSelectedKeys={[window.location.pathname]}
             items={menuItems}
             style={{
               lineHeight: '62px',
@@ -71,7 +76,13 @@ const UserLayout: React.FC = () => {
           />
         )}
       </Header>
-      <Content style={{ padding: isMobile ? '16px' : '24px 48px', marginTop: 16 }}>
+      <Content
+        style={{
+          padding: isMobile ? '16px' : '24px 48px',
+          marginTop: 16,
+          backgroundColor: '#f5f5f5',
+        }}
+      >
         <PageContentWrapper>
           <Outlet />
         </PageContentWrapper>
@@ -81,16 +92,16 @@ const UserLayout: React.FC = () => {
         placement="left"
         onClose={toggleDrawer}
         open={drawerVisible && isMobile}
-        bodyStyle={{ padding: 0 }}
+        styles={{ body: { padding: 0 } }}
       >
         <Menu
           mode="inline"
-          defaultSelectedKeys={[window.location.hash.substring(1) || '/']}
+          defaultSelectedKeys={[window.location.pathname]}
           items={menuItems}
           onClick={toggleDrawer}
         />
       </Drawer>
-      <AppFooter layoutType="User Layout" />
+      <AppFooter layoutType="Entix Platform" />
     </Layout>
   );
 };

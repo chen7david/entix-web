@@ -36,9 +36,9 @@ export const antdTheme: ThemeConfig = {
     },
     Menu: {
       // Example: Ensure menu items match primary color scheme if desired
-      colorItemTextSelected: '#00b96b',
-      colorItemTextHover: '#00a35c',
-      colorItemBgSelected: 'e6fffb',
+      itemSelectedColor: '#00b96b',
+      itemHoverColor: '#00a35c',
+      itemSelectedBg: 'e6fffb',
     },
     // Add other component-specific overrides here if needed
   },

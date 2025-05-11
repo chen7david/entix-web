@@ -86,6 +86,24 @@ const AdminLayout: React.FC = () => {
   const currentPath = location.pathname;
   const breadcrumbItems = generateBreadcrumbs(currentPath.replace('/admin', ''));
 
+  // Common app title component
+  const appTitle = (
+    <div
+      style={{
+        height: 32,
+        margin: 16,
+        background: 'rgba(255, 255, 255, 0.2)',
+        borderRadius: 6,
+        textAlign: 'center',
+        lineHeight: '32px',
+        color: 'white',
+      }}
+    >
+      {collapsed && !isMobile ? 'ENTIX' : 'Entix Admin'}
+    </div>
+  );
+
+  // Common menu component
   const siderContent = (
     <Menu
       theme="dark"
@@ -94,6 +112,7 @@ const AdminLayout: React.FC = () => {
       selectedKeys={[currentPath]}
       items={adminMenuItems}
       onClick={isMobile ? toggleDrawer : undefined}
+      style={{ height: '100%' }}
     />
   );
 
@@ -101,14 +120,23 @@ const AdminLayout: React.FC = () => {
     <Layout style={{ minHeight: '100vh' }}>
       {isMobile ? (
         <Drawer
-          title="Admin Menu"
+          title={null} // Remove default title
           placement="left"
           onClose={toggleDrawer}
           open={drawerVisible}
-          bodyStyle={{ padding: 0 }}
+          styles={{
+            body: { padding: 0, background: '#001529', height: '100%' },
+            header: { display: 'none' }, // Hide header completely
+            wrapper: { width: '250px' },
+            content: { display: 'flex', flexDirection: 'column', height: '100%' },
+          }}
           width={250}
+          closable={false} // Remove default close button
         >
-          {siderContent}
+          <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+            {appTitle}
+            {siderContent}
+          </div>
         </Drawer>
       ) : (
         <Sider
@@ -120,19 +148,7 @@ const AdminLayout: React.FC = () => {
           theme="dark"
           style={{ position: 'fixed', left: 0, top: 0, bottom: 0, zIndex: 1000, overflow: 'auto' }}
         >
-          <div
-            style={{
-              height: 32,
-              margin: 16,
-              background: 'rgba(255, 255, 255, 0.2)',
-              borderRadius: 6,
-              textAlign: 'center',
-              lineHeight: '32px',
-              color: 'white',
-            }}
-          >
-            {collapsed ? 'APP' : 'My Admin App'}
-          </div>
+          {appTitle}
           {siderContent}
         </Sider>
       )}
