@@ -68,7 +68,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, adminOnly = f
   // Check admin access if required
   if (adminOnly && !isAdmin) {
     message.error('You do not have permission to access this page');
-    return <Navigate to="/dashboard" replace />;
+    return <Navigate to="/unauthorized" replace />;
   }
 
   // Authenticated (and admin if required) - render children

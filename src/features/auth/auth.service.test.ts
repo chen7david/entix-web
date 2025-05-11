@@ -17,6 +17,7 @@ import type {
   ResendConfirmationCodeRequest,
   ChangePasswordRequest,
 } from './auth.schemas';
+import * as authStore from '@/features/auth/auth.store';
 
 vi.mock('@/services/apiService', () => ({
   apiService: {
@@ -158,6 +159,72 @@ describe('AuthService', () => {
       expect(apiService.post).toHaveBeenCalledWith('/api/v1/auth/change-password', requestData);
       expect(result).toEqual(mockResponse);
       expect(() => changePasswordResponseSchema.parse(mockResponse)).not.toThrow();
+    });
+  });
+
+  describe('signOut', () => {
+    it('should call clearAuthTokens', () => {
+      AuthService.signOut();
+
+      expect(authStore.clearAuthTokens).toHaveBeenCalled();
+    });
+  });
+
+  describe('refreshToken', () => {
+    it('should refresh tokens successfully', async () => {
+      const mockResponse = {
+        accessToken: 'newAccessToken',
+        refreshToken: 'newRefreshToken',
+      };
+      (apiService.post as ReturnType<typeof vi.fn>).mockResolvedValue({ data: mockResponse });
+
+      const result = await AuthService.refreshToken();
+
+      expect(apiService.post).toHaveBeenCalledWith('/api/v1/auth/refresh-token');
+      expect(authStore.setAuthTokens).toHaveBeenCalledWith({
+        accessToken: 'newAccessToken',
+        refreshToken: 'newRefreshToken',
+      });
+      expect(result).toBe(true);
+    });
+
+    it('should handle refresh token without new refresh token', async () => {
+      const mockResponse = {
+        accessToken: 'newAccessToken',
+        // No refresh token in response
+      };
+      (apiService.post as ReturnType<typeof vi.fn>).mockResolvedValue({ data: mockResponse });
+
+      const result = await AuthService.refreshToken();
+
+      expect(apiService.post).toHaveBeenCalledWith('/api/v1/auth/refresh-token');
+      expect(authStore.setAuthTokens).toHaveBeenCalledWith({
+        accessToken: 'newAccessToken',
+        refreshToken: null,
+      });
+      expect(result).toBe(true);
+    });
+
+    it('should handle failed token refresh (no access token)', async () => {
+      const mockResponse = {}; // Empty response with no tokens
+      (apiService.post as ReturnType<typeof vi.fn>).mockResolvedValue({ data: mockResponse });
+
+      const result = await AuthService.refreshToken();
+
+      expect(apiService.post).toHaveBeenCalledWith('/api/v1/auth/refresh-token');
+      expect(authStore.clearAuthTokens).toHaveBeenCalled();
+      expect(result).toBe(false);
+    });
+
+    it('should handle API errors during token refresh', async () => {
+      const error = new Error('Network Error');
+      (apiService.post as ReturnType<typeof vi.fn>).mockRejectedValue(error);
+
+      const result = await AuthService.refreshToken();
+
+      expect(apiService.post).toHaveBeenCalledWith('/api/v1/auth/refresh-token');
+      expect(authStore.clearAuthTokens).toHaveBeenCalled();
+      expect(result).toBe(false);
     });
   });
 });

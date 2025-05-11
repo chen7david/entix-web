@@ -7,7 +7,12 @@ import AdminDashboardPage from '../pages/admin/AdminDashboardPage';
 import AdminUsersPage from '../pages/admin/AdminUsersPage';
 import AdminSettingsPage from '../pages/admin/AdminSettingsPage';
 import UserDashboardPage from '../pages/UserDashboardPage';
+import NotFoundPage from '../pages/error/NotFoundPage';
+import UnauthorizedPage from '../pages/error/UnauthorizedPage';
+import ProfilePage from '../pages/user/ProfilePage';
+import SettingsPage from '../pages/user/SettingsPage';
 import ProtectedRoute from '../components/auth/ProtectedRoute';
+import { getAuthTokens } from '@/features/auth/auth.store';
 
 // Auth pages
 import SignupPage from '../pages/auth/SignupPage';
@@ -25,6 +30,22 @@ const AuthLayout = React.lazy(
 );
 
 /**
+ * RouteGuard component prevents authenticated users from accessing auth pages
+ * by redirecting them to the dashboard if they're already logged in
+ */
+const AuthRouteGuard: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { accessToken } = getAuthTokens();
+
+  if (accessToken) {
+    // User is authenticated, redirect to dashboard
+    return <Navigate to="/dashboard" replace />;
+  }
+
+  // User is not authenticated, allow access to auth pages
+  return <>{children}</>;
+};
+
+/**
  * Application routes with layouts.
  * @returns {JSX.Element} The router component with defined routes and layouts.
  */
@@ -38,8 +59,15 @@ const AppRouter: React.FC = () => {
         {/* More public routes as needed */}
       </Route>
 
-      {/* Auth routes */}
-      <Route path="/auth" element={<AuthLayout />}>
+      {/* Auth routes - Accessible only when not authenticated */}
+      <Route
+        path="/auth"
+        element={
+          <AuthRouteGuard>
+            <AuthLayout />
+          </AuthRouteGuard>
+        }
+      >
         <Route path="signup" element={<SignupPage />} />
         <Route path="confirm-signup" element={<ConfirmSignupPage />} />
         <Route path="signin" element={<SigninPage />} />
@@ -57,6 +85,8 @@ const AppRouter: React.FC = () => {
         }
       >
         <Route path="dashboard" element={<UserDashboardPage />} />
+        <Route path="profile" element={<ProfilePage />} />
+        <Route path="settings" element={<SettingsPage />} />
         {/* Add more protected user routes as needed */}
       </Route>
 
@@ -75,8 +105,11 @@ const AppRouter: React.FC = () => {
         {/* More admin routes as needed */}
       </Route>
 
+      {/* Error pages */}
+      <Route path="/unauthorized" element={<UnauthorizedPage />} />
+
       {/* Fallback route */}
-      <Route path="*" element={<Navigate to="/" replace />} />
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
 };

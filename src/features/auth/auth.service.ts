@@ -13,6 +13,7 @@ import type {
   ChangePasswordRequest,
   ChangePasswordResponse,
 } from './auth.schemas';
+import { clearAuthTokens, setAuthTokens } from './auth.store';
 
 /**
  * Authentication service to handle user authentication operations
@@ -124,6 +125,45 @@ export const AuthService = {
     } catch (error) {
       console.error('Password change failed:', error);
       throw error;
+    }
+  },
+
+  /**
+   * Sign out the current user
+   * Clears tokens from storage and state
+   */
+  signOut(): void {
+    // Clear tokens from storage
+    clearAuthTokens();
+  },
+
+  /**
+   * Refresh the access token using the refresh token
+   * @returns Promise that resolves when token refresh is complete
+   */
+  async refreshToken(): Promise<boolean> {
+    try {
+      const response = await apiService.post('/api/v1/auth/refresh-token');
+      const { accessToken, refreshToken } = response.data;
+
+      if (!accessToken) {
+        // If no access token in response, refresh failed
+        clearAuthTokens();
+        return false;
+      }
+
+      // Save the new tokens
+      setAuthTokens({
+        accessToken,
+        refreshToken: refreshToken || null,
+      });
+
+      return true;
+    } catch (error) {
+      console.error('Token refresh failed:', error);
+      // Clear tokens on refresh failure
+      clearAuthTokens();
+      return false;
     }
   },
 };

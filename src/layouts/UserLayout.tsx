@@ -45,6 +45,10 @@ const UserLayout: React.FC = () => {
           padding: '0 24px',
           backgroundColor: '#fff',
           boxShadow: '0 1px 4px rgba(0,0,0,0.1)',
+          position: 'sticky',
+          top: 0,
+          zIndex: 1000,
+          width: '100%',
         }}
       >
         {isMobile ? (
