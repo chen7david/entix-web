@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { Spin } from 'antd';
-import { getAuthTokens } from '@/features/auth/auth.store';
-import { apiService } from '@/services/apiService';
 import { useMessage } from '@/utils/message';
+import useAuthCheck from '@/hooks/useAuthCheck';
+import { AUTH_EVENTS } from '@/services/apiService';
 
 type ProtectedRouteProps = {
   children: React.ReactNode;
@@ -19,40 +19,36 @@ type ProtectedRouteProps = {
  * @returns {JSX.Element} The protected route component
  */
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, adminOnly = false }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
-  const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const location = useLocation();
+  const navigate = useNavigate();
   const message = useMessage();
 
+  // Use our custom hook to check authentication
+  const { isAuthenticated, isAdmin, isLoading, isError } = useAuthCheck();
+
+  // Listen for auth events from apiService
   useEffect(() => {
-    const checkAuthStatus = async () => {
-      const tokens = getAuthTokens();
-
-      // Quick check if tokens exist
-      if (!tokens.accessToken) {
-        setIsAuthenticated(false);
-        return;
-      }
-
-      try {
-        // Verify token validity by checking user data
-        const response = await apiService.get('/api/v1/users/me');
-        setIsAuthenticated(true);
-
-        // Check if user has admin role (adjust based on your API response)
-        setIsAdmin(response.data.role === 'admin' || response.data.isAdmin === true);
-      } catch (error) {
-        console.error('Authentication check failed:', error);
-        message.error('Your session has expired. Please sign in again.');
-        setIsAuthenticated(false);
-      }
+    const handleSessionExpired = () => {
+      navigate('/auth/signin', { state: { from: location }, replace: true });
     };
 
-    checkAuthStatus();
-  }, [message]);
+    const handleTokenRefreshFailed = () => {
+      // This will be handled by the apiService directly with redirect
+    };
+
+    // Add event listeners
+    window.addEventListener(AUTH_EVENTS.SESSION_EXPIRED, handleSessionExpired);
+    window.addEventListener(AUTH_EVENTS.TOKEN_REFRESH_FAILED, handleTokenRefreshFailed);
+
+    // Clean up
+    return () => {
+      window.removeEventListener(AUTH_EVENTS.SESSION_EXPIRED, handleSessionExpired);
+      window.removeEventListener(AUTH_EVENTS.TOKEN_REFRESH_FAILED, handleTokenRefreshFailed);
+    };
+  }, [location, navigate]);
 
   // Show loading while checking authentication status
-  if (isAuthenticated === null) {
+  if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
         <Spin size="large" tip="Checking authentication..." />
@@ -60,8 +56,8 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, adminOnly = f
     );
   }
 
-  // Not authenticated - redirect to login
-  if (!isAuthenticated) {
+  // Not authenticated or error - redirect to login
+  if (!isAuthenticated || isError) {
     return <Navigate to="/auth/signin" state={{ from: location }} replace />;
   }
 

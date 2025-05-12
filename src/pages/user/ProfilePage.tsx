@@ -22,7 +22,7 @@ const ProfilePage: React.FC = () => {
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const response = await apiService.get('/api/v1/users/me');
+        const response = await apiService.get('/api/v1/auth/me');
         setUser(response.data);
 
         // Set form values
@@ -47,7 +47,7 @@ const ProfilePage: React.FC = () => {
   const handleSubmit = async (values: Record<string, string>) => {
     setSubmitting(true);
     try {
-      await apiService.put('/api/v1/users/me', values);
+      await apiService.put('/api/v1/auth/me', values);
       messageApi.success('Profile updated successfully');
     } catch (error) {
       console.error('Failed to update profile:', error);
