@@ -1,12 +1,15 @@
-import { Button, message } from "antd";
+import { HashRouter, Routes, Route } from "react-router-dom";
+import { HomePage } from "./pages/home/HomePage";
+import { SignInPage } from "./pages/signin/SignInPage";
+
 function App() {
   return (
-    <div>
-      <h1 className="text-3xl font-bold underline">Hello World</h1>
-      <Button type="primary" onClick={() => message.success("Hello World")}>
-        Click me
-      </Button>
-    </div>
+    <HashRouter>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/signin" element={<SignInPage />} />
+      </Routes>
+    </HashRouter>
   );
 }
 
