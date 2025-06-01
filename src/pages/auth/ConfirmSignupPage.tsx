@@ -33,7 +33,7 @@ const ConfirmSignupPage: React.FC = () => {
   // Create a validation rule using the Zod schema
   const rule = createSchemaFieldRule(confirmSignupRequestSchema);
 
-  const handleConfirmSignup = async (values: { username: string; code: string }) => {
+  const handleConfirmSignup = async (values: { username: string; confirmationCode: string }) => {
     setConfirmLoading(true);
 
     try {
@@ -107,7 +107,7 @@ const ConfirmSignupPage: React.FC = () => {
           </Form.Item>
 
           <Form.Item
-            name="code"
+            name="confirmationCode"
             label="Confirmation Code"
             rules={[rule]}
             extra="Check your email for the 6-digit confirmation code"

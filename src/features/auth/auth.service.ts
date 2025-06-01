@@ -41,6 +41,7 @@ export const AuthService = {
    */
   async confirmSignup(data: ConfirmSignupRequest): Promise<ConfirmSignupResponse> {
     try {
+      console.log('Confirming signup with data:', data);
       const response = await apiService.post<ConfirmSignupResponse>(
         '/api/v1/auth/confirm-signup',
         data

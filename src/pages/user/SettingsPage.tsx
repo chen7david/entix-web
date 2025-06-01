@@ -67,7 +67,6 @@ const SettingsPage: React.FC = () => {
       setLoadingPassword(true);
 
       await apiService.post('/api/v1/auth/change-password', {
-        accessToken: null, // Will be handled by apiService interceptor
         previousPassword: values.currentPassword,
         proposedPassword: values.newPassword,
       });

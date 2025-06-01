@@ -6,6 +6,7 @@ import { apiService } from '@/services/apiService';
 import { z } from 'zod';
 import { setAuthTokens } from '@/features/auth/auth.store';
 import { useMessage } from '@/utils/message';
+import axios from 'axios';
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -39,9 +40,29 @@ const SigninPage: React.FC = () => {
     setLoading(true);
 
     try {
-      // Call sign-in endpoint directly instead of through AuthService
-      // as the AuthService doesn't handle token storage
-      const response = await apiService.post('/api/v1/auth/signin', values);
+      // Debug: Log the exact values being sent to API
+      console.log('Signin payload:', {
+        username: values.username,
+        password: values.password.replace(/./g, '*'), // Mask password in logs
+      });
+
+      // Create a fresh payload - ensuring it's properly stringified
+      const payload = {
+        username: values.username.trim(), // Trim any whitespace
+        password: values.password,
+      };
+
+      // Use a direct axios call to avoid any interceptor issues
+      // that might be happening with the stream handling
+      const API_BASE_URL = import.meta.env.VITE_API_URL || '/api/v1';
+      const response = await axios({
+        method: 'post',
+        url: `${API_BASE_URL}/api/v1/auth/signin`,
+        data: payload,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
 
       // Get tokens from response
       const { accessToken, refreshToken } = response.data;
@@ -62,6 +83,9 @@ const SigninPage: React.FC = () => {
       // Navigate to the dashboard or the protected route the user tried to access
       navigate(from === '/' ? '/dashboard' : from, { replace: true });
     } catch (error: unknown) {
+      // Debug: Log the full error details
+      console.error('Signin error details:', error);
+
       // Handle errors from the API
       const errorMessage =
         (error as { response?: { data?: { message?: string } } })?.response?.data?.message ||

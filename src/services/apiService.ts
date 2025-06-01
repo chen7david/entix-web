@@ -67,6 +67,14 @@ export const apiService = axios.create({
 // Request Interceptor: Injects a token into the Authorization header
 apiService.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
+    // Debug auth requests - particularly signin
+    if (config.url?.includes('/auth/signin')) {
+      console.log('Auth Request Headers:', JSON.stringify(config.headers));
+      console.log('Auth Request URL:', config.url);
+      console.log('Auth Request Method:', config.method);
+      console.log('Auth Request Data:', JSON.stringify(config.data));
+    }
+
     // Obtain the fresh token each time the function is called
     const tokens = getAuthTokens();
     if (tokens?.accessToken && !config.headers.Authorization) {
@@ -156,6 +164,16 @@ createAuthRefreshInterceptor(apiService, refreshAuthLogic, {
 apiService.interceptors.response.use(
   (response: AxiosResponse) => response,
   (error: AxiosError<ApiErrorResponse>) => {
+    // Debug auth errors - particularly signin
+    if (error.config?.url?.includes('/auth/signin')) {
+      console.error('Auth Error Response:', {
+        status: error.response?.status,
+        statusText: error.response?.statusText,
+        data: error.response?.data,
+        headers: error.response?.headers,
+      });
+    }
+
     // Add the API's error message to the error object for easier access
     const apiErrorMessage = error.response?.data?.message || null;
     if (apiErrorMessage) {

@@ -17,7 +17,7 @@ export type SignupResponse = z.infer<typeof signupResponseSchema>;
 // Endpoint: POST /api/v1/auth/confirm-signup
 export const confirmSignupRequestSchema = z.object({
   username: z.string().min(1, 'Username is required'),
-  code: z.string().min(1, 'Confirmation code is required'),
+  confirmationCode: z.string().min(1, 'Confirmation code is required'),
 });
 export type ConfirmSignupRequest = z.infer<typeof confirmSignupRequestSchema>;
 

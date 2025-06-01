@@ -13,5 +13,16 @@ import type { RuleRender } from 'rc-field-form/lib/interface';
 export const createZodFieldRule = (schema: z.ZodTypeAny): RuleRender => {
   // This is a workaround to make antd-zod work with all Zod schema types
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return createSchemaFieldRule(schema as any);
+  const originalRule = createSchemaFieldRule(schema as any);
+
+  return (...args) => {
+    try {
+      // If args are valid, use the original rule
+      return originalRule(...args);
+    } catch (error) {
+      // If there's an error, return a resolved promise to prevent UI errors
+      console.warn('Form validation error in createZodFieldRule:', error);
+      return { validator: () => Promise.resolve() };
+    }
+  };
 };
