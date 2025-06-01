@@ -8,7 +8,7 @@ export const SignInPage = () => {
       <Button type="primary" onClick={() => message.success("Hello World")}>
         Click me
       </Button>
-      <Link to="/">Home</Link>
+      <Link to="/auth/home">Home</Link>
     </div>
   );
 };
