@@ -16,7 +16,7 @@ export const ForgotPasswordPage = () => {
       await authService.forgotPassword(params);
     },
     onSuccess: (_, variables) => {
-      // Use the submitted username as a URL param
+      message.success("Password reset link sent to your email");
       const username = encodeURIComponent(variables.username);
       navigate(`/auth/password-confirm?username=${username}`);
     },
