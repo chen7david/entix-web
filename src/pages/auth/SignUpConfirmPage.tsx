@@ -23,7 +23,7 @@ export const SignupConfirmPage = () => {
     mutationFn: (params: ConfirmSignUpDto) => authService.confirmSignUp(params),
     onSuccess: () => {
       message.success("Account confirmed successfully");
-      navigate("/auth/home");
+      navigate("/auth/signin");
     },
   });
 
