@@ -3,6 +3,7 @@ import { authService } from "../../services/api";
 import { Link, useNavigate } from "react-router-dom";
 import { ForgotPasswordDto } from "../../services/api/auth.dto";
 import { createSchemaFieldRule } from "antd-zod";
+import { useMutation } from "@tanstack/react-query";
 
 const { Title, Text } = Typography;
 
@@ -10,11 +11,15 @@ export const ForgotPasswordPage = () => {
   const rules = createSchemaFieldRule(ForgotPasswordDto);
   const navigate = useNavigate();
 
-  const handleForgotPassword = async (params: ForgotPasswordDto) => {
-    await authService.forgotPassword(params);
-    message.success("Password reset link sent to your email");
-    navigate("/auth/password-confirm");
-  };
+  const { mutate: sendResetLink, isPending } = useMutation({
+    mutationFn: async (params: ForgotPasswordDto) => {
+      await authService.forgotPassword(params);
+    },
+    onSuccess: () => {
+      message.success("Password reset link sent to your email");
+      navigate("/auth/password-confirm");
+    },
+  });
 
   return (
     <>
@@ -27,7 +32,7 @@ export const ForgotPasswordPage = () => {
 
       <Form
         layout="vertical"
-        onFinish={handleForgotPassword}
+        onFinish={sendResetLink}
         size="middle"
         autoComplete="off"
       >
@@ -36,7 +41,13 @@ export const ForgotPasswordPage = () => {
         </Form.Item>
 
         <Form.Item>
-          <Button type="primary" htmlType="submit" className="w-full">
+          <Button
+            type="primary"
+            htmlType="submit"
+            className="w-full"
+            loading={isPending}
+            disabled={isPending}
+          >
             Send Reset Link
           </Button>
         </Form.Item>

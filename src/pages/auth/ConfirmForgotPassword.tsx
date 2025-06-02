@@ -4,6 +4,7 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { ConfirmForgotPasswordDto } from "../../services/api/auth.dto";
 import { createSchemaFieldRule } from "antd-zod";
 import { useEffect, useState } from "react";
+import { useMutation } from "@tanstack/react-query";
 
 const { Title, Text } = Typography;
 
@@ -31,13 +32,15 @@ export const ConfirmForgotPassword = () => {
     }
   }, [searchParams, form]);
 
-  const handleConfirmForgotPassword = async (
-    params: ConfirmForgotPasswordDto
-  ) => {
-    await authService.confirmForgotPassword(params);
-    message.success("Password reset successful");
-    navigate("/auth/signin");
-  };
+  const { mutate: confirmReset, isPending } = useMutation({
+    mutationFn: async (params: ConfirmForgotPasswordDto) => {
+      await authService.confirmForgotPassword(params);
+    },
+    onSuccess: () => {
+      message.success("Password reset successful");
+      navigate("/auth/signin");
+    },
+  });
 
   return (
     <>
@@ -51,7 +54,7 @@ export const ConfirmForgotPassword = () => {
       <Form
         form={form}
         layout="vertical"
-        onFinish={handleConfirmForgotPassword}
+        onFinish={confirmReset}
         size="middle"
         autoComplete="off"
       >
@@ -84,7 +87,13 @@ export const ConfirmForgotPassword = () => {
         </Form.Item>
 
         <Form.Item>
-          <Button type="primary" htmlType="submit" className="w-full">
+          <Button
+            type="primary"
+            htmlType="submit"
+            className="w-full"
+            loading={isPending}
+            disabled={isPending}
+          >
             Reset Password
           </Button>
         </Form.Item>
