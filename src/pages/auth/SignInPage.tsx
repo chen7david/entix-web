@@ -3,6 +3,7 @@ import { authService } from "../../services/api";
 import { Link, useNavigate } from "react-router-dom";
 import { SignInDto } from "../../services/api/auth.dto";
 import { createSchemaFieldRule } from "antd-zod";
+import { useMutation } from "@tanstack/react-query";
 
 const { Title, Text } = Typography;
 
@@ -10,12 +11,16 @@ export const SignInPage = () => {
   const rules = createSchemaFieldRule(SignInDto);
   const navigate = useNavigate();
 
-  const handleSignIn = async (params: SignInDto) => {
-    const response = await authService.signIn(params);
-    authService.saveAuthContext(response);
-    message.success("Sign in successful");
-    navigate("/auth/home");
-  };
+  const { mutate: signIn, isPending } = useMutation({
+    mutationFn: async (params: SignInDto) => {
+      const response = await authService.signIn(params);
+      authService.saveAuthContext(response);
+    },
+    onSuccess: () => {
+      message.success("Sign in successful");
+      navigate("/auth/home");
+    },
+  });
 
   return (
     <>
@@ -28,7 +33,7 @@ export const SignInPage = () => {
 
       <Form
         layout="vertical"
-        onFinish={handleSignIn}
+        onFinish={signIn}
         size="middle"
         autoComplete="off"
       >
@@ -41,7 +46,13 @@ export const SignInPage = () => {
         </Form.Item>
 
         <Form.Item>
-          <Button type="primary" htmlType="submit" className="w-full">
+          <Button
+            type="primary"
+            htmlType="submit"
+            className="w-full"
+            loading={isPending}
+            disabled={isPending}
+          >
             Sign In
           </Button>
         </Form.Item>
