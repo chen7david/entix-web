@@ -1,21 +1,35 @@
 import { Button, Form, Input, Typography, message } from "antd";
 import { authService } from "../../services/api";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { SignUpDto } from "../../services/api/auth.dto";
 import { createSchemaFieldRule } from "antd-zod";
+import { useEffect, useState } from "react";
 
 const { Title, Text } = Typography;
 
 export const SignUpPage = () => {
   const rules = createSchemaFieldRule(SignUpDto);
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  const [form] = Form.useForm();
+  const [isCodeDisabled, setIsCodeDisabled] = useState(false);
+
+  useEffect(() => {
+    const code = searchParams.get("code");
+
+    if (code) {
+      form.setFieldsValue({ code });
+      setIsCodeDisabled(true);
+    }
+  }, [searchParams, form]);
 
   const handleSignUp = async (params: SignUpDto) => {
     await authService.signUp(params);
 
     message.success(
       `Sign up successful. A confirmation code has been sent to ${params.email}`
-    ); // Replace with actual if needed
+    );
 
     navigate(
       `/auth/signup-confirm?username=${encodeURIComponent(params.username)}`
@@ -30,6 +44,7 @@ export const SignUpPage = () => {
       </div>
 
       <Form
+        form={form}
         layout="vertical"
         onFinish={handleSignUp}
         size="middle"
@@ -48,7 +63,11 @@ export const SignUpPage = () => {
         </Form.Item>
 
         <Form.Item label="Code" name="code" rules={[rules]}>
-          <Input allowClear placeholder="8-character code" />
+          <Input
+            allowClear
+            placeholder="8-character code"
+            disabled={isCodeDisabled}
+          />
         </Form.Item>
 
         <Form.Item>
