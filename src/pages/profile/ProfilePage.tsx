@@ -2,11 +2,13 @@ import { Typography, Spin, Button } from "antd";
 import { useQuery } from "@tanstack/react-query";
 import { authService } from "../../services/api";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../hooks/auth.hooks";
 
 const { Title, Text } = Typography;
 
 export const ProfilePage = () => {
   const navigate = useNavigate();
+  const { signOut, isAuthenticated } = useAuth();
 
   const { data, isLoading } = useQuery({
     queryKey: ["me"],
@@ -14,7 +16,7 @@ export const ProfilePage = () => {
   });
 
   const handleLogout = () => {
-    authService.clearAuthContext();
+    signOut();
     navigate("/auth/signin");
   };
 
@@ -34,9 +36,11 @@ export const ProfilePage = () => {
         {data?.username}
       </Title>
 
-      <Button type="primary" danger className="mt-6" onClick={handleLogout}>
-        Logout
-      </Button>
+      {isAuthenticated && (
+        <Button type="primary" danger className="mt-6" onClick={handleLogout}>
+          Logout
+        </Button>
+      )}
     </div>
   );
 };

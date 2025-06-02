@@ -9,6 +9,7 @@ import { ConfirmForgotPassword } from "./pages/auth/ConfirmForgotPassword";
 import { ProfilePage } from "./pages/profile/ProfilePage";
 import { ResendConfirmationCode } from "./pages/auth/ResendConfirmationCode";
 import { NotFoundPage } from "./pages/error/NotFound";
+import { ProtectedRoute } from "./components/guards/ProtectedRoutes";
 
 function App() {
   return (
@@ -27,7 +28,10 @@ function App() {
             element={<ResendConfirmationCode />}
           />
         </Route>
-        <Route path="/profile" element={<ProfilePage />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/profile" element={<ProfilePage />} />
+          {/* Add more protected routes here */}
+        </Route>
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </HashRouter>
