@@ -1,4 +1,5 @@
 import axios, { type AxiosInstance } from "axios";
+import createAuthRefreshInterceptor from "axios-auth-refresh";
 import { message } from "antd";
 import { authService } from "./index";
 
@@ -12,6 +13,7 @@ export class HttpService {
     });
 
     this.registerRequestInterceptor();
+    this.registerRefreshTokenInterceptor();
     this.registerResponseInterceptor();
   }
 
@@ -29,9 +31,8 @@ export class HttpService {
     return response;
   }
 
-  registerRequestInterceptor(): void {
+  private registerRequestInterceptor(): void {
     this.http.interceptors.request.use((config) => {
-      // Get token from auth service instead of localStorage directly
       const token = authService.getAccessToken();
 
       if (token) {
@@ -41,20 +42,44 @@ export class HttpService {
     });
   }
 
-  registerResponseInterceptor(): void {
+  private registerRefreshTokenInterceptor(): void {
+    console.log("called registerRefreshTokenInterceptor");
+    createAuthRefreshInterceptor(this.http, async (failedRequest) => {
+      try {
+        const refreshToken = authService.getRefreshToken();
+
+        if (!refreshToken) {
+          throw new Error("No refresh token found");
+        }
+
+        const response = await authService.refreshToken({ refreshToken }); // Assume this returns { accessToken }
+        const newToken = response.accessToken;
+
+        authService.saveAuthContext(response);
+
+        failedRequest.response.config.headers[
+          "Authorization"
+        ] = `Bearer ${newToken}`;
+        return Promise.resolve();
+      } catch (error) {
+        message.error("Session expired. Please login again.");
+        authService.clearAuthContext?.(); // Optional: clear session/token
+        window.location.href = "#/auth/signin"; // Redirect to login
+        return Promise.reject(error);
+      }
+    });
+  }
+
+  private registerResponseInterceptor(): void {
     this.http.interceptors.response.use(
       (response) => response,
       (error) => {
-        // Extract message from response or use fallback
         const errorMsg =
           error.response?.data?.message ||
           error.message ||
           "Something went wrong";
 
-        // Display error using Ant Design message
         message.error(errorMsg);
-
-        // Re-throw error so that calling code can still handle it if needed
         return Promise.reject(error);
       }
     );

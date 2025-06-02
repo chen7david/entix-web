@@ -68,7 +68,7 @@ export class AuthService {
     return response.data;
   }
 
-  async refreshToken(params: RefreshTokenDto) {
+  async refreshToken(params: RefreshTokenDto): Promise<SignInResponseDto> {
     const response = await this.http.post("api/v1/auth/refresh-token", params);
     return response.data;
   }
