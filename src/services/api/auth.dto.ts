@@ -9,10 +9,20 @@ export const SignUpDto = z.object({
   username: z.string().min(2),
   email: z.string().email(),
   password: z.string().min(8),
+  code: z
+    .string()
+    .min(8)
+    .regex(/^[a-zA-Z0-9]+$/),
 });
 
 export const RefreshTokenDto = z.object({
   refreshToken: z.string().min(1),
+});
+
+export const SignUpResponseDto = z.object({
+  userId: z.string().min(1),
+  userSub: z.string().min(1),
+  userConfirmed: z.boolean(),
 });
 
 export const GetMeDto = z.object({
@@ -52,6 +62,7 @@ export const SignInResponseDto = z.object({
   tokenType: z.string().min(1),
 });
 
+export type SignUpResponseDto = z.infer<typeof SignUpResponseDto>;
 export type SignInResponseDto = z.infer<typeof SignInResponseDto>;
 export type ChangePasswordDto = z.infer<typeof ChangePasswordDto>;
 export type ForgotPasswordDto = z.infer<typeof ForgotPasswordDto>;

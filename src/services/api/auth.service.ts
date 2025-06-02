@@ -1,5 +1,6 @@
 // services/ApiService.ts
 import { type AxiosInstance } from "axios";
+import { StorageService } from "../storage/storage.service";
 import {
   ConfirmSignUpDto,
   RefreshTokenDto,
@@ -7,13 +8,34 @@ import {
   SignInDto,
   SignUpDto,
   SignInResponseDto,
+  SignUpResponseDto,
 } from "./auth.dto";
 
 export class AuthService {
   private http: AxiosInstance;
+  private storageService: StorageService;
 
-  constructor(http: AxiosInstance) {
+  constructor(http: AxiosInstance, storageService: StorageService) {
     this.http = http;
+    this.storageService = storageService;
+  }
+
+  saveAuthContext(params: SignInResponseDto) {
+    this.storageService.setItem("accessToken", params.accessToken);
+    this.storageService.setItem("refreshToken", params.refreshToken);
+  }
+
+  clearAuthContext() {
+    this.storageService.removeItem("accessToken");
+    this.storageService.removeItem("refreshToken");
+  }
+
+  getAccessToken() {
+    return this.storageService.getItem("accessToken");
+  }
+
+  getRefreshToken() {
+    return this.storageService.getItem("refreshToken");
   }
 
   async signIn(params: SignInDto): Promise<SignInResponseDto> {
@@ -21,7 +43,7 @@ export class AuthService {
     return response.data;
   }
 
-  async signUp(params: SignUpDto) {
+  async signUp(params: SignUpDto): Promise<SignUpResponseDto> {
     const response = await this.http.post("api/v1/auth/signup", params);
     return response.data;
   }
