@@ -76,7 +76,10 @@ export const SignupConfirmPage = () => {
       </Form>
 
       <div className="flex justify-between items-center text-sm mt-4">
-        <Link to="/auth/signup" className="text-blue-500 hover:underline">
+        <Link
+          to="/auth/resend-confirmation-code"
+          className="text-blue-500 hover:underline"
+        >
           Didn't get a code? Sign Up again
         </Link>
       </div>

@@ -11,6 +11,8 @@ import {
   SignUpResponseDto,
   ForgotPasswordDto,
   ConfirmForgotPasswordDto,
+  GetMeDto,
+  GetMeResponseDto,
 } from "./auth.dto";
 
 export class AuthService {
@@ -81,6 +83,11 @@ export class AuthService {
       "api/v1/auth/confirm-forgot-password",
       params
     );
+    return response.data;
+  }
+
+  async getMe(): Promise<GetMeResponseDto> {
+    const response = await this.http.get("api/v1/auth/me");
     return response.data;
   }
 }

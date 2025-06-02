@@ -6,6 +6,8 @@ import { SignUpPage } from "./pages/auth/SignUpPage";
 import { SignupConfirmPage } from "./pages/auth/SignUpConfirmPage";
 import { ForgotPasswordPage } from "./pages/auth/ForgotPasswordPage";
 import { ConfirmForgotPassword } from "./pages/auth/ConfirmForgotPassword";
+import { ProfilePage } from "./pages/profile/ProfilePage";
+import { ResendConfirmationCode } from "./pages/auth/ResendConfirmationCode";
 
 function App() {
   return (
@@ -19,7 +21,12 @@ function App() {
           <Route path="signup-confirm" element={<SignupConfirmPage />} />
           <Route path="forgot-password" element={<ForgotPasswordPage />} />
           <Route path="password-confirm" element={<ConfirmForgotPassword />} />
+          <Route
+            path="resend-confirmation-code"
+            element={<ResendConfirmationCode />}
+          />
         </Route>
+        <Route path="/profile" element={<ProfilePage />} />
       </Routes>
     </HashRouter>
   );

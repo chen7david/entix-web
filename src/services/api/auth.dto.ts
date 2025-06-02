@@ -68,6 +68,11 @@ export const SignInResponseDto = z.object({
   tokenType: z.string().min(1),
 });
 
+export const GetMeResponseDto = z.object({
+  username: z.string().min(1),
+});
+
+export type GetMeResponseDto = z.infer<typeof GetMeResponseDto>;
 export type SignUpResponseDto = z.infer<typeof SignUpResponseDto>;
 export type SignInResponseDto = z.infer<typeof SignInResponseDto>;
 export type ChangePasswordDto = z.infer<typeof ChangePasswordDto>;

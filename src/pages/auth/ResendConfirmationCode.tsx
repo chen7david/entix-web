@@ -1,48 +1,43 @@
 import { Button, Form, Input, Typography, message } from "antd";
 import { authService } from "../../services/api";
 import { Link, useNavigate } from "react-router-dom";
-import { SignInDto } from "../../services/api/auth.dto";
+import { ResendConfirmationCodeDto } from "../../services/api/auth.dto"; // You might want a new DTO like ResendConfirmationCodeDto
 import { createSchemaFieldRule } from "antd-zod";
 import { useMutation } from "@tanstack/react-query";
 
 const { Title, Text } = Typography;
 
-export const SignInPage = () => {
-  const rules = createSchemaFieldRule(SignInDto);
+export const ResendConfirmationCode = () => {
+  const rules = createSchemaFieldRule(ResendConfirmationCodeDto); // Replace with appropriate DTO if needed
   const navigate = useNavigate();
 
-  const { mutate: signIn, isPending } = useMutation({
-    mutationFn: async (params: SignInDto) => {
-      const response = await authService.signIn(params);
-      authService.saveAuthContext(response);
+  const { mutate: resendCode, isPending } = useMutation({
+    mutationFn: async (params: ResendConfirmationCodeDto) => {
+      await authService.resendConfirmationCode(params); // Replace with your actual API call
     },
     onSuccess: () => {
-      message.success("Sign in successful");
-      navigate("/profile");
+      message.success("Confirmation code has been resent to your email");
+      navigate(`/auth/signup-confirm`);
     },
   });
 
   return (
     <>
       <div className="text-center mb-6">
-        <Title level={2}>Sign In</Title>
+        <Title level={2}>Resend Confirmation Code</Title>
         <Text type="secondary">
-          Welcome back! Please sign in to your account.
+          Enter your username to receive a new confirmation code.
         </Text>
       </div>
 
       <Form
         layout="vertical"
-        onFinish={signIn}
+        onFinish={resendCode}
         size="middle"
         autoComplete="off"
       >
         <Form.Item label="Username" name="username" rules={[rules]}>
           <Input allowClear placeholder="Enter your username" />
-        </Form.Item>
-
-        <Form.Item label="Password" name="password" rules={[rules]}>
-          <Input.Password allowClear placeholder="Enter your password" />
         </Form.Item>
 
         <Form.Item>
@@ -53,17 +48,14 @@ export const SignInPage = () => {
             loading={isPending}
             disabled={isPending}
           >
-            Sign In
+            Resend Code
           </Button>
         </Form.Item>
       </Form>
 
       <div className="flex justify-between items-center text-sm mt-4">
-        <Link
-          to="/auth/forgot-password"
-          className="text-blue-500 hover:underline"
-        >
-          Forgot password?
+        <Link to="/auth/signin" className="text-blue-500 hover:underline">
+          Back to Sign In
         </Link>
         <Link to="/auth/signup" className="text-blue-500 hover:underline">
           Don't have an account?
