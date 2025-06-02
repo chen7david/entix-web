@@ -1,5 +1,6 @@
 import axios, { type AxiosInstance } from "axios";
 import { message } from "antd";
+import { authService } from "./index";
 
 export class HttpService {
   private http: AxiosInstance;
@@ -30,7 +31,9 @@ export class HttpService {
 
   registerRequestInterceptor(): void {
     this.http.interceptors.request.use((config) => {
-      const token = localStorage.getItem("accessToken");
+      // Get token from auth service instead of localStorage directly
+      const token = authService.getAccessToken();
+
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
       }

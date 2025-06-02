@@ -1,20 +1,24 @@
+// pages/auth/SignInPage.tsx
 import { Button, Form, Input, Typography, message } from "antd";
 import { authService } from "../../services/api";
 import { Link, useNavigate } from "react-router-dom";
 import { SignInDto } from "../../services/api/auth.dto";
 import { createSchemaFieldRule } from "antd-zod";
 import { useMutation } from "@tanstack/react-query";
+import { useAuth } from "../../hooks/auth.hooks";
 
 const { Title, Text } = Typography;
 
 export const SignInPage = () => {
   const rules = createSchemaFieldRule(SignInDto);
   const navigate = useNavigate();
+  const { setTokens } = useAuth();
 
   const { mutate: signIn, isPending } = useMutation({
     mutationFn: async (params: SignInDto) => {
       const response = await authService.signIn(params);
-      authService.saveAuthContext(response);
+      setTokens(response);
+      return response;
     },
     onSuccess: () => {
       message.success("Sign in successful");

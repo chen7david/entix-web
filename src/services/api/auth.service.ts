@@ -1,6 +1,7 @@
 // services/ApiService.ts
 import { type AxiosInstance } from "axios";
 import { StorageService } from "../storage/storage.service";
+import { STORAGE_KEYS } from "../../constants/keys.constants";
 import {
   ConfirmSignUpDto,
   RefreshTokenDto,
@@ -11,7 +12,6 @@ import {
   SignUpResponseDto,
   ForgotPasswordDto,
   ConfirmForgotPasswordDto,
-  GetMeDto,
   GetMeResponseDto,
 } from "./auth.dto";
 
@@ -25,21 +25,24 @@ export class AuthService {
   }
 
   saveAuthContext(params: SignInResponseDto) {
-    this.storageService.setItem("accessToken", params.accessToken);
-    this.storageService.setItem("refreshToken", params.refreshToken);
+    this.storageService.setItem(STORAGE_KEYS.ACCESS_TOKEN, params.accessToken);
+    this.storageService.setItem(
+      STORAGE_KEYS.REFRESH_TOKEN,
+      params.refreshToken
+    );
   }
 
   clearAuthContext() {
-    this.storageService.removeItem("accessToken");
-    this.storageService.removeItem("refreshToken");
+    this.storageService.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
+    this.storageService.removeItem(STORAGE_KEYS.REFRESH_TOKEN);
   }
 
   getAccessToken() {
-    return this.storageService.getItem("accessToken");
+    return this.storageService.getItem(STORAGE_KEYS.ACCESS_TOKEN);
   }
 
   getRefreshToken() {
-    return this.storageService.getItem("refreshToken");
+    return this.storageService.getItem(STORAGE_KEYS.REFRESH_TOKEN);
   }
 
   async signIn(params: SignInDto): Promise<SignInResponseDto> {
