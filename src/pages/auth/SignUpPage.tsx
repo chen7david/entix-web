@@ -4,6 +4,7 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { SignUpDto } from "../../services/api/auth.dto";
 import { createSchemaFieldRule } from "antd-zod";
 import { useEffect, useState } from "react";
+import { useMutation } from "@tanstack/react-query";
 
 const { Title, Text } = Typography;
 
@@ -24,17 +25,19 @@ export const SignUpPage = () => {
     }
   }, [searchParams, form]);
 
-  const handleSignUp = async (params: SignUpDto) => {
-    await authService.signUp(params);
-
-    message.success(
-      `Sign up successful. A confirmation code has been sent to ${params.email}`
-    );
-
-    navigate(
-      `/auth/signup-confirm?username=${encodeURIComponent(params.username)}`
-    );
-  };
+  const { mutate: signUp, isPending } = useMutation({
+    mutationFn: async (params: SignUpDto) => {
+      await authService.signUp(params);
+    },
+    onSuccess: (_, params) => {
+      message.success(
+        `Sign up successful. A confirmation code has been sent to ${params.email}`
+      );
+      navigate(
+        `/auth/signup-confirm?username=${encodeURIComponent(params.username)}`
+      );
+    },
+  });
 
   return (
     <>
@@ -46,7 +49,7 @@ export const SignUpPage = () => {
       <Form
         form={form}
         layout="vertical"
-        onFinish={handleSignUp}
+        onFinish={signUp}
         size="middle"
         autoComplete="off"
       >
@@ -71,7 +74,13 @@ export const SignUpPage = () => {
         </Form.Item>
 
         <Form.Item>
-          <Button type="primary" htmlType="submit" className="w-full">
+          <Button
+            type="primary"
+            htmlType="submit"
+            className="w-full"
+            loading={isPending}
+            disabled={isPending}
+          >
             Sign Up
           </Button>
         </Form.Item>

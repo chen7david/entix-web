@@ -3,6 +3,7 @@ import { authService } from "../../services/api";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { ConfirmSignUpDto } from "../../services/api/auth.dto";
 import { createSchemaFieldRule } from "antd-zod";
+import { useMutation } from "@tanstack/react-query";
 
 const { Title, Text } = Typography;
 
@@ -11,7 +12,6 @@ export const SignupConfirmPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Extract query parameters
   const queryParams = new URLSearchParams(location.search);
   const prefilledUsername = queryParams.get("username") || "";
   const prefilledCode = queryParams.get("code") || "";
@@ -19,11 +19,13 @@ export const SignupConfirmPage = () => {
   const isUsernamePrefilled = !!prefilledUsername;
   const isCodePrefilled = !!prefilledCode;
 
-  const handleConfirm = async (params: ConfirmSignUpDto) => {
-    await authService.confirmSignUp(params);
-    message.success("Account confirmed successfully");
-    navigate("/auth/home");
-  };
+  const { mutate: confirmSignUp, isPending } = useMutation({
+    mutationFn: (params: ConfirmSignUpDto) => authService.confirmSignUp(params),
+    onSuccess: () => {
+      message.success("Account confirmed successfully");
+      navigate("/auth/home");
+    },
+  });
 
   return (
     <>
@@ -36,7 +38,7 @@ export const SignupConfirmPage = () => {
 
       <Form
         layout="vertical"
-        onFinish={handleConfirm}
+        onFinish={confirmSignUp}
         size="middle"
         autoComplete="off"
         initialValues={{
@@ -61,7 +63,13 @@ export const SignupConfirmPage = () => {
         </Form.Item>
 
         <Form.Item>
-          <Button type="primary" htmlType="submit" className="w-full">
+          <Button
+            type="primary"
+            htmlType="submit"
+            className="w-full"
+            loading={isPending}
+            disabled={isPending}
+          >
             Confirm Account
           </Button>
         </Form.Item>
