@@ -15,9 +15,10 @@ export const ForgotPasswordPage = () => {
     mutationFn: async (params: ForgotPasswordDto) => {
       await authService.forgotPassword(params);
     },
-    onSuccess: () => {
-      message.success("Password reset link sent to your email");
-      navigate("/auth/password-confirm");
+    onSuccess: (_, variables) => {
+      // Use the submitted username as a URL param
+      const username = encodeURIComponent(variables.username);
+      navigate(`/auth/password-confirm?username=${username}`);
     },
   });
 
