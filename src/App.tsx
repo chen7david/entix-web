@@ -8,6 +8,7 @@ import { ForgotPasswordPage } from "./pages/auth/ForgotPasswordPage";
 import { ConfirmForgotPassword } from "./pages/auth/ConfirmForgotPassword";
 import { ProfilePage } from "./pages/profile/ProfilePage";
 import { ResendConfirmationCode } from "./pages/auth/ResendConfirmationCode";
+import { NotFoundPage } from "./pages/error/NotFound";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           />
         </Route>
         <Route path="/profile" element={<ProfilePage />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </HashRouter>
   );
