@@ -1,34 +1,33 @@
 import { Button, Form, Input, Typography, message } from "antd";
 import { authService } from "../../services/api";
 import { Link, useNavigate } from "react-router-dom";
-import { SignInDto } from "../../services/api/auth.dto";
+import { ForgotPasswordDto } from "../../services/api/auth.dto";
 import { createSchemaFieldRule } from "antd-zod";
 
 const { Title, Text } = Typography;
 
-export const SignInPage = () => {
-  const rules = createSchemaFieldRule(SignInDto);
+export const ForgotPasswordPage = () => {
+  const rules = createSchemaFieldRule(ForgotPasswordDto);
   const navigate = useNavigate();
 
-  const handleSignIn = async (params: SignInDto) => {
-    const response = await authService.signIn(params);
-    authService.saveAuthContext(response);
-    message.success("Sign in successful");
-    navigate("/auth/home");
+  const handleForgotPassword = async (params: ForgotPasswordDto) => {
+    await authService.forgotPassword(params);
+    message.success("Password reset link sent to your email");
+    navigate("/auth/password-confirm");
   };
 
   return (
     <>
       <div className="text-center mb-6">
-        <Title level={2}>Sign In</Title>
+        <Title level={2}>Forgot Password</Title>
         <Text type="secondary">
-          Welcome back! Please sign in to your account.
+          Enter your username to receive a password reset link.
         </Text>
       </div>
 
       <Form
         layout="vertical"
-        onFinish={handleSignIn}
+        onFinish={handleForgotPassword}
         size="middle"
         autoComplete="off"
       >
@@ -36,23 +35,16 @@ export const SignInPage = () => {
           <Input allowClear placeholder="Enter your username" />
         </Form.Item>
 
-        <Form.Item label="Password" name="password" rules={[rules]}>
-          <Input.Password allowClear placeholder="Enter your password" />
-        </Form.Item>
-
         <Form.Item>
           <Button type="primary" htmlType="submit" className="w-full">
-            Sign In
+            Send Reset Link
           </Button>
         </Form.Item>
       </Form>
 
       <div className="flex justify-between items-center text-sm mt-4">
-        <Link
-          to="/auth/forgot-password"
-          className="text-blue-500 hover:underline"
-        >
-          Forgot password?
+        <Link to="/auth/signin" className="text-blue-500 hover:underline">
+          Back to Sign In
         </Link>
         <Link to="/auth/signup" className="text-blue-500 hover:underline">
           Don't have an account?

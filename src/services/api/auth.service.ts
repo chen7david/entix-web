@@ -9,6 +9,8 @@ import {
   SignUpDto,
   SignInResponseDto,
   SignUpResponseDto,
+  ForgotPasswordDto,
+  ConfirmForgotPasswordDto,
 } from "./auth.dto";
 
 export class AuthService {
@@ -63,6 +65,22 @@ export class AuthService {
 
   async refreshToken(params: RefreshTokenDto) {
     const response = await this.http.post("api/v1/auth/refresh-token", params);
+    return response.data;
+  }
+
+  async forgotPassword(params: ForgotPasswordDto): Promise<boolean> {
+    const response = await this.http.post(
+      "api/v1/auth/forgot-password",
+      params
+    );
+    return response.data;
+  }
+
+  async confirmForgotPassword(params: ConfirmForgotPasswordDto) {
+    const response = await this.http.post(
+      "api/v1/auth/confirm-forgot-password",
+      params
+    );
     return response.data;
   }
 }

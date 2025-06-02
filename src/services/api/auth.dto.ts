@@ -42,11 +42,17 @@ export const ForgotPasswordDto = z.object({
   username: z.string().min(1),
 });
 
-export const ConfirmForgotPasswordDto = z.object({
-  username: z.string().min(1),
-  confirmationCode: z.string().min(1),
-  newPassword: z.string().min(1),
-});
+export const ConfirmForgotPasswordDto = z
+  .object({
+    username: z.string().min(1),
+    confirmationCode: z.string().min(1),
+    newPassword: z.string().min(1),
+    newPasswordRepeat: z.string().min(1),
+  })
+  .refine((data) => data.newPassword === data.newPasswordRepeat, {
+    message: "Passwords do not match",
+    path: ["newPasswordRepeat"],
+  });
 
 export const ChangePasswordDto = z.object({
   username: z.string().min(1),

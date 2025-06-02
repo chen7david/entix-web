@@ -4,6 +4,8 @@ import { SignInPage } from "./pages/auth/SignInPage";
 import { AuthLayout } from "./layouts/AuthLayout";
 import { SignUpPage } from "./pages/auth/SignUpPage";
 import { SignupConfirmPage } from "./pages/auth/SignUpConfirmPage";
+import { ForgotPasswordPage } from "./pages/auth/ForgotPasswordPage";
+import { ConfirmForgotPassword } from "./pages/auth/ConfirmForgotPassword";
 
 function App() {
   return (
@@ -15,6 +17,8 @@ function App() {
           <Route path="signin" element={<SignInPage />} />
           <Route path="signup" element={<SignUpPage />} />
           <Route path="signup-confirm" element={<SignupConfirmPage />} />
+          <Route path="forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="password-confirm" element={<ConfirmForgotPassword />} />
         </Route>
       </Routes>
     </HashRouter>
