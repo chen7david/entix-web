@@ -1,48 +1,20 @@
-import { Menu, Drawer, Button } from "antd";
-import { MenuOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
-
-const menuItems = [
-  { key: "dashboard", label: "Dashboard" },
-  { key: "users", label: "Users" },
-  { key: "settings", label: "Settings" },
-];
+import { Button } from "antd";
+import { MenuOutlined } from "@ant-design/icons";
+import { AdminSidebar } from "../components/navigation/AdminSidebar";
 
 export const AdminLayout = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  const SidebarContent = (
-    <Menu
-      mode="inline"
-      defaultSelectedKeys={["dashboard"]}
-      items={menuItems}
-      className="h-full border-r-0"
-    />
-  );
-
   return (
-    <div className="flex min-h-screen w-full">
-      {/* Desktop sidebar */}
-      <aside className="hidden md:flex w-64 bg-white shadow-md flex-col">
-        {SidebarContent}
-      </aside>
-
-      {/* Mobile drawer sidebar */}
-      <Drawer
-        title="Menu"
-        placement="left"
-        closable
+    <div className="flex h-screen w-full overflow-hidden">
+      <AdminSidebar
+        drawerOpen={drawerOpen}
         onClose={() => setDrawerOpen(false)}
-        open={drawerOpen}
-        className="md:hidden"
-        bodyStyle={{ padding: 0 }}
-      >
-        {SidebarContent}
-      </Drawer>
+      />
 
-      {/* Main content area */}
-      <div className="flex flex-col flex-1 min-h-screen">
+      <div className="flex flex-col flex-1 h-screen overflow-hidden">
         {/* Header */}
         <header className="bg-white shadow-sm px-4 py-3 flex items-center justify-between">
           <div className="md:hidden">
