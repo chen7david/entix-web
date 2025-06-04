@@ -10,6 +10,8 @@ import { ProfilePage } from "./pages/profile/ProfilePage";
 import { ResendConfirmationCode } from "./pages/auth/ResendConfirmationCode";
 import { NotFoundPage } from "./pages/error/NotFound";
 import { ProtectedRoute } from "./components/guards/ProtectedRoutes";
+import { AdminLayout } from "./layouts/AdminLayout";
+import { AdminProfilePage } from "./pages/admin/AdminProfilePage";
 
 function App() {
   return (
@@ -30,6 +32,9 @@ function App() {
         </Route>
         <Route element={<ProtectedRoute />}>
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route path="profile" element={<AdminProfilePage />} />
+          </Route>
           {/* Add more protected routes here */}
         </Route>
         <Route path="*" element={<NotFoundPage />} />
