@@ -1,6 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { adminService } from "../../services/api";
-import { Table } from "antd";
+import { Badge, Table } from "antd";
+import type { AdminUserAttributesDto } from "../../services/api/admin.dto";
+import dayjs, { timeSince } from "../../config/dayjs.config";
 
 const columns = [
   {
@@ -10,8 +12,25 @@ const columns = [
   },
   {
     title: "Email",
-    dataIndex: "email",
-    key: "email",
+    dataIndex: "userAttributes",
+    render: (userAttributes: AdminUserAttributesDto) => userAttributes.email,
+  },
+  {
+    title: "Created At",
+    dataIndex: "userCreateDate",
+    render: (date: Date) => dayjs(date).format("MM-DD-YYYY"),
+  },
+  {
+    title: "Last Modified",
+    dataIndex: "userLastModifiedDate",
+    render: (date: Date) => timeSince(date),
+  },
+  {
+    title: "Enabled",
+    dataIndex: "enabled",
+    render: (enabled: boolean) => (
+      <Badge status={enabled ? "success" : "error"} />
+    ),
   },
 ];
 
@@ -24,10 +43,9 @@ export const UsersPage = () => {
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
-
   return (
     <div>
-      <Table dataSource={data} columns={columns} />
+      <Table size="small" dataSource={data} columns={columns} />
     </div>
   );
 };
