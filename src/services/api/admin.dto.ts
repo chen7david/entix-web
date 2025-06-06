@@ -25,3 +25,9 @@ export type AdminListUsersResponseDto = z.infer<
 >;
 
 export type AdminUserAttributesDto = z.infer<typeof AdminUserAttributesDto>;
+
+export const AdminDeleteUserParamsDto = z.object({
+  username: z.string(),
+});
+
+export type AdminDeleteUserParamsDto = z.infer<typeof AdminDeleteUserParamsDto>;

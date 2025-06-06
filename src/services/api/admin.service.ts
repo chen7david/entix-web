@@ -1,7 +1,10 @@
 // services/ApiService.ts
 import { type AxiosInstance } from "axios";
 import { SignInResponseDto, SignUpResponseDto } from "./auth.dto";
-import { AdminListUsersResponseDto } from "./admin.dto";
+import {
+  AdminDeleteUserParamsDto,
+  AdminListUsersResponseDto,
+} from "./admin.dto";
 
 export class AdminService {
   private http: AxiosInstance;
@@ -12,6 +15,11 @@ export class AdminService {
 
   async getUsers(): Promise<AdminListUsersResponseDto> {
     const response = await this.http.get("api/v1/admin/users");
+    return response.data;
+  }
+
+  async deleteUser(username: string): Promise<AdminDeleteUserParamsDto> {
+    const response = await this.http.delete(`api/v1/admin/users/${username}`);
     return response.data;
   }
 
