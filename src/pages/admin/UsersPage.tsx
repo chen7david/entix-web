@@ -12,6 +12,8 @@ import {
   Input,
   Select,
   Tabs,
+  Dropdown,
+  Tooltip,
 } from "antd";
 import {
   DeleteOutlined,
@@ -19,6 +21,8 @@ import {
   PlusOutlined,
   ExclamationCircleFilled,
   UserAddOutlined,
+  MoreOutlined,
+  EllipsisOutlined,
 } from "@ant-design/icons";
 import type {
   AdminUserAttributesDto,
@@ -26,7 +30,7 @@ import type {
   AdminCreateUserParamsDto,
 } from "../../services/api/admin";
 import dayjs, { timeSince } from "../../config/dayjs.config";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const { Title } = Typography;
 const { confirm } = Modal;
@@ -66,9 +70,11 @@ type UserAttributesUpdate = {
 const UserDeleteButton = ({
   username,
   onSuccess,
+  isInDropdown = false,
 }: {
   username: string;
   onSuccess: () => void;
+  isInDropdown?: boolean;
 }) => {
   const [loading, setLoading] = useState(false);
 
@@ -102,6 +108,18 @@ const UserDeleteButton = ({
       onOk: handleDelete,
     });
   };
+
+  if (isInDropdown) {
+    return (
+      <div
+        onClick={showDeleteConfirm}
+        className="flex items-center text-red-500 px-4 py-2 hover:bg-gray-100 cursor-pointer"
+      >
+        <DeleteOutlined className="mr-2" />
+        <span>Delete</span>
+      </div>
+    );
+  }
 
   return (
     <Button
@@ -187,7 +205,13 @@ const UserForm = ({
 /**
  * Group management for users
  */
-const UserGroupsManagement = ({ username }: { username: string }) => {
+const UserGroupsManagement = ({
+  username,
+  isInDropdown = false,
+}: {
+  username: string;
+  isInDropdown?: boolean;
+}) => {
   const [visible, setVisible] = useState(false);
   const [groupName, setGroupName] = useState("");
   const queryClient = useQueryClient();
@@ -252,6 +276,10 @@ const UserGroupsManagement = ({ username }: { username: string }) => {
     });
   };
 
+  const closeModal = () => {
+    setVisible(false);
+  };
+
   // Filter out groups the user is already in
   const availableGroups =
     allGroups?.Groups?.filter(
@@ -260,6 +288,86 @@ const UserGroupsManagement = ({ username }: { username: string }) => {
           (g: UserGroupType) => g.GroupName === group.groupName
         )
     ) || [];
+
+  if (isInDropdown) {
+    return (
+      <>
+        <div
+          onClick={() => setVisible(true)}
+          className="flex items-center px-4 py-2 hover:bg-gray-100 cursor-pointer"
+        >
+          <UserAddOutlined className="mr-2" />
+          <span>Manage Groups</span>
+        </div>
+
+        {visible && (
+          <Modal
+            title={`Manage Groups for ${username}`}
+            open={visible}
+            onCancel={closeModal}
+            footer={null}
+            width={700}
+          >
+            <div className="mb-4">
+              <Select
+                placeholder="Select a group to add"
+                value={groupName}
+                onChange={setGroupName}
+                style={{ width: 300 }}
+                options={availableGroups.map((group: GroupItemType) => ({
+                  value: group.groupName,
+                  label: group.groupName,
+                }))}
+              />
+              <Button
+                type="primary"
+                onClick={handleAddToGroup}
+                loading={addToGroupMutation.isPending}
+                className="ml-2"
+                disabled={!groupName}
+              >
+                Add to Group
+              </Button>
+            </div>
+
+            <Table
+              dataSource={(userGroups?.Groups || []) as UserGroupType[]}
+              rowKey="GroupName"
+              loading={isLoading}
+              size="small"
+              pagination={false}
+              columns={[
+                {
+                  title: "Group Name",
+                  dataIndex: "GroupName",
+                  key: "groupName",
+                },
+                {
+                  title: "Status",
+                  dataIndex: "Status",
+                  key: "status",
+                },
+                {
+                  title: "Actions",
+                  key: "actions",
+                  render: (_: unknown, record: UserGroupType) => (
+                    <Button
+                      danger
+                      type="link"
+                      onClick={() => handleRemoveFromGroup(record.GroupName)}
+                      loading={removeFromGroupMutation.isPending}
+                    >
+                      Remove
+                    </Button>
+                  ),
+                },
+              ]}
+            />
+          </Modal>
+        )}
+      </>
+    );
+  }
 
   return (
     <>
@@ -270,77 +378,132 @@ const UserGroupsManagement = ({ username }: { username: string }) => {
       >
         Manage Groups
       </Button>
-      <Modal
-        title={`Manage Groups for ${username}`}
-        open={visible}
-        onCancel={() => setVisible(false)}
-        footer={null}
-        width={700}
-      >
-        <div className="mb-4">
-          <Select
-            placeholder="Select a group to add"
-            value={groupName}
-            onChange={setGroupName}
-            style={{ width: 300 }}
-            options={availableGroups.map((group: GroupItemType) => ({
-              value: group.groupName,
-              label: group.groupName,
-            }))}
-          />
-          <Button
-            type="primary"
-            onClick={handleAddToGroup}
-            loading={addToGroupMutation.isPending}
-            className="ml-2"
-            disabled={!groupName}
-          >
-            Add to Group
-          </Button>
-        </div>
+      {visible && (
+        <Modal
+          title={`Manage Groups for ${username}`}
+          open={visible}
+          onCancel={closeModal}
+          footer={null}
+          width={700}
+        >
+          <div className="mb-4">
+            <Select
+              placeholder="Select a group to add"
+              value={groupName}
+              onChange={setGroupName}
+              style={{ width: 300 }}
+              options={availableGroups.map((group: GroupItemType) => ({
+                value: group.groupName,
+                label: group.groupName,
+              }))}
+            />
+            <Button
+              type="primary"
+              onClick={handleAddToGroup}
+              loading={addToGroupMutation.isPending}
+              className="ml-2"
+              disabled={!groupName}
+            >
+              Add to Group
+            </Button>
+          </div>
 
-        <Table
-          dataSource={(userGroups?.Groups || []) as UserGroupType[]}
-          rowKey="GroupName"
-          loading={isLoading}
-          size="small"
-          pagination={false}
-          columns={[
-            {
-              title: "Group Name",
-              dataIndex: "GroupName",
-              key: "groupName",
-            },
-            {
-              title: "Status",
-              dataIndex: "Status",
-              key: "status",
-            },
-            {
-              title: "Actions",
-              key: "actions",
-              render: (_: unknown, record: UserGroupType) => (
-                <Button
-                  danger
-                  type="link"
-                  onClick={() => handleRemoveFromGroup(record.GroupName)}
-                  loading={removeFromGroupMutation.isPending}
-                >
-                  Remove
-                </Button>
-              ),
-            },
-          ]}
-        />
-      </Modal>
+          <Table
+            dataSource={(userGroups?.Groups || []) as UserGroupType[]}
+            rowKey="GroupName"
+            loading={isLoading}
+            size="small"
+            pagination={false}
+            columns={[
+              {
+                title: "Group Name",
+                dataIndex: "GroupName",
+                key: "groupName",
+              },
+              {
+                title: "Status",
+                dataIndex: "Status",
+                key: "status",
+              },
+              {
+                title: "Actions",
+                key: "actions",
+                render: (_: unknown, record: UserGroupType) => (
+                  <Button
+                    danger
+                    type="link"
+                    onClick={() => handleRemoveFromGroup(record.GroupName)}
+                    loading={removeFromGroupMutation.isPending}
+                  >
+                    Remove
+                  </Button>
+                ),
+              },
+            ]}
+          />
+        </Modal>
+      )}
     </>
   );
+};
+
+// Custom hook to get user groups
+const useUserGroups = () => {
+  const queryClient = useQueryClient();
+
+  const getUserGroups = (username: string) => {
+    // Get groups from cached queries if available
+    const cachedGroups = queryClient.getQueryData<{ Groups: UserGroupType[] }>([
+      "user-groups-display",
+      username,
+    ]);
+
+    if (cachedGroups?.Groups?.length) {
+      return (
+        <Space wrap size={[0, 4]}>
+          {cachedGroups.Groups.map((group) => (
+            <Badge
+              key={group.GroupName}
+              count={group.GroupName}
+              style={{ backgroundColor: "#108ee9" }}
+            />
+          ))}
+        </Space>
+      );
+    }
+
+    // Load groups if not in cache
+    queryClient.fetchQuery({
+      queryKey: ["user-groups-display", username],
+      queryFn: () => adminGroupService.listGroupsForUser({ username }),
+    });
+
+    return <span className="text-gray-400">Loading...</span>;
+  };
+
+  return { getUserGroups };
 };
 
 export const UsersPage = () => {
   const queryClient = useQueryClient();
   const [createModalVisible, setCreateModalVisible] = useState(false);
   const [editUser, setEditUser] = useState<UserType | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const { getUserGroups } = useUserGroups();
+
+  // Handle responsive layout
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkIfMobile();
+    window.addEventListener("resize", checkIfMobile);
+
+    return () => {
+      window.removeEventListener("resize", checkIfMobile);
+    };
+  }, []);
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["users"],
@@ -393,67 +556,123 @@ export const UsersPage = () => {
     setEditUser(record);
   };
 
-  const columns = [
+  // Actions dropdown menu for each user
+  const getActionMenu = (record: UserType) => [
     {
-      title: "Username",
-      dataIndex: "username",
-      key: "username",
-      sorter: (a: UserType, b: UserType) =>
-        a.username.localeCompare(b.username),
+      key: "edit",
+      label: (
+        <div
+          onClick={() => handleEdit(record)}
+          className="flex items-center px-4 py-2 hover:bg-gray-100 cursor-pointer"
+        >
+          <EditOutlined className="mr-2" />
+          <span>Edit</span>
+        </div>
+      ),
     },
     {
-      title: "Email",
-      dataIndex: "userAttributes",
-      key: "email",
-      render: (userAttributes: AdminUserAttributesDto) => userAttributes.email,
+      key: "groups",
+      label: (
+        <UserGroupsManagement username={record.username} isInDropdown={true} />
+      ),
     },
     {
-      title: "Created At",
-      dataIndex: "userCreateDate",
-      key: "userCreateDate",
-      sorter: (a: UserType, b: UserType) =>
-        new Date(a.userCreateDate).getTime() -
-        new Date(b.userCreateDate).getTime(),
-      render: (date: Date) => dayjs(date).format("MM-DD-YYYY"),
-    },
-    {
-      title: "Last Modified",
-      dataIndex: "userLastModifiedDate",
-      key: "userLastModifiedDate",
-      render: (date: Date) => timeSince(date),
-    },
-    {
-      title: "Status",
-      dataIndex: "enabled",
-      key: "enabled",
-      render: (enabled: boolean) => (
-        <Badge
-          status={enabled ? "success" : "error"}
-          text={enabled ? "Active" : "Inactive"}
+      key: "delete",
+      label: (
+        <UserDeleteButton
+          username={record.username}
+          onSuccess={handleDeleteSuccess}
+          isInDropdown={true}
         />
       ),
     },
-    {
-      title: "Actions",
-      key: "actions",
-      render: (_: unknown, record: UserType) => (
-        <Space>
-          <Button
-            type="link"
-            icon={<EditOutlined />}
-            onClick={() => handleEdit(record)}
-          >
-            Edit
-          </Button>
-          <UserGroupsManagement username={record.username} />
-          <UserDeleteButton
-            username={record.username}
-            onSuccess={handleDeleteSuccess}
-          />
-        </Space>
-      ),
-    },
   ];
+
+  // Define columns based on screen size
+  const getColumns = () => {
+    const baseColumns = [
+      {
+        title: "Username",
+        dataIndex: "username",
+        key: "username",
+        sorter: (a: UserType, b: UserType) =>
+          a.username.localeCompare(b.username),
+        ellipsis: true,
+      },
+      {
+        title: "Email",
+        dataIndex: "userAttributes",
+        key: "email",
+        render: (userAttributes: AdminUserAttributesDto) =>
+          userAttributes.email,
+        ellipsis: true,
+        responsive: ["md"] as const,
+      },
+      {
+        title: "Groups",
+        key: "groups",
+        render: (_, record: UserType) => getUserGroups(record.username),
+        responsive: ["lg"] as const,
+      },
+      {
+        title: "Status",
+        dataIndex: "enabled",
+        key: "enabled",
+        render: (enabled: boolean) => (
+          <Badge
+            status={enabled ? "success" : "error"}
+            text={enabled ? "Active" : "Inactive"}
+          />
+        ),
+        responsive: ["sm"] as const,
+      },
+      {
+        title: "Created",
+        dataIndex: "userCreateDate",
+        key: "userCreateDate",
+        render: (date: Date) => dayjs(date).format("MM-DD-YYYY"),
+        responsive: ["md"] as const,
+      },
+      {
+        title: "Actions",
+        key: "actions",
+        fixed: "right" as const,
+        width: 70,
+        render: (_: unknown, record: UserType) => (
+          <Dropdown
+            menu={{ items: getActionMenu(record) }}
+            trigger={["click"]}
+            placement="bottomRight"
+          >
+            <Button
+              icon={<EllipsisOutlined />}
+              type="text"
+              className="flex items-center justify-center"
+            />
+          </Dropdown>
+        ),
+      },
+    ];
+
+    // For mobile, add a combined column showing username and email
+    if (isMobile) {
+      baseColumns.unshift({
+        title: "User",
+        key: "user",
+        render: (_, record: UserType) => (
+          <div>
+            <div className="font-medium">{record.username}</div>
+            <div className="text-xs text-gray-500">
+              {record.userAttributes.email}
+            </div>
+          </div>
+        ),
+        responsive: ["xs"] as const,
+      });
+    }
+
+    return baseColumns;
+  };
 
   if (isLoading)
     return <div className="py-8 text-center">Loading users...</div>;
@@ -480,8 +699,9 @@ export const UsersPage = () => {
       <Table
         rowKey="username"
         dataSource={data}
-        columns={columns}
+        columns={getColumns()}
         size="middle"
+        scroll={{ x: "max-content" }}
         pagination={{
           defaultPageSize: 10,
           showSizeChanger: true,

@@ -9,6 +9,7 @@ import {
   Typography,
   Form,
   Input,
+  Dropdown,
 } from "antd";
 import {
   DeleteOutlined,
@@ -17,9 +18,10 @@ import {
   ExclamationCircleFilled,
   UserAddOutlined,
   ReloadOutlined,
+  EllipsisOutlined,
 } from "@ant-design/icons";
 import dayjs from "../../config/dayjs.config";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const { Title } = Typography;
 const { confirm } = Modal;
@@ -27,11 +29,17 @@ const { confirm } = Modal;
 // Group type for rendering - should match what comes from the API
 type GroupType = {
   groupName: string;
+  userPoolId?: string;
   description?: string;
   precedence?: number;
   roleArn?: string;
-  creationDate?: Date;
-  lastModifiedDate?: Date;
+  creationDate?: Date | string;
+  lastModifiedDate?: Date | string;
+};
+
+// API response type
+type GroupsApiResponse = {
+  groups: GroupType[];
 };
 
 // User type for the users in a group
@@ -47,9 +55,11 @@ type GroupUserType = {
 const GroupDeleteButton = ({
   groupName,
   onSuccess,
+  isInDropdown = false,
 }: {
   groupName: string;
   onSuccess: () => void;
+  isInDropdown?: boolean;
 }) => {
   const [loading, setLoading] = useState(false);
 
@@ -83,6 +93,18 @@ const GroupDeleteButton = ({
       onOk: handleDelete,
     });
   };
+
+  if (isInDropdown) {
+    return (
+      <div
+        onClick={showDeleteConfirm}
+        className="flex items-center text-red-500 px-4 py-2 hover:bg-gray-100 cursor-pointer"
+      >
+        <DeleteOutlined className="mr-2" />
+        <span>Delete</span>
+      </div>
+    );
+  }
 
   return (
     <Button
@@ -143,7 +165,13 @@ const GroupForm = ({
 /**
  * User management modal for adding/removing users from a group
  */
-const GroupUsersManagement = ({ groupName }: { groupName: string }) => {
+const GroupUsersManagement = ({
+  groupName,
+  isInDropdown = false,
+}: {
+  groupName: string;
+  isInDropdown?: boolean;
+}) => {
   const [visible, setVisible] = useState(false);
   const [username, setUsername] = useState("");
   const queryClient = useQueryClient();
@@ -202,6 +230,81 @@ const GroupUsersManagement = ({ groupName }: { groupName: string }) => {
     });
   };
 
+  const closeModal = () => {
+    setVisible(false);
+  };
+
+  if (isInDropdown) {
+    return (
+      <>
+        <div
+          onClick={() => setVisible(true)}
+          className="flex items-center px-4 py-2 hover:bg-gray-100 cursor-pointer"
+        >
+          <UserAddOutlined className="mr-2" />
+          <span>Manage Users</span>
+        </div>
+
+        {visible && (
+          <Modal
+            title={`Manage Users in ${groupName}`}
+            open={visible}
+            onCancel={closeModal}
+            footer={null}
+            width={700}
+          >
+            <div className="mb-4">
+              <Input
+                placeholder="Enter username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                style={{ width: 300 }}
+                onPressEnter={handleAddUser}
+              />
+              <Button
+                type="primary"
+                onClick={handleAddUser}
+                loading={addUserMutation.isPending}
+                className="ml-2"
+              >
+                Add User
+              </Button>
+            </div>
+
+            <Table
+              dataSource={(usersInGroup?.Users || []) as GroupUserType[]}
+              rowKey="Username"
+              loading={isLoading}
+              size="small"
+              pagination={false}
+              columns={[
+                {
+                  title: "Username",
+                  dataIndex: "Username",
+                  key: "username",
+                },
+                {
+                  title: "Actions",
+                  key: "actions",
+                  render: (_: unknown, record: GroupUserType) => (
+                    <Button
+                      danger
+                      type="link"
+                      onClick={() => handleRemoveUser(record.Username)}
+                      loading={removeUserMutation.isPending}
+                    >
+                      Remove
+                    </Button>
+                  ),
+                },
+              ]}
+            />
+          </Modal>
+        )}
+      </>
+    );
+  }
+
   return (
     <>
       <Button
@@ -211,60 +314,62 @@ const GroupUsersManagement = ({ groupName }: { groupName: string }) => {
       >
         Manage Users
       </Button>
-      <Modal
-        title={`Manage Users in ${groupName}`}
-        open={visible}
-        onCancel={() => setVisible(false)}
-        footer={null}
-        width={700}
-      >
-        <div className="mb-4">
-          <Input
-            placeholder="Enter username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            style={{ width: 300 }}
-            onPressEnter={handleAddUser}
-          />
-          <Button
-            type="primary"
-            onClick={handleAddUser}
-            loading={addUserMutation.isPending}
-            className="ml-2"
-          >
-            Add User
-          </Button>
-        </div>
+      {visible && (
+        <Modal
+          title={`Manage Users in ${groupName}`}
+          open={visible}
+          onCancel={closeModal}
+          footer={null}
+          width={700}
+        >
+          <div className="mb-4">
+            <Input
+              placeholder="Enter username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              style={{ width: 300 }}
+              onPressEnter={handleAddUser}
+            />
+            <Button
+              type="primary"
+              onClick={handleAddUser}
+              loading={addUserMutation.isPending}
+              className="ml-2"
+            >
+              Add User
+            </Button>
+          </div>
 
-        <Table
-          dataSource={(usersInGroup?.Users || []) as GroupUserType[]}
-          rowKey="Username"
-          loading={isLoading}
-          size="small"
-          pagination={false}
-          columns={[
-            {
-              title: "Username",
-              dataIndex: "Username",
-              key: "username",
-            },
-            {
-              title: "Actions",
-              key: "actions",
-              render: (_: unknown, record: GroupUserType) => (
-                <Button
-                  danger
-                  type="link"
-                  onClick={() => handleRemoveUser(record.Username)}
-                  loading={removeUserMutation.isPending}
-                >
-                  Remove
-                </Button>
-              ),
-            },
-          ]}
-        />
-      </Modal>
+          <Table
+            dataSource={(usersInGroup?.Users || []) as GroupUserType[]}
+            rowKey="Username"
+            loading={isLoading}
+            size="small"
+            pagination={false}
+            columns={[
+              {
+                title: "Username",
+                dataIndex: "Username",
+                key: "username",
+              },
+              {
+                title: "Actions",
+                key: "actions",
+                render: (_: unknown, record: GroupUserType) => (
+                  <Button
+                    danger
+                    type="link"
+                    onClick={() => handleRemoveUser(record.Username)}
+                    loading={removeUserMutation.isPending}
+                  >
+                    Remove
+                  </Button>
+                ),
+              },
+            ]}
+          />
+        </Modal>
+      )}
     </>
   );
 };
@@ -274,11 +379,33 @@ export const GroupsPage = () => {
   const [createModalVisible, setCreateModalVisible] = useState(false);
   const [editGroup, setEditGroup] = useState<GroupType | null>(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
-  const { data, isLoading, error, refetch } = useQuery({
+  // Handle responsive layout
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkIfMobile();
+    window.addEventListener("resize", checkIfMobile);
+
+    return () => {
+      window.removeEventListener("resize", checkIfMobile);
+    };
+  }, []);
+
+  const { data, isLoading, error, refetch } = useQuery<GroupsApiResponse>({
     queryKey: ["groups"],
     queryFn: () => adminGroupService.getGroups(),
   });
+
+  // Log the data to see what we're getting
+  useEffect(() => {
+    if (data) {
+      console.log("Groups data:", data);
+    }
+  }, [data]);
 
   const handleRefresh = async () => {
     setIsRefreshing(true);
@@ -323,53 +450,117 @@ export const GroupsPage = () => {
     setEditGroup(record);
   };
 
-  const columns = [
+  // Actions dropdown menu for each group
+  const getActionMenu = (record: GroupType) => [
     {
-      title: "Group Name",
-      dataIndex: "groupName",
-      key: "groupName",
-      sorter: (a: GroupType, b: GroupType) =>
-        a.groupName.localeCompare(b.groupName),
+      key: "edit",
+      label: (
+        <div
+          onClick={() => handleEdit(record)}
+          className="flex items-center px-4 py-2 hover:bg-gray-100 cursor-pointer"
+        >
+          <EditOutlined className="mr-2" />
+          <span>Edit</span>
+        </div>
+      ),
     },
     {
-      title: "Description",
-      dataIndex: "description",
-      key: "description",
+      key: "users",
+      label: (
+        <GroupUsersManagement
+          groupName={record.groupName}
+          isInDropdown={true}
+        />
+      ),
     },
     {
-      title: "Precedence",
-      dataIndex: "precedence",
-      key: "precedence",
-      sorter: (a: GroupType, b: GroupType) =>
-        (a.precedence || 0) - (b.precedence || 0),
-    },
-    {
-      title: "Creation Date",
-      dataIndex: "creationDate",
-      key: "creationDate",
-      render: (date?: Date) => (date ? dayjs(date).format("MM-DD-YYYY") : "-"),
-    },
-    {
-      title: "Actions",
-      key: "actions",
-      render: (_: unknown, record: GroupType) => (
-        <Space>
-          <Button
-            type="link"
-            icon={<EditOutlined />}
-            onClick={() => handleEdit(record)}
-          >
-            Edit
-          </Button>
-          <GroupUsersManagement groupName={record.groupName} />
-          <GroupDeleteButton
-            groupName={record.groupName}
-            onSuccess={handleDeleteSuccess}
-          />
-        </Space>
+      key: "delete",
+      label: (
+        <GroupDeleteButton
+          groupName={record.groupName}
+          onSuccess={handleDeleteSuccess}
+          isInDropdown={true}
+        />
       ),
     },
   ];
+
+  // Define columns based on screen size
+  const getColumns = () => {
+    // Base columns
+    const baseColumns = [
+      {
+        title: "Group Name",
+        dataIndex: "groupName",
+        key: "groupName",
+        sorter: (a: GroupType, b: GroupType) =>
+          a.groupName.localeCompare(b.groupName),
+        ellipsis: true,
+      },
+      {
+        title: "Description",
+        dataIndex: "description",
+        key: "description",
+        ellipsis: true,
+      },
+      {
+        title: "Precedence",
+        dataIndex: "precedence",
+        key: "precedence",
+        sorter: (a: GroupType, b: GroupType) =>
+          (a.precedence || 0) - (b.precedence || 0),
+      },
+      {
+        title: "Creation Date",
+        dataIndex: "creationDate",
+        key: "creationDate",
+        render: (date?: Date | string) =>
+          date ? dayjs(date).format("MM-DD-YYYY") : "-",
+      },
+      {
+        title: "Actions",
+        key: "actions",
+        fixed: "right" as const,
+        width: 70,
+        render: (_: unknown, record: GroupType) => (
+          <Dropdown
+            menu={{ items: getActionMenu(record) }}
+            trigger={["click"]}
+            placement="bottomRight"
+          >
+            <Button
+              icon={<EllipsisOutlined />}
+              type="text"
+              className="flex items-center justify-center"
+            />
+          </Dropdown>
+        ),
+      },
+    ];
+
+    // If on mobile, use a simplified column set
+    if (isMobile) {
+      return [
+        {
+          title: "Group",
+          key: "group",
+          render: (_: unknown, record: GroupType) => (
+            <div>
+              <div className="font-medium">{record.groupName}</div>
+              {record.description && (
+                <div className="text-xs text-gray-500">
+                  {record.description}
+                </div>
+              )}
+            </div>
+          ),
+        },
+        baseColumns[4], // Actions
+      ];
+    }
+
+    return baseColumns;
+  };
 
   if (isLoading)
     return <div className="py-8 text-center">Loading groups...</div>;
@@ -379,6 +570,9 @@ export const GroupsPage = () => {
         Error: {error.message}
       </div>
     );
+
+  // Get the groups data from the API response
+  const groups = data?.groups || [];
 
   return (
     <div className="space-y-4">
@@ -404,9 +598,10 @@ export const GroupsPage = () => {
 
       <Table
         rowKey="groupName"
-        dataSource={data?.Groups || []}
-        columns={columns}
+        dataSource={groups}
+        columns={getColumns()}
         size="middle"
+        scroll={{ x: "max-content" }}
         pagination={{
           defaultPageSize: 10,
           showSizeChanger: true,
