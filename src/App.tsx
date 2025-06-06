@@ -13,7 +13,7 @@ import { ProtectedRoute } from "./components/guards/ProtectedRoutes";
 import { AdminLayout } from "./layouts/AdminLayout";
 import { AdminDashboardPage } from "./pages/admin/AdminDashboardPage";
 import { UsersPage } from "./pages/admin/UsersPage";
-import { RolesPage } from "./pages/admin/RolesPage";
+import { GroupsPage } from "./pages/admin/GroupsPage";
 
 function App() {
   return (
@@ -37,7 +37,7 @@ function App() {
           <Route path="/admin" element={<AdminLayout />}>
             <Route path="dashboard" element={<AdminDashboardPage />} />
             <Route path="users" element={<UsersPage />} />
-            <Route path="roles" element={<RolesPage />} />
+            <Route path="groups" element={<GroupsPage />} />
           </Route>
           {/* Add more protected routes here */}
         </Route>

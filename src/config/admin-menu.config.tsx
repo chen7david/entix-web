@@ -18,9 +18,9 @@ export const menuItems = [
     icon: <UserOutlined />,
   },
   {
-    path: "/admin/roles",
-    key: "roles",
-    label: "Roles",
+    path: "/admin/groups",
+    key: "groups",
+    label: "Groups",
     icon: <SettingOutlined />,
   },
 ];
