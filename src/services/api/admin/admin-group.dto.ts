@@ -1,58 +1,8 @@
 import { z } from "zod";
 
-export const AdminUserAttributesDto = z.object({
-  email: z.string(),
-  emailVerified: z.string(),
-  sub: z.string(),
-});
-
-export type AdminUserAttributesDto = z.infer<typeof AdminUserAttributesDto>;
-
-const AdminUserDto = z.object({
-  username: z.string(),
-  userCreateDate: z.date(),
-  userLastModifiedDate: z.date(),
-  enabled: z.boolean(),
-  userStatus: z.string(),
-  userAttributes: AdminUserAttributesDto,
-});
-
-export const AdminListUsersResponseDto = z.object({
-  users: z.array(AdminUserDto),
-  paginationToken: z.string().optional(),
-});
-
-export type AdminListUsersResponseDto = z.infer<
-  typeof AdminListUsersResponseDto
->;
-
-export const AdminDeleteUserParamsDto = z.object({
-  username: z.string(),
-});
-
-export type AdminDeleteUserParamsDto = z.infer<typeof AdminDeleteUserParamsDto>;
-
-export const AdminCreateUserParamsDto = z.object({
-  username: z.string(),
-  password: z.string().optional(),
-  email: z.string(),
-  phone: z.string().optional(),
-  temporaryPassword: z.string().optional(),
-  messageAction: z.enum(["RESEND", "SUPPRESS"]).optional(),
-  attributes: z.record(z.string()).optional(),
-});
-
-export type AdminCreateUserParamsDto = z.infer<typeof AdminCreateUserParamsDto>;
-
-export const AdminUpdateUserAttributesParamsDto = z.object({
-  username: z.string(),
-  attributes: z.record(z.string()),
-});
-
-export type AdminUpdateUserAttributesParamsDto = z.infer<
-  typeof AdminUpdateUserAttributesParamsDto
->;
-
+/**
+ * Add user to group params schema
+ */
 export const AdminAddUserToGroupParamsDto = z.object({
   username: z.string(),
   groupName: z.string(),
@@ -62,6 +12,9 @@ export type AdminAddUserToGroupParamsDto = z.infer<
   typeof AdminAddUserToGroupParamsDto
 >;
 
+/**
+ * Remove user from group params schema
+ */
 export const AdminRemoveUserFromGroupParamsDto = z.object({
   username: z.string(),
   groupName: z.string(),
@@ -71,6 +24,9 @@ export type AdminRemoveUserFromGroupParamsDto = z.infer<
   typeof AdminRemoveUserFromGroupParamsDto
 >;
 
+/**
+ * Create group params schema
+ */
 export const CreateGroupParamsDto = z.object({
   groupName: z.string(),
   description: z.string().optional(),
@@ -80,12 +36,18 @@ export const CreateGroupParamsDto = z.object({
 
 export type CreateGroupParamsDto = z.infer<typeof CreateGroupParamsDto>;
 
+/**
+ * Get group params schema
+ */
 export const GetGroupParamsDto = z.object({
   groupName: z.string(),
 });
 
 export type GetGroupParamsDto = z.infer<typeof GetGroupParamsDto>;
 
+/**
+ * Update group params schema
+ */
 export const UpdateGroupParamsDto = z.object({
   groupName: z.string(),
   description: z.string().optional(),
@@ -95,12 +57,18 @@ export const UpdateGroupParamsDto = z.object({
 
 export type UpdateGroupParamsDto = z.infer<typeof UpdateGroupParamsDto>;
 
+/**
+ * Delete group params schema
+ */
 export const DeleteGroupParamsDto = z.object({
   groupName: z.string(),
 });
 
 export type DeleteGroupParamsDto = z.infer<typeof DeleteGroupParamsDto>;
 
+/**
+ * List groups params schema
+ */
 export const ListGroupsParamsDto = z.object({
   limit: z.number().optional(),
   nextToken: z.string().optional(),
@@ -108,6 +76,9 @@ export const ListGroupsParamsDto = z.object({
 
 export type ListGroupsParamsDto = z.infer<typeof ListGroupsParamsDto>;
 
+/**
+ * List users in group params schema
+ */
 export const ListUsersInGroupParamsDto = z.object({
   groupName: z.string(),
   limit: z.number().optional(),
@@ -118,6 +89,9 @@ export type ListUsersInGroupParamsDto = z.infer<
   typeof ListUsersInGroupParamsDto
 >;
 
+/**
+ * List groups for user params schema
+ */
 export const AdminListGroupsForUserParamsDto = z.object({
   username: z.string(),
   limit: z.number().optional(),
@@ -127,11 +101,3 @@ export const AdminListGroupsForUserParamsDto = z.object({
 export type AdminListGroupsForUserParamsDto = z.infer<
   typeof AdminListGroupsForUserParamsDto
 >;
-
-export const ListUsersParamsDto = z.object({
-  limit: z.number().min(1).max(100).optional(),
-  filter: z.string().optional(),
-  paginationToken: z.string().optional(),
-});
-
-export type ListUsersParamsDto = z.infer<typeof ListUsersParamsDto>;

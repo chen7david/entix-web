@@ -1,18 +1,18 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { adminService } from "../../services/api";
+import { adminUserService } from "../../services/api";
 import { Badge, Table, Button, Modal, message, Space, Typography } from "antd";
 import { DeleteOutlined, ExclamationCircleFilled } from "@ant-design/icons";
 import type {
   AdminUserAttributesDto,
-  AdminListUsersResponseDto,
-} from "../../services/api/admin.dto";
+  AdminUserDto,
+} from "../../services/api/admin";
 import dayjs, { timeSince } from "../../config/dayjs.config";
 import { useState } from "react";
 
 const { Title } = Typography;
 const { confirm } = Modal;
 
-type UserType = AdminListUsersResponseDto["users"][0];
+type UserType = AdminUserDto;
 
 /**
  * UserDeleteButton component to handle individual user deletion
@@ -30,7 +30,7 @@ const UserDeleteButton = ({
   const handleDelete = async () => {
     try {
       setLoading(true);
-      await adminService.deleteUser(username);
+      await adminUserService.deleteUser(username);
       message.success("User deleted successfully");
       onSuccess();
     } catch (error) {
@@ -76,7 +76,7 @@ export const UsersPage = () => {
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["users"],
-    queryFn: () => adminService.getUsers(),
+    queryFn: () => adminUserService.getUsers(),
     select: (data) => data.users,
   });
 

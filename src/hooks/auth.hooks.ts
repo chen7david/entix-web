@@ -1,7 +1,7 @@
 // hooks/useAuth.ts
 import { useAtom } from "jotai";
-import { accessTokenAtom, refreshTokenAtom } from "../state/auth.state";
-import { SignInResponseDto } from "../services/api/auth.dto";
+import { accessTokenAtom, refreshTokenAtom } from "../store/auth.state";
+import { SignInResponseDto } from "../services/api";
 
 export function useAuth() {
   const [accessToken, setAccessToken] = useAtom(accessTokenAtom);

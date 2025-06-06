@@ -1,7 +1,7 @@
 import { Button, Form, Input, Typography, message } from "antd";
 import { authService } from "../../services/api";
 import { Link, useNavigate } from "react-router-dom";
-import { ResendConfirmationCodeDto } from "../../services/api/auth.dto"; // You might want a new DTO like ResendConfirmationCodeDto
+import { ResendConfirmationCodeDto } from "../../services/api";
 import { createSchemaFieldRule } from "antd-zod";
 import { useMutation } from "@tanstack/react-query";
 

@@ -1,7 +1,7 @@
 import { Button, Form, Input, Typography, message } from "antd";
 import { authService } from "../../services/api";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { ConfirmSignUpDto } from "../../services/api/auth.dto";
+import { ConfirmSignUpDto } from "../../services/api";
 import { createSchemaFieldRule } from "antd-zod";
 import { useMutation } from "@tanstack/react-query";
 
