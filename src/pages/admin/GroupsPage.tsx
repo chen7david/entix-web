@@ -16,6 +16,7 @@ import {
   PlusOutlined,
   ExclamationCircleFilled,
   UserAddOutlined,
+  ReloadOutlined,
 } from "@ant-design/icons";
 import dayjs from "../../config/dayjs.config";
 import { useState } from "react";
@@ -272,18 +273,30 @@ export const GroupsPage = () => {
   const queryClient = useQueryClient();
   const [createModalVisible, setCreateModalVisible] = useState(false);
   const [editGroup, setEditGroup] = useState<GroupType | null>(null);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, error, refetch } = useQuery({
     queryKey: ["groups"],
     queryFn: () => adminGroupService.getGroups(),
   });
+
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    await refetch();
+    setIsRefreshing(false);
+  };
 
   const createGroupMutation = useMutation({
     mutationFn: (values: GroupType) => adminGroupService.createGroup(values),
     onSuccess: () => {
       message.success("Group created successfully");
       setCreateModalVisible(false);
+      // Force refetch after creation to ensure new group appears
       queryClient.invalidateQueries({ queryKey: ["groups"] });
+      // Additional delay and refetch to ensure API consistency
+      setTimeout(() => {
+        refetch();
+      }, 500);
     },
     onError: (error) => {
       message.error(`Failed to create group: ${error.message}`);
@@ -371,13 +384,22 @@ export const GroupsPage = () => {
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <Title level={4}>Group Management</Title>
-        <Button
-          type="primary"
-          icon={<PlusOutlined />}
-          onClick={() => setCreateModalVisible(true)}
-        >
-          Create Group
-        </Button>
+        <Space>
+          <Button
+            icon={<ReloadOutlined />}
+            onClick={handleRefresh}
+            loading={isRefreshing}
+          >
+            Refresh
+          </Button>
+          <Button
+            type="primary"
+            icon={<PlusOutlined />}
+            onClick={() => setCreateModalVisible(true)}
+          >
+            Create Group
+          </Button>
+        </Space>
       </div>
 
       <Table
